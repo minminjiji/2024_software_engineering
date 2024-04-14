@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign up 페이지 (feat. MySQL, NodeJS)</title>
+    </head>
+    <body>
+        <h1>사용자 등록 페이지</h1>
+        <br>
+        <form method="post" action="/adduser">
+            <table>
+                <tr>
+                    <td><label>사용자명</label></td>
+                    <td><input type="text" name="name"></td>
+                </tr>
+                <tr>
+                    <td><label>아이디</label></td>
+                    <td><input type="text" name="id"></td>
+                </tr>
+                <tr>
+                    <td><label>비밀번호</label></td>
+                    <td><input type="password" name="password"></td>
+                </tr>
+                <tr>
+                    <td><label>비밀번호 확인</label></td>
+                    <td><input type="password" name="passwordConfirm"></td>
+                </tr>
+                <tr>
+                    <td><label>이메일 주소</label></td>
+                    <td><input type="text" name="email"></td>
+                </tr>
+            </table>
+            <input type="submit" value="회원가입">
+        </form>
+        
+        
+    </body>
+</html>
