@@ -3,24 +3,174 @@
     <head>
         <meta charset = "utf-8">
         <title>sign_up</title>
+        <style>
+            .header {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: white;
+            }
+            
+            .logo {
+                width:100px;
+                cursor: pointer;
+            }
+            
+            .user-image {
+                width: 50px;
+                cursor: pointer;
+            }
+            
+            .button {
+                background-color: transparent;
+                border: none;
+                padding: 10px 20px;
+                margin: 0 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            
+            .button:hover {
+                background-color: orange;
+                color: white;
+            }
+            
+            .button-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .button-container2 {
+                text-align: center;
+                margin-top: 70px;
+                margin-left : 200px;
+                font-size: 30px;
+            }
+            
+            hr.custom {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 85%;
+                margin: 0 auto;
+            }
+            
+            hr.custom2 {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 48%;
+                margin: 0 auto;
+            }
+            
+            .user-menu {
+                position: absolute;
+                top: calc(100% + 5px);
+                right: 10px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                display: none;
+            }
+            
+            .user-menu-item {
+                margin-bottom: 5px;
+            }
+            
+            .user-image-container {
+                margin-top: 50px;
+                margin-left: 600px;
+            }
+            
+            .story_image {
+                margin-left: 200px;
+                width: 700px;
+                height: 500px;
+            }
+            .find_box {
+                width: 800px;
+                height: 700px;
+                border: 3px solid darkgray;
+                background-color: white;
+                margin: 50px auto; 
+                box-sizing: border-box;
+                display: flex; 
+                flex-direction: column;
+                align-items: center;
+            }
+            .input_box {
+                width: 700px;
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+            }
+
+            .input_box input {
+            width: 1000px;  
+            height: 50px;
+            border: 3px solid darkgray;
+            background-color: white;
+            box-sizing: border-box;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+            
+            .user-icon,
+            .password-icon, 
+            .id-icon {
+                margin-top: 140px;
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+                margin-top: 0px;
+            }
+
+            .user-img {
+                width: 100px;
+                height: 100px;
+                margin-right: 10px;
+                margin-top: 0px;
+            }
+            
+            </style>
     </head>
 
     <body>
-        <img src = "svg/logo.svg" alt = "logoSVG" width = "100">
-        <br><br>
-        <img src="svg/circle_user.svg" alt="circleuserSVG" width="100">
-        <br>
-        <form name="profileIMG">
-            <input type="file" value="사진 등록"><input type="button" value="기본 이미지">
-        </form>
-        <br>
-        <form name = "signup" method = "get">
-            <img src = "svg/user.svg" alt = "userSVG" width="30"> <input type = "text" size = "20" placeholder="이름" value = ""><br>
-            <img src = "svg/user.svg" alt = "userSVG" width="30"> <input type="text" size="20" placeholder="아이디" value=""><br>
-            <img src="svg/lock.svg" alt="lockSVG" width="30"> <input type="password" size="20" placeholder="비밀번호" value=""><br>
-            <img src="svg/lock.svg" alt="lockSVG" width="30"> <input type="password" size="20" placeholder="비밀번호 확인" value=""><br>
-            <img src="svg/mail.svg" alt="mailSVG" width="30"> <input type="email" size="20" placeholder="이메일 주소" value=""><br>
-            <br> <input type = "submit" value="회원가입">
-        </form>
+        <img src="svg/logo.svg" alt="로고" class="logo" onclick="redirectToMain()">
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item"><button class="button" onclick="register()">회원가입</button></div>
+            <div class="user-menu-item"><button class="button" onclick="login()">로그인</button></div>
+            <div class="user-menu-item"><button class="button" onclick="logout()">로그아웃</button></div>
+        </div>
+
+        <div class="button-container2">
+            <div class="input_box">
+                <img src="svg/circle_user.svg" alt="userSVG" class="user-img">
+            </div>
+            <div class="input_box">    
+                <input type="file" value="사진 등록">
+                <button onclick="standardIMG()">기본 이미지</button>
+            </div>
+            <div class="input_box">
+            <img src = "svg/user.svg" alt = "userSVG" class="user-icon"> <input type = "text" size = "20" placeholder="이름" value = "" style="margin-top:140px;"><br>
+            </div>
+            <div class="input_box">
+            <img src = "svg/user.svg" alt = "userSVG" class="user-icon"> <input type="text" size="20" placeholder="아이디" value="" style="margin-top:140px;"><br>
+            </div>
+            <div class="input_box">
+            <img src="svg/lock.svg" alt="lockSVG" class="user-icon"> <input type="password" size="20" placeholder="비밀번호" value="" style="margin-top:140px;"><br>
+            </div>
+            <div class="input_box">
+            <img src="svg/lock.svg" alt="lockSVG" class="user-icon"> <input type="password" size="20" placeholder="비밀번호 확인" value="" style="margin-top:140px;"><br>
+            </div>
+            <div class="input_box">
+            <img src="svg/mail.svg" alt="mailSVG" class="user-icon"> <input type="email" size="20" placeholder="이메일 주소" value="" style="margin-top:140px;"><br>
+            </div>
+            <div>
+            <input type = "submit" value="회원가입" style="margin-top: 30px; width: 500px; height: 50px; background-color: white; border: 3px solid darkgray; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+            </div>
+        </div>
     </body>
 </html>

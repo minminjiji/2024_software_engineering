@@ -3,43 +3,184 @@
     <head>
         <meta charset ="utf-8">
         <title>festival</title>
+        <style>
+            .header {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: white;
+            }
+            
+            .logo {
+                width:100px;
+                cursor: pointer;
+            }
+            
+            .user-image {
+                width: 50px;
+                cursor: pointer;
+            }
+            
+            .button {
+                background-color: transparent;
+                border: none;
+                padding: 10px 20px;
+                margin: 0 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            
+            .button:hover {
+                background-color: orange;
+                color: white;
+            }
+            
+            .button-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .button-container2 {
+                text-align: center;
+                margin-top: 70px;
+                margin-left : 200px;
+                font-size: 30px;
+            }
+            
+            hr.custom {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 85%;
+                margin: 0 auto;
+            }
+            
+            hr.custom2 {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 48%;
+                margin: 0 auto;
+            }
+            
+            .user-menu {
+                position: absolute;
+                top: calc(100% + 5px);
+                right: 10px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                display: none;
+            }
+            
+            .user-menu-item {
+                margin-bottom: 5px;
+            }
+            
+            .user-image-container {
+                margin-top: 50px;
+                margin-left: 600px;
+            }
+            
+            .story_image {
+                margin-left: 200px;
+                width: 700px;
+                height: 500px;
+            }
+            .find_box {
+                width: 800px;
+                height: 700px;
+                border: 3px solid darkgray;
+                background-color: white;
+                margin: 50px auto; 
+                box-sizing: border-box;
+                display: flex; 
+                flex-direction: column;
+                align-items: center;
+            }
+            .input_box {
+                width: 700px;
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+            }
+
+            .input_box input {
+            width: 1000px;  
+            height: 50px;
+            border: 3px solid darkgray;
+            background-color: white;
+            box-sizing: border-box;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+            
+            .user-icon,
+            .password-icon, 
+            .id-icon,
+            .icon {
+                margin-top: 140px;
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+                margin-top: 0px;
+            }
+
+            .location-item {
+                margin-bottom: 5px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            </style>
     </head>
     <body>
-        <br><img src = "svg/logo.svg" alt = "logoSVG" width = "100">
-        <img src="svg/search.svg" alt="serachSVG" width="20"> <input type="text" size="80" placeholder="검색">
-        <br><br>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>서울</figcaption></figure>
-        </div>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>인천</figcaption></figure>
-        </div>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>대전</figcaption></figure>
-        </div>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>대구</figcaption></figure>
-        </div>  
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>경기</figcaption></figure>
-        </div>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>부산</figcaption></figure>
-        </div>      
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>울산</figcaption></figure>
-        </div>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>광주</figcaption></figure>
-        </div>
-        <div style="float:left;">
-            <figure><img src="svg/land_location.svg" alt="landLocationSVG" width="30"><figcaption>강원</figcaption></figure>
+        <div class="header">
+            <img src="svg/logo.svg" alt="로고" class="logo" onclick="redirectToMain()">
+            <div class="input_box">
+                <img src="svg/search.svg" alt="serachSVG" width="20" class="icon"> <input type="text" size="80" placeholder="검색">
+            </div>
+            <img src="svg/circle_user.svg" alt="사용자" class="user-image" onclick="toggleUserMenu()">
+            <div class="user-menu" id="userMenu">
+                <div class="user-menu-item"><button class="button" onclick="register()">회원가입</button></div>
+                <div class="user-menu-item"><button class="button" onclick="login()">로그인</button></div>
+                <div class="user-menu-item"><button class="button" onclick="logout()">로그아웃</button></div>
+            </div>
         </div>
 
-        <br><br><br><br><br><br>
-        이달의 축제
+        <br><br>
+
+        <div>
+            <div class="location-item">
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>서울</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>인천</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>대전</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>대구</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경기</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>부산</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>울산</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>광주</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>강원</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>충주</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>충남</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경북</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경남</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>전남</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>제주</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>세종</figcaption></figure>
+            </div>
+        <br><br>
+        
+        <div>
+            이달의 축제
+        </div>
+
         <br>
-        임의 달력(추가 예정)<br>
-        <input type="date">
+
+        <div>
+            임의 달력(추가 예정)
+            <input type="date">
+        </div>
     </body>
 </html>
