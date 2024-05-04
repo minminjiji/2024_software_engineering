@@ -2,8 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-            <title>view_diary</title>
-            <style>
+        <title>local_festival</title>
+
+        <style>
             .header {
                 position: relative;
                 display: flex;
@@ -84,11 +85,6 @@
                 margin-left: 600px;
             }
             
-            .story_image {
-                margin-left: 200px;
-                width: 700px;
-                height: 500px;
-            }
             .find_box {
                 width: 800px;
                 height: 700px;
@@ -119,33 +115,59 @@
             
             .user-icon,
             .password-icon, 
-            .id-icon {
+            .id-icon,
+            .icon {
                 margin-top: 140px;
                 width: 50px;
                 height: 50px;
                 margin-right: 10px;
                 margin-top: 0px;
             }
+
+            .festival {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .festival-info{
+                background-color: #f9f9f9;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .festival-info h3 {
+                margin-top: 0;
+            }
+            .festival-info p {
+                margin-bottom: 5px;
+            }
         </style>
     </head>
     <body>
+        <div class="header">
+            <img src="svg/logo.svg" alt="로고" class="logo" onclick="redirectToMain()">
+            <div class="input_box">
+                <img src="svg/search.svg" alt="serachSVG" width="20" class="icon"> <input type="text" size="80" placeholder="검색">
+            </div>
+            <img src="svg/circle_user.svg" alt="사용자" class="user-image" onclick="toggleUserMenu()">
+            <div class="user-menu" id="userMenu">
+                <div class="user-menu-item"><button class="button" onclick="register()">회원가입</button></div>
+                <div class="user-menu-item"><button class="button" onclick="login()">로그인</button></div>
+                <div class="user-menu-item"><button class="button" onclick="logout()">로그아웃</button></div>
+            </div>
+        </div>
+        <br>
+        <hr class="custom">
+        <br>
         <div>
-            <h1>일기 제목</h1>
-            <div>
-                이미지 업로드
-            </div>
-            <div>
-                <button onclick="share()" class="button-container">공유</button>
-            </div>
-            <div class="input_box">작성한 글</div>
-            <br><br>
-            <div>
-                <div>
-                    <img src="svg/circle_user.svg" alt="user" class="user-icon"> 아이디
-                </div>
-                <div>
-                    <br>댓글
-                </div>
+            <h1>지역 이름</h1>
+        </div>
+        <div class="festival">
+            <div class="festival-info">
+                <h3>축제 이름</h3>
+                <p>일자: </p>
+                <p>장소: </p>
+                <p>축제 설명</p>
             </div>
         </div>
     </body>
