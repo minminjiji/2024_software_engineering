@@ -19,10 +19,6 @@ MySQL Workbench를 실행하고 대상 MySQL 서버에 연결합니다.
 
 2024.05.22 travle.zip
 다운 받으시면 sql 파일과 소스파일 다 들어있어요
-파일 경로는 다음과 같게 설정하시고 작동해보세요 
-nodejs 서버 먼저 실행하시고 [loca](http://localhost:3000/) 접속.
-       - app.js
-       - uploads
-       - public 폴더 내에 css, images, js, svg 포함되어 있어야 함
-       - views
+nodejs 서버 먼저 실행하시고 [loca](http://localhost:3000/) 접속
+
        
