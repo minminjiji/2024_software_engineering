@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset ="utf-8">
+        <title>festival</title>
+        
+        <!--달력 라이브러리 fullcalendar-->
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        
+              document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                  initialView: 'dayGridMonth'
+                });
+                calendar.render();
+              });
+        </script>
+
+        <style>
+            #calendar{
+                width: 80%;
+                height: 500px;
+                margin: 0 auto;
+            }
+
+            .header {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: white;
+            }
+            
+            .logo {
+                width:100px;
+                cursor: pointer;
+            }
+            
+            .user-image {
+                width: 50px;
+                cursor: pointer;
+            }
+            
+            .button {
+                background-color: transparent;
+                border: none;
+                padding: 10px 20px;
+                margin: 0 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            
+            .button:hover {
+                background-color: orange;
+                color: white;
+            }
+            
+            .button-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .button-container2 {
+                text-align: center;
+                margin-top: 70px;
+                margin-left : 200px;
+                font-size: 30px;
+            }
+            
+            hr.custom {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 85%;
+                margin: 0 auto;
+            }
+            
+            hr.custom2 {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 48%;
+                margin: 0 auto;
+            }
+            
+            .user-menu {
+                position: absolute;
+                top: calc(100% + 5px);
+                right: 10px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                display: none;
+            }
+            
+            .user-menu-item {
+                margin-bottom: 5px;
+            }
+            
+            .user-image-container {
+                margin-top: 50px;
+                margin-left: 600px;
+            }
+            
+            .story_image {
+                margin-left: 200px;
+                width: 700px;
+                height: 500px;
+            }
+            .find_box {
+                width: 800px;
+                height: 700px;
+                border: 3px solid darkgray;
+                background-color: white;
+                margin: 50px auto; 
+                box-sizing: border-box;
+                display: flex; 
+                flex-direction: column;
+                align-items: center;
+            }
+            .input_box {
+                width: 700px;
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+            }
+
+            .input_box input {
+            width: 1000px;  
+            height: 50px;
+            border: 3px solid darkgray;
+            background-color: white;
+            box-sizing: border-box;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+            
+            .user-icon,
+            .password-icon, 
+            .id-icon,
+            .icon {
+                margin-top: 140px;
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+                margin-top: 0px;
+            }
+
+            .location-item {
+                margin-bottom: 5px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .festival {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .festival-info{
+                background-color: #f9f9f9;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .festival-info h3 {
+                margin-top: 0;
+            }
+            .festival-info p {
+                margin-bottom: 5px;
+            }
+            </style>
+    </head>
+    <body>
+        <div class="header">
+            <img src="svg/logo.svg" alt="로고" class="logo" onclick="redirectToMain()">
+            <div class="input_box">
+                <img src="svg/search.svg" alt="serachSVG" width="20" class="icon"> <input type="text" size="80" placeholder="검색">
+            </div>
+            <img src="svg/circle_user.svg" alt="사용자" class="user-image" onclick="toggleUserMenu()">
+            <div class="user-menu" id="userMenu">
+                <div class="user-menu-item"><button class="button" onclick="register()">회원가입</button></div>
+                <div class="user-menu-item"><button class="button" onclick="login()">로그인</button></div>
+                <div class="user-menu-item"><button class="button" onclick="logout()">로그아웃</button></div>
+            </div>
+        </div>
+        <br>
+        <hr class="custom">
+        <br>
+
+        <div>
+            <div class="location-item">
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>서울</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>인천</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>대전</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>대구</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경기</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>부산</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>울산</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>광주</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>강원</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>충주</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>충남</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경북</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경남</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>전남</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>제주</figcaption></figure>
+                <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>세종</figcaption></figure>
+            </div>
+        <br><br>
+        
+        <div style="text-align:center;">
+            <h1>이달의 축제</h1>
+        </div>
+        <div class="festival">
+            <div class="festival-info">
+                <h3>축제 이름</h3>
+                <p>일자: </p>
+                <p>장소: </p>
+                <p>축제 설명</p>
+            </div>
+        </div>
+        <br>
+
+        <div id="calendar">
+        </div> 
+    </body>
+</html>

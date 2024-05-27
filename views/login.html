@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Log In</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .logo {
+                width: 150px;
+                cursor: pointer;
+                margin-bottom: 30px;
+            }
+            .input_box {
+                width: 300px;
+                height: 50px;
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            .input_box input {
+                width: 100%;
+                height: 50px;
+                border: 3px solid darkgray;
+                background-color: white;
+                box-sizing: border-box;
+                padding: 0 10px;
+                font-size: 16px;
+            }
+            .button {
+                background-color: transparent;
+                border: none;
+                padding: 10px 20px;
+                margin: 0 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .button:hover {
+                background-color: orange;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="logo-container">
+            <img
+                src="svg/logo.svg"
+                alt="로고"
+                class="logo"
+                onclick="redirectToMain()"
+            />
+        </div>
+        <form action="/login" method="post">
+            <div class="input_box">
+                <input type="text" name="id" placeholder="아이디" required />
+            </div>
+            <div class="input_box">
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="비밀번호"
+                    required
+                />
+            </div>
+            <div class="input_box">
+                <input
+                    type="submit"
+                    value="로그인"
+                    style="
+                        width: 100%;
+                        height: 50px;
+                        background-color: white;
+                        border: 3px solid darkgray;
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        cursor: pointer;
+                    "
+                />
+            </div>
+        </form>
+    </body>
+</html>
