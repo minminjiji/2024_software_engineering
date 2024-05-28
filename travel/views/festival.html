@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>festival</title>
+    
+    <!-- 달력 라이브러리 fullcalendar -->
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+                    {
+                        title: '춘천마임축제',
+                        start: '2024-05-26',
+                        end: '2024-06-03',
+                        description: '춘천마임축제는 해마다 5월 마지막 주 춘천에서 열리는 축제로 물과 불, 몸과 움직임을 통해 도시와 예술, 시민을 잇는 공연예술축제이다. 프랑스 미모스 마임축제, 영국의 런던 마임축제와 더불어 세계 3대 마임축제로 손꼽힌다. 도시와 도시민이 가진 정서와 마음을 말 없는 움직임과 물, 불, 꽃, 빛, 영상 등 다양한 장르와의 융복합을 통해 \'춘천+마임+축제\'라는 새로운 장르를 만들어가고 있다. 물과 불의 원초적 에너지를 기반으로 도시와 시대가 가진 욕망을 예술적 몸짓으로 풀어헤치는 \'난장\'의 축제이다. 2024 춘천마임축제는 \'따뜻한 몸, Warm Body\'를 주제로 05월26일부터 06월02일까지 개최되며 개막난장 물의도시;아!水라장을 시작으로 불의도시;도깨비난장까지 8일간 다양한 프로그램을 선보인다.'
+                    },
+                    {
+                        title: '해운대 모래축제',
+                        start: '2024-05-24',
+                        end: '2024-05-28',
+                        description: '전국 최대의 모래를 소재로 한 친환경 전시회인 2024 해운대 모래축제가 모래로 만나는 그랜드 미술관이라는 주제로 2024년 5월 24일(금)부터 5월 27일(월)까지 해운대해수욕장 및 해운대 광장(구남로)에서 개최된다. 주요 프로그램으로는 모래작품전, 개막행사, 샌드보드, 샌드전망대, 모래조각 경연대회 등이 있다.'
+                    },
+                    {
+                        title: '도봉옛길 문화제',
+                        start: '2024-05-27',
+                        end: '2024-06-03',
+                        description: '도봉옛길 문화제는 서울 도봉구에서 열리는 축제로, 옛길을 따라 다양한 문화 행사가 진행된다.'
+                    }
+                ],
+                eventClick: function(info) {
+                    alert(info.event.title + "\n" + info.event.extendedProps.description);
+                }
+            });
+            calendar.render();
+        });
+    </script>
+
+    <style>
+        #calendar {
+            width: 80%;
+            height: 500px;
+            margin: 0 auto;
+        }
+
+        .header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: white;
+        }
+        
+        .logo {
+            width: 100px;
+            cursor: pointer;
+        }
+        
+        .user-image {
+            width: 50px;
+            cursor: pointer;
+        }
+        
+        .button {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            background-color: orange;
+            color: white;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container2 {
+            text-align: center;
+            margin-top: 70px;
+            margin-left: 200px;
+            font-size: 30px;
+        }
+        
+        hr.custom {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 85%;
+            margin: 0 auto;
+        }
+        
+        hr.custom2 {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 48%;
+            margin: 0 auto;
+        }
+        
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+        }
+        
+        .user-menu-item {
+            margin-bottom: 5px;
+        }
+        
+        .user-image-container {
+            margin-top: 50px;
+            margin-left: 600px;
+        }
+        
+        .story_image {
+            margin-left: 200px;
+            width: 700px;
+            height: 500px;
+        }
+
+        .find_box {
+            width: 800px;
+            height: 700px;
+            border: 3px solid darkgray;
+            background-color: white;
+            margin: 50px auto; 
+            box-sizing: border-box;
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input_box {
+            width: 700px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input_box input {
+            width: 1000px;  
+            height: 50px;
+            border: 3px solid darkgray;
+            background-color: white;
+            box-sizing: border-box;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+        
+        .user-icon,
+        .password-icon, 
+        .id-icon,
+        .icon {
+            margin-top: 140px;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            margin-top: 0px;
+        }
+
+        .location-item {
+            margin-bottom: 5px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .festival {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .festival-info {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .festival-info h3 {
+            margin-top: 0;
+        }
+
+        .festival-info p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="svg/logo.svg" alt="로고" class="logo" onclick="redirectToMain()">
+        <div class="input_box">
+            <img src="svg/search.svg" alt="serachSVG" width="20" class="icon"> 
+            <input type="text" size="80" placeholder="검색">
+        </div>
+        <img src="svg/circle_user.svg" alt="사용자" class="user-image" onclick="toggleUserMenu()">
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item"><button class="button" onclick="register()">회원가입</button></div>
+            <div class="user-menu-item"><button class="button" onclick="login()">로그인</button></div>
+            <div class="user-menu-item"><button class="button" onclick="logout()">로그아웃</button></div>
+        </div>
+    </div>
+    <br>
+    <hr class="custom">
+    <br>
+
+    <div>
+        <div class="location-item">
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>서울</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>인천</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>대전</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>대구</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경기</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>부산</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>울산</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>광주</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>강원</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>충주</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>충남</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경북</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>경남</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>전남</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>제주</figcaption></figure>
+            <figure><img src="svg/land_location.svg" alt="landLocationSVG" class="user-menu-item"><figcaption>세종</figcaption></figure>
+        </div>
+    <br><br>
+    
+    <div style="text-align:center;">
+        <h1>이달의 축제</h1>
+    </div>
+    <div class="festival">
+        <div class="festival-info">
+            <h3>춘천마임축제</h3>
+            <p>일자: 2024.05.26(일) ~ 2024.06.02(일)</p>
+            <p>장소: 강원특별자치도 춘천시 전역</p>
+            <p>축제 설명: 춘천마임축제는 해마다 5월 마지막 주 춘천에서 열리는 축제로 물과 불, 몸과 움직임을 통해 도시와 예술, 시민을 잇는 공연예술축제이다. 프랑스 미모스 마임축제, 영국의 런던 마임축제와 더불어 세계 3대 마임축제로 손꼽힌다. 도시와 도시민이 가진 정서와 마음을 말 없는 움직임과 물, 불, 꽃, 빛, 영상 등 다양한 장르와의 융복합을 통해 '춘천+마임+축제'라는 새로운 장르를 만들어가고 있다. 물과 불의 원초적 에너지를 기반으로 도시와 시대가 가진 욕망을 예술적 몸짓으로 풀어헤치는 '난장'의 축제이다. 2024 춘천마임축제는 '따뜻한 몸, Warm Body'를 주제로 05월26일부터 06월02일까지 개최되며 개막난장 물의도시;아!水라장을 시작으로 불의도시;도깨비난장까지 8일간 다양한 프로그램을 선보인다.</p>
+        </div>
+        <div class="festival-info">
+            <h3>해운대 모래축제</h3>
+            <p>일자: 2024.05.24(금) ~ 2024.05.27(월)</p>
+            <p>장소: 부산 해운대 해수욕장</p>
+            <p>축제 설명: 전국 최대의 모래를 소재로 한 친환경 전시회인 '2024 해운대 모래축제'가 모래로 만나는 그랜드 미술관이라는 주제로 2024년 5월 24일(금)부터 5월 27일(월)까지 해운대해수욕장 및 해운대 광장(구남로)에서 개최된다. 주요 프로그램으로는 모래작품전, 개막행사, 샌드보드, 샌드전망대, 모래조각 경연대회 등이 있다.</p>
+        </div>
+        <div class="festival-info">
+            <h3>도봉옛길 문화제</h3>
+            <p>일자: 2024.05.27(월) ~ 2024.06.02(일)</p>
+            <p>장소: 서울 도봉구</p>
+            <p>축제 설명: ‘도봉옛길 문화제’는 서울 도봉구의 대표적 문화유산인 ‘도봉옛길’의 역사·문화적 가치를 알리고 지역주민의 일상에서 지역문화예술을 향유할 수 있도록 마련된 지역 문화제다. 도봉옛길은 조선시대 수도 한양과 한반도 각지를 잇는 6개의 큰 대로(大路) 중 두번째인 경흥대로(慶興大路)의 도봉구 구간을 지칭한다. 조선 태종 대 함흥차사, 세종 대 4군 6진으로 출정했던 군대, 북어와 북포를 가득 멘 보부상 등 과거 수많은 사람들이 부푼 꿈을 안고 이 길을 걸었다. 특히 도봉옛길은 수려한 도봉산과 도봉서원, 벚꽃놀이와 하이킹을 가기 위해 이용했던 산수유람로기도 했다. 제4회 도봉옛길 문화제 ""도봉유람""은 오늘날의 도봉옛길이 지역주민들이 일상을 만들어가는 삶의 터전이자, 도봉사람들을 치유하고 보듬어 줄 수 있는 휴식의 공간이라는 점에 집중하였다. 지역문화예술인으로 구성된 도봉옛길 예술상단의 거리공연, 도봉사람들과 함께 도봉옛길을 걸어보는 ‘도봉옛길 거리행렬’, 지역문화해설사와 함께하는 도봉옛길 도보여행 ‘도봉옛길 문화탐방’, 기획전시 및 체험프로그램 등으로 꾸린 '도봉유람'은 어디론가 훌쩍 유람을 떠나고 싶은 사람이라면 누구나 함께 할 수 있다.</p>
+        </div>
+    </div>
+    <br>
+
+    <div id="calendar"></div> 
+</body>
+</html>

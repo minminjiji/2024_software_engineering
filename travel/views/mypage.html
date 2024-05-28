@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+        <title>여행 웹사이트</title>
+        <style>
+            .header {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: white;
+            }
+
+            .logo {
+                width: 50px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+
+            .user-image {
+                width: 50px;
+                cursor: pointer;
+            }
+
+            .button {
+                background-color: transparent;
+                border: none;
+                padding: 10px 20px;
+                margin: 0 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            .button:hover {
+                background-color: orange;
+                color: white;
+            }
+
+            .button-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .button-container2 {
+                text-align: left;
+                margin-top: 20px;
+                margin-left: 170px;
+            }
+
+            hr.custom {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 85%;
+                margin: 0 auto;
+            }
+
+            hr.custom2 {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 48%;
+                margin: 0 auto;
+            }
+
+            .user-menu {
+                position: absolute;
+                top: calc(100% + 5px);
+                right: 10px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                display: none;
+            }
+
+            .user-menu-item {
+                margin-bottom: 5px;
+            }
+
+            .user-image-container {
+                margin-top: 50px;
+                margin-left: 600px;
+            }
+
+            .story_image {
+                margin-left: 200px;
+                width: 300px; /* 이미지 크기 조정 */
+                height: 300px; /* 이미지 크기 조정 */
+            }
+
+            .travel-box {
+                background-color: #f0f0f0;
+                padding: 10px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+                max-width: 300px;
+                height: 300px;
+                margin-top: 20px;
+                margin-left: 35px; /* 왼쪽 여백 수정 */
+                margin-right: 10px; /* 상자들 사이의 여백 조절 */
+                display: inline-block; /* 인라인 블록 요소로 설정하여 가로로 배치 */
+                vertical-align: top; /* 상단 정렬 */
+                white-space: nowrap; /* 텍스트가 가로로만 늘어나도록 설정 */
+            }
+
+            .travel-name {
+                font-weight: bold;
+                margin-bottom: 5px;
+                text-align: center; /* 텍스트 가운데 정렬 */
+            }
+
+            .travel-image-container {
+                position: relative;
+                margin-bottom: 5px;
+                width: 100px; /* 이미지의 가로 크기 지정 */
+                height: auto; /* 이미지의 세로 크기를 자동으로 조정 */
+            }
+
+            .travel-image {
+                width: 300px; /* 이미지의 가로 크기 조정 */
+                height: 200px; /* 이미지의 세로 크기 조정 */
+            }
+
+            .travel-name-overlay {
+                position: absolute;
+                bottom: -50px; /* 기존의 -20px 대신 더 음수 값으로 위치 조정 */
+                left: 0;
+                background-color: transparent;
+                color: black;
+                padding: 5px;
+                width: 100%;
+                box-sizing: border-box;
+                font-size: 30px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .button-view-travel {
+                background-color: #f0f0f0;
+                border: none;
+                padding: 7px 10px;
+                cursor: pointer;
+                border: 3px solid black;
+                margin-right: 5px; /* 수정된 부분: 버튼 사이 간격 조절 */
+            }
+
+            .button-add-travel {
+                background-color: #f0f0f0;
+                border: none;
+                padding: 7px 10px;
+                cursor: pointer;
+                border: 3px solid black;
+                margin-top: 45px; /* 여행 추가 버튼의 상단 여백 추가 */
+                margin-left: 50px; /* 여행 추가 버튼의 왼쪽 여백 추가 */
+            }
+
+            .button-add-travel:hover,
+            .button-view-travel:hover {
+                background-color: #c0c0c0; /* 호버 시 배경색 변경 */
+                color: black;
+            }
+
+            .button-view-travel-box {
+                margin-top: 10px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <!-- logo 이미지에 onclick 이벤트 추가 -->
+            <img
+                src="images/logo.png"
+                alt="로고"
+                class="logo"
+                onclick="redirectToMain()"
+            />
+            <div class="button-container">
+                <button class="button">여행 스토리</button>
+                <button class="button">여행지 추천</button>
+                <button class="button">축제</button>
+                <button class="button">경로 추천</button>
+                <button class="button">마이페이지</button>
+            </div>
+            <img
+                src="images/user.png"
+                alt="사용자"
+                class="user-image"
+                onclick="toggleUserMenu()"
+            />
+            <div class="user-menu" id="userMenu">
+                <div class="user-menu-item">
+                    <button class="button" onclick="register()">
+                        회원가입
+                    </button>
+                </div>
+                <div class="user-menu-item">
+                    <button class="button" onclick="login()">로그인</button>
+                </div>
+                <div class="user-menu-item">
+                    <button class="button" onclick="logout()">로그아웃</button>
+                </div>
+            </div>
+        </div>
+        <hr class="custom" />
+
+        <div class="button-container2">
+            <button class="button" onclick="createTravel()">여행 만들기</button>
+            <button class="button" onclick="gotodiary()">일기</button>
+            <button class="button" onclick="gotowishlist()">관심 리스트</button>
+            <button class="button" onclick="gotoretouch()">
+                사용자 정보 수정
+            </button>
+        </div>
+
+        <div id="travelList">
+            <!-- 여행 정보가 표시될 곳 -->
+        </div>
+
+        <script>
+            var travels = [];
+
+            function toggleUserMenu() {
+                var userMenu = document.getElementById("userMenu");
+                if (userMenu.style.display === "block") {
+                    userMenu.style.display = "none";
+                } else {
+                    userMenu.style.display = "block";
+                }
+            }
+
+            function createTravel() {
+                var travelName = prompt(
+                    "여행 이름을 입력하세요 (공백포함 최대 10글자):"
+                );
+                if (travelName) {
+                    // 입력된 여행 이름의 글자 수 (공백 포함) 확인
+                    var nameLength = travelName.length;
+
+                    // 공백을 제외한 글자 수 확인
+                    var trimmedLength = travelName.replace(/\s/g, "").length;
+
+                    // 최대 글자 수 확인
+                    if (nameLength <= 10 && trimmedLength <= 10) {
+                        var travel = {
+                            name: travelName,
+                            image: "story_image.png", // 여행 이미지 경로
+                        };
+                        travels.push(travel);
+                        renderTravelList();
+                    } else {
+                        alert(
+                            "입력된 여행 이름은 공백 포함 10글자를 넘을 수 없습니다."
+                        );
+                    }
+                }
+            }
+
+            function renderTravelList() {
+                var container = document.getElementById("travelList");
+                container.innerHTML = ""; // Clear previous content
+                travels.forEach(function (travel, index) {
+                    var travelBox = document.createElement("div");
+                    travelBox.className = "travel-box";
+
+                    var travelImageContainer = document.createElement("div");
+                    travelImageContainer.className = "travel-image-container";
+
+                    var travelImage = document.createElement("img");
+                    travelImage.className = "travel-image";
+                    travelImage.src = travel.image;
+
+                    var travelNameOverlay = document.createElement("div");
+                    travelNameOverlay.className = "travel-name-overlay";
+                    travelNameOverlay.textContent = travel.name;
+
+                    travelImageContainer.appendChild(travelImage);
+                    travelImageContainer.appendChild(travelNameOverlay);
+
+                    var viewButton = document.createElement("button");
+                    viewButton.className = "button-view-travel";
+                    viewButton.textContent = "내가 만든 여행 보기";
+                    viewButton.onclick = function () {
+                        alert("내가 만든 여행 보기: " + travel.name); // 여행 보기 동작 정의
+                    };
+
+                    var addButton = document.createElement("button");
+                    addButton.className = "button-add-travel";
+                    addButton.textContent = "여행 추가하기";
+                    addButton.onclick = function () {
+                        createTravel();
+                    };
+
+                    var buttonBox = document.createElement("div");
+                    buttonBox.className = "button-view-travel-box"; // 여행 보기 버튼을 감싸는 박스 추가
+                    buttonBox.appendChild(viewButton);
+                    buttonBox.appendChild(addButton);
+
+                    travelBox.appendChild(travelImageContainer);
+                    travelBox.appendChild(buttonBox);
+
+                    container.appendChild(travelBox);
+                });
+            }
+
+            function gotodiary() {
+                window.location.href = "diary.html";
+            }
+
+            function gotowishlist() {
+                window.location.href = "wishlist.html";
+            }
+
+            function register() {
+                alert("회원가입 페이지로 이동합니다.");
+                window.location.href = "/signup";
+            }
+
+            function login() {
+                alert("로그인 페이지로 이동합니다.");
+                window.location.href = "/login";
+            }
+
+            function logout() {
+                alert("로그아웃합니다.");
+            }
+
+            function redirectToMain() {
+                window.location.href = "main.html";
+            }
+
+            function gotoretouch() {
+                window.location.href = "retouch.html";
+            }
+        </script>
+    </body>
+</html>
