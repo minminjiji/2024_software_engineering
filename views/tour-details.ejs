@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title><%= course.subject %> - 여행지 정보</title>
+        <link rel="stylesheet" href="/styles.css" />
+    </head>
+    <body>
+        <div class="header">
+            <h1><%= course.subject %></h1>
+        </div>
+        <div class="content">
+            <img
+                src="<%= course.image %>"
+                alt="<%= course.subject %>"
+                style="width: 100%"
+            />
+            <div class="details">
+                <h2>요약</h2>
+                <p><%= course.summary %></p>
+                <h2>태그</h2>
+                <p><%= course.tag %></p>
+                <h2>도시 및 구</h2>
+                <p><%= course.city %> - <%= course.gu %></p>
+                <h2>코스</h2>
+                <p><%= course.course %></p>
+                <h2>날짜</h2>
+                <p><%= course.date %></p>
+            </div>
+        </div>
+        <button onclick="goBack()">뒤로가기</button>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+    </body>
+</html>
