@@ -10,10 +10,101 @@
         .button-container2 {
             text-align: left;
             margin-top: 20px;
+            margin-left: 500px;
+            margin-right: 500px;
             flex-direction: row;
             justify-content: space-evenly;
             display: flex;
-            align-items: center;    
+            align-items: center;
+        }
+
+        .gallery {
+            display: block;
+
+        }
+
+        .diary_container2 {
+            background-color: #eee;
+            border-radius: 20px;
+            margin-top: 60px;
+            width: 30%;
+            height: 550px;
+            padding: 0 5px;
+            margin-left: 8%;
+            float: left;
+        }
+
+        .user_img {
+            text-align: center;
+        }
+
+        .user_img img {
+            margin-top: 10%;
+            margin-bottom: 3%;
+            width: 60%;
+            border-radius: 150px;
+        }
+
+        .user_name {
+            font-size: 20px;
+        }
+
+        .user_nick {
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .diary_container {
+            background-color: #eee;
+            border-radius: 20px;
+            margin-top: 60px;
+            width: 50%;
+            height: 530px;
+            padding: 10px;
+            margin-right: 8%;
+            float: right;
+            display: flex;
+            justify-content: center;
+        }
+
+        .diary_list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 10px;
+            width: 100%;
+            height: 96%;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .diary_list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .diary_list::-webkit-scrollbar-thumb {
+            height: 30%;
+            background: #f9a296;
+            border-radius: 10px;
+        }
+
+        .diary_list::-webkit-scrollbar-track {
+            background: rgba(33, 122, 244, 0.1);
+        }
+
+        .card {
+            box-sizing: border-box;
+            border: none;
+            border-radius: 12px;
+            /* padding: 5px; */
+            margin-bottom: 7%;
+            text-align: center;
+            background-color: #fff;
+            width: 90%;
+        }
+
+        .card img {
+            border-radius: 10px;
         }
     </style>
 
@@ -24,11 +115,11 @@
         <!-- logo 이미지에 onclick 이벤트 추가 -->
         <img src="images/logo.png" alt="로고" class="logo" onclick="redirectToMain()" />
         <div class="button-container">
-            <button class="button">여행 스토리</button>
-            <button class="button">여행지 추천</button>
-            <button class="button">축제</button>
-            <button class="button">경로 추천</button>
-            <button class="button">마이페이지</button>
+            <button class="button" onclick="redirectToMain()">여행 스토리</button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">경로 추천</button>
+            <button class="button" onclick="gotoMyPage()">마이페이지</button>
         </div>
         <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
@@ -56,16 +147,33 @@
         </button>
     </div>
     <div class="gallery" id="gallery">
-        <% list.forEach(list=> { %>
-            <div class="card">
-                <a href="/diary-list/<%= list.diary_id %>">
-                    <img src="<%= list.photo_url %>" alt="<%= list.title %>" style="width: 100%" />
-                    <div class="description">
-                        <%= list.title %>
-                    </div>
-                </a>
+        <div class="diary_container2">
+            <div class="user_img">
+                <!-- <%= id %> -->
+                <img src="https://i.pinimg.com/236x/43/67/96/4367963cfc8b35d7f810193a46f1dbeb.jpg">
             </div>
-            <% }); %>
+            <div class="user_nick">
+                <p class="user_name">
+                    <%= id %>
+                </p>
+            </div>
+        </div>
+
+        <div class="diary_container">
+            <div class="diary_list">
+                <% list.forEach(list=> { %>
+                    <div class="card">
+                        <a href="/diary-list/<%= list.diary_id %>">
+                            <img src="<%= list.photo_url %>" alt="<%= list.title %>" />
+                            <div class="description">
+                                <%= list.title %>
+                            </div>
+                        </a>
+                    </div>
+                    <% }); %>
+            </div>
+        </div>
+
     </div>
 
 
@@ -155,6 +263,22 @@
             });
         }
 
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+
+        function gototour() {
+            window.location.href = "/tour";
+        }
+
+        function gotocourse() {
+            window.location.href = "/course";
+        }
+
+        function gotoMyPage() {
+            window.location.href = "/mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+        }
+
         function gotodiary() {
             window.location.href = "diary.html";
         }
@@ -178,7 +302,11 @@
         }
 
         function redirectToMain() {
-            window.location.href = "main.html";
+            window.location.href = "/";
+        }
+
+        function gotoretouch() {
+            window.location.href = "/retouch";
         }
 
         document

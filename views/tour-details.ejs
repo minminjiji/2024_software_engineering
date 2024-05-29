@@ -4,6 +4,25 @@
         <meta charset="UTF-8" />
         <title><%= course.subject %> - 여행지 정보</title>
         <link rel="stylesheet" href="/styles.css" />
+        <style>
+            .content {
+                text-align: center; /* 중앙 정렬 */
+                margin: 20px auto; /* 위아래 여백 */
+                max-width: 900px; /* 최대 너비 */
+            }
+            .details {
+                max-width: 900px;
+                margin: 20px auto;
+                text-align: left;
+            }
+            .back-button {
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
         <div class="header">
@@ -13,7 +32,7 @@
             <img
                 src="<%= course.image %>"
                 alt="<%= course.subject %>"
-                style="width: 100%"
+                style="max-width: 100%; height: auto; margin: 0 auto"
             />
             <div class="details">
                 <h2>요약</h2>
@@ -28,7 +47,7 @@
                 <p><%= course.date %></p>
             </div>
         </div>
-        <button onclick="goBack()">뒤로가기</button>
+        <button class="back-button" onclick="goBack()">뒤로가기</button>
 
         <script>
             function goBack() {

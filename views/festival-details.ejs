@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= festival.FCLTY_NM %> - 세부 정보</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/styles1.css" />
+        <!-- 카카오맵 API 로드 (API_KEY를 실제 API 키로 교체하세요) -->
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f16de7f8d3ee2ae208ff54f169060951"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <button class="btn btn-primary mt-4" onclick="goBack()">
+                뒤로가기
+            </button>
+            <h1 class="my-4"><%= festival.FCLTY_NM %></h1>
+            <p><strong>축제명:</strong> <%= festival.FCLTY_NM %></p>
+            <p>
+                <strong>지역:</strong> <%= festival.CTPRVN_NM %> <%=
+                festival.SIGNGU_NM %>
+            </p>
+            <p><strong>장소:</strong> <%= festival.OPMTN_PLACE_NM %></p>
+            <p>
+                <strong>축제 시작 날짜:</strong> <%= festival.FSTVL_BEGIN_DE %>
+            </p>
+            <p><strong>축제 종료 날짜:</strong> <%= festival.FSTVL_END_DE %></p>
+            <p><strong>세부 내용:</strong> <%= festival.FSTVL_CN %></p>
+            <p><strong>주최:</strong> <%= festival.MNNST_NM %></p>
+            <p><strong>후원:</strong> <%= festival.AUSPC_INSTT_NM %></p>
+            <p><strong>전화 번호:</strong> <%= festival.TEL_NO %></p>
+            <p>
+                <strong>홈페이지:</strong>
+                <a href="<%= festival.HMPG_ADDR %>" target="_blank"
+                    ><%= festival.HMPG_ADDR %></a
+                >
+            </p>
+            <div id="map" style="width: 100%; height: 400px"></div>
+        </div>
+        <script>
+            function initMap() {
+                var location = {
+                    lat: parseFloat("<%= festival.FCLTY_LA %>"),
+                    lng: parseFloat("<%= festival.FCLTY_LO %>"),
+                };
+
+                var container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
+                var options = {
+                    // 지도를 생성할 때 필요한 기본 옵션
+                    center: new kakao.maps.LatLng(location.lat, location.lng), // 지도의 중심좌표.
+                    level: 3, // 지도의 레벨(확대, 축소 정도)
+                };
+
+                var map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+
+                // 마커가 표시될 위치입니다
+                var markerPosition = new kakao.maps.LatLng(
+                    location.lat,
+                    location.lng
+                );
+
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                });
+
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
+            }
+
+            // 카카오맵 API 스크립트가 로드된 후 initMap 함수 호출
+            kakao.maps.load(initMap);
+
+            // 뒤로가기 함수
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</html>

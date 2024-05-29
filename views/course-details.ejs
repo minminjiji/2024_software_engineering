@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= tour.POI_NM %> - 세부 정보</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/styles.css" />
+        <!-- 카카오맵 API 로드 (API_KEY를 실제 API 키로 교체하세요) -->
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f16de7f8d3ee2ae208ff54f169060951"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="my-4"><%= tour.POI_NM %></h1>
+            <p><strong>관광지 유형:</strong> <%= tour.CL_NM %></p>
+            <p>
+                <strong>지역:</strong> <%= tour.CTPRVN_NM %> <%= tour.SIGNGU_NM
+                %>
+            </p>
+            <p><strong>세부 정보:</strong> <%= tour.ORIGIN_NM %></p>
+            <div id="map" style="width: 100%; height: 400px"></div>
+        </div>
+        <script>
+            function initMap() {
+                var location = {
+                    lat: parseFloat("<%= tour.LC_LA %>"),
+                    lng: parseFloat("<%= tour.LC_LO %>"),
+                };
+
+                var container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
+                var options = {
+                    // 지도를 생성할 때 필요한 기본 옵션
+                    center: new kakao.maps.LatLng(location.lat, location.lng), // 지도의 중심좌표.
+                    level: 3, // 지도의 레벨(확대, 축소 정도)
+                };
+
+                var map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+
+                // 마커가 표시될 위치입니다
+                var markerPosition = new kakao.maps.LatLng(
+                    location.lat,
+                    location.lng
+                );
+
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition,
+                });
+
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
+            }
+
+            // 카카오맵 API 스크립트가 로드된 후 initMap 함수 호출
+            kakao.maps.load(initMap);
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</html>

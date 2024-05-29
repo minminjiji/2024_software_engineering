@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title><%= list.title %> - 여행지 정보</title>
+        <link rel="stylesheet" href="/styles.css" />
+    </head>
+    <body>
+        <div class="header">
+            <h1><%= list.title %></h1>
+        </div>
+        <div class="content">
+            <img
+                src="<%= list.photo_url %>"
+                alt="<%= list.title %>"
+                style="width: 100%"
+            />
+            <div class="details">
+                <h2>내용</h2>
+                <p><%= list.content %></p>
+            </div>
+        </div>
+        <button onclick="goBack()">뒤로가기</button>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+    </body>
+</html>

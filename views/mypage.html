@@ -176,14 +176,18 @@
                 src="images/logo.png"
                 alt="로고"
                 class="logo"
-                onclick="redirectToMain()"
+                onclick="gotoMainPage()"
             />
             <div class="button-container">
                 <button class="button">여행 스토리</button>
-                <button class="button">여행지 추천</button>
-                <button class="button">축제</button>
-                <button class="button">경로 추천</button>
-                <button class="button">마이페이지</button>
+                <button class="button" onclick="gototour()">여행지 추천</button>
+                <button class="button" onclick="gotofestival()">축제</button>
+                <button class="button" onclick="gotocourse()">
+                    관광지 정보
+                </button>
+                <button class="button" onclick="gotoMyPage()">
+                    마이페이지
+                </button>
             </div>
             <img
                 src="images/user.png"
@@ -328,12 +332,28 @@
                 alert("로그아웃합니다.");
             }
 
-            function redirectToMain() {
-                window.location.href = "main.html";
+            function gotoretouch() {
+                window.location.href = "/retouch";
             }
 
-            function gotoretouch() {
-                window.location.href = "retouch.html";
+            function gotoMainPage() {
+                window.location.href = "/";
+            }
+
+            function gotoMyPage() {
+                window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+            }
+
+            function gotofestival() {
+                window.location.href = "/festival";
+            }
+
+            function gototour() {
+                window.location.href = "/tour";
+            }
+
+            function gotocourse() {
+                window.location.href = "/course";
             }
         </script>
     </body>
