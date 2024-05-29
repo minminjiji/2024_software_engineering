@@ -20,7 +20,9 @@
                 </button>
                 <button class="button" onclick="gototour()">여행지 추천</button>
                 <button class="button" onclick="gotofestival()">축제</button>
-                <button class="button" onclick="gotoRoute()">경로 추천</button>
+                <button class="button" onclick="gotocourse()">
+                    관광지 정보
+                </button>
                 <button class="button" onclick="toggleMyPageOptions()">
                     마이페이지
                 </button>
@@ -147,16 +149,16 @@
                 alert("여행 스토리 페이지로 이동합니다.");
             }
 
-            function gotoRoute() {
-                alert("경로 추천 페이지로 이동합니다.");
+            function gotocourse() {
+                window.location.href = "/course";
             }
 
             function gotoMyPage() {
-                window.location.href = "/mypage.html";
+                window.location.href = "/mypage";
             }
 
             function gotofestival() {
-                window.location.href = "/festival.html";
+                window.location.href = "/festival";
             }
 
             function gototour() {
@@ -168,15 +170,15 @@
             }
 
             function gotodiary() {
-                window.location.href = "/diary.html";
+                window.location.href = "/diary";
             }
 
             function gotowishlist() {
-                window.location.href = "/wishlist.html";
+                window.location.href = "/wishlist";
             }
 
             function gotoretouch() {
-                window.location.href = "/retouch.html";
+                window.location.href = "/retouch";
             }
 
             function search() {

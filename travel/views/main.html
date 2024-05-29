@@ -98,7 +98,9 @@
                 <button class="button">여행 스토리</button>
                 <button class="button" onclick="gototour()">여행지 추천</button>
                 <button class="button" onclick="gotofestival()">축제</button>
-                <button class="button">경로 추천</button>
+                <button class="button" onclick="gotocourse()">
+                    관광지 정보
+                </button>
                 <button class="button" onclick="gotoMyPage()">
                     마이페이지
                 </button>
@@ -158,19 +160,23 @@
             }
 
             function gotoMainPage() {
-                window.location.href = "main.html";
+                window.location.href = "main";
             }
 
             function gotoMyPage() {
-                window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+                window.location.href = "mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
             }
 
             function gotofestival() {
-                window.location.href = "festival.html";
+                window.location.href = "/festival";
             }
 
             function gototour() {
                 window.location.href = "/tour";
+            }
+
+            function gotocourse() {
+                window.location.href = "/course";
             }
         </script>
     </body>

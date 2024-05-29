@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>여행 웹사이트</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/styles1.css" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
+            .header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 20px;
+                background-color: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .logo {
+                width: 50px;
+            }
+
+            .button-container {
+                display: flex;
+                align-items: center;
+            }
+
+            .button {
+                background-color: transparent;
+                border: none;
+                padding: 10px 20px;
+                margin: 0 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            .button:hover {
+                background-color: orange;
+                color: white;
+            }
+
+            .user-image {
+                width: 50px;
+                cursor: pointer;
+            }
+
+            .user-menu {
+                position: absolute;
+                top: calc(100% + 5px);
+                right: 10px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                display: none;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .user-menu-item {
+                margin-bottom: 5px;
+            }
+
+            hr.custom {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 85%;
+                margin: 0 auto;
+            }
+
+            hr.custom2 {
+                border: none;
+                height: 2px;
+                background-color: black;
+                width: 48%;
+                margin: 0 auto;
+            }
+
+            .user-image-container {
+                margin-top: 50px;
+                text-align: center;
+            }
+
+            .story_image {
+                width: 100%;
+                max-width: 700px;
+                height: auto;
+                margin: 0 auto;
+            }
+
+            .search-box {
+                text-align: center;
+                margin: 20px 0;
+            }
+
+            .search-box label,
+            .search-box select,
+            .search-box input,
+            .search-box button {
+                margin: 5px;
+            }
+
+            .gallery {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .card {
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                margin: 10px;
+                width: 200px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .card img {
+                border-bottom: 1px solid #ddd;
+                width: 100%;
+                height: auto;
+            }
+
+            .card a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .description {
+                padding: 10px;
+                text-align: center;
+            }
+
+            #loadMoreBtn {
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #333;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            #loadMoreBtn:hover {
+                background-color: #555;
+            }
+
+            #myPageOptions {
+                display: none;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            #myPageOptions .button {
+                margin: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <img
+                src="images/logo.png"
+                alt="로고"
+                class="logo"
+                onclick="gotoMainPage()"
+            />
+            <div class="button-container">
+                <button class="button" onclick="gotoStory()">
+                    여행 스토리
+                </button>
+                <button class="button" onclick="gototour()">여행지 추천</button>
+                <button class="button" onclick="gotofestival()">축제</button>
+                <button class="button" onclick="gotocourse()">
+                    관광지 정보
+                </button>
+                <button class="button" onclick="gotoMyPage()">
+                    마이페이지
+                </button>
+            </div>
+            <img
+                src="images/user.png"
+                alt="사용자"
+                class="user-image"
+                onclick="toggleUserMenu()"
+            />
+            <div class="user-menu" id="userMenu">
+                <div class="user-menu-item">
+                    <button class="button" onclick="register()">
+                        회원가입
+                    </button>
+                </div>
+                <div class="user-menu-item">
+                    <button class="button" onclick="login()">로그인</button>
+                </div>
+                <div class="user-menu-item">
+                    <button class="button" onclick="logout()">로그아웃</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="myPageOptions">
+            <button class="button" onclick="createTravel()">여행 만들기</button>
+            <button class="button" onclick="gotodiary()">일기</button>
+            <button class="button" onclick="gotowishlist()">관심 리스트</button>
+            <button class="button" onclick="gotoretouch()">
+                사용자 정보 수정
+            </button>
+        </div>
+        <hr class="custom" />
+        <div class="search-box">
+            <div>
+                <label for="city">지역 선택</label>
+                <select id="city">
+                    <option value="서울">서울</option>
+                    <option value="강원">강원</option>
+                    <option value="경기">경기</option>
+                    <option value="인천">인천</option>
+                    <option value="대전">대전</option>
+                    <option value="대구">대구</option>
+                    <option value="울산">울산</option>
+                    <option value="광주">광주</option>
+                    <option value="경북">경북</option>
+                    <option value="경남">경남</option>
+                    <option value="충남">충남</option>
+                    <option value="충북">충북</option>
+                    <option value="전북">전북</option>
+                    <option value="전남">전남</option>
+                    <option value="제주">제주</option>
+                </select>
+                <label for="type">분류</label>
+                <select id="type">
+                    <option value="일반관광지">일반관광지</option>
+                    <option value="항공사/여행사">항공사/여행사</option>
+                    <option value="천연기념물">천연기념물</option>
+                    <option value="관광안내소/매표소">관광안내소/매표소</option>
+                    <option value="유명사적/유적지">유명사적/유적지</option>
+                    <option value="영어마을">영어마을</option>
+                    <option value="동물원">동물원</option>
+                    <option value="먹거리/패션거리">먹거리/패션거리</option>
+                    <option value="테마공원/대형놀이공원">
+                        테마공원/대형놀이공원
+                    </option>
+                    <option value="야영장">야영장</option>
+                    <option value="비/탑/문/각">비/탑/문/각</option>
+                    <option value="식물원">식물원</option>
+                </select>
+            </div>
+            <div>
+                <input type="text" placeholder="검색어 입력" />
+                <button type="button" onclick="search()">검색</button>
+                <button type="button">초기화</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1 class="my-4">여행 정보 게시판</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>여행지 이름</th>
+                        <th>관광지 유형</th>
+                        <th>지역</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% tours.forEach(tour => { %>
+                    <tr>
+                        <td>
+                            <a href="/course/<%= tour.num %>"
+                                ><%= tour.POI_NM %></a
+                            >
+                        </td>
+                        <td><%= tour.CL_NM %></td>
+                        <td><%= tour.지역 %></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="/course?page=<%= currentPage - 1 %>"
+                            aria-label="Previous"
+                        >
+                            <span aria-hidden="true">&laquo; 이전</span>
+                        </a>
+                    </li>
+                    <% } %> <% let startPage = Math.floor((currentPage - 1) / 5)
+                    * 5 + 1; %> <% let endPage = Math.min(startPage + 4,
+                    totalPages); %> <% if (startPage > 1) { %>
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="/course?page=<%= startPage - 1 %>"
+                            >&laquo;&laquo;</a
+                        >
+                    </li>
+                    <% } %> <% for (let i = startPage; i <= endPage; i++) { %>
+                    <li
+                        class="page-item <%= i === currentPage ? 'active' : '' %>"
+                    >
+                        <a class="page-link" href="/course?page=<%= i %>"
+                            ><%= i %></a
+                        >
+                    </li>
+                    <% } %> <% if (endPage < totalPages) { %>
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="/course?page=<%= endPage + 1 %>"
+                            >&raquo;&raquo;</a
+                        >
+                    </li>
+                    <% } %> <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="/course?page=<%= currentPage + 1 %>"
+                            aria-label="Next"
+                        >
+                            <span aria-hidden="true">다음 &raquo;</span>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            function toggleUserMenu() {
+                var userMenu = document.getElementById("userMenu");
+                if (userMenu.style.display === "block") {
+                    userMenu.style.display = "none";
+                } else {
+                    userMenu.style.display = "block";
+                }
+            }
+
+            function register() {
+                alert("회원가입 페이지로 이동합니다.");
+                window.location.href = "/signup";
+            }
+
+            function login() {
+                alert("로그인 페이지로 이동합니다.");
+                window.location.href = "/login";
+            }
+
+            function logout() {
+                alert("로그아웃합니다.");
+            }
+
+            function gotoMainPage() {
+                window.location.href = "main.html";
+            }
+
+            function gotoMyPage() {
+                window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+            }
+
+            function gotofestival() {
+                window.location.href = "festival.html";
+            }
+
+            function gototour() {
+                window.location.href = "/tour";
+            }
+
+            function gotocourse() {
+                window.location.href = "/course";
+            }
+        </script>
+    </body>
+</html>

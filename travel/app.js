@@ -234,19 +234,6 @@ app.get("/wishlist", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "wishlist.html"));
 });
 
-// 지역별 축제 데이터를 가져오는 라우트
-app.get("/festival", (req, res) => {
-    const region = req.query.region;
-
-    const query = "SELECT * FROM festival WHERE CTPRVN_NM = ?";
-    connection.query(query, [region], (error, results) => {
-        if (error) {
-            return res.status(500).json({ error: error.message });
-        }
-        res.json(results);
-    });
-});
-
 // 초기 10개의 여행지 목록을 제공하는 경로 설정
 app.get("/tour", (req, res) => {
     const sql = "SELECT id, subject, image FROM course LIMIT 10";
@@ -285,6 +272,114 @@ app.get("/tour/:id", (req, res) => {
             return res.status(404).send("Tour not found");
         }
         res.render("tour-details", { course: results[0] });
+    });
+});
+
+// 게시판 형태의 여행 정보 페이지 제공
+app.get("/course", (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let offset = (page - 1) * 10;
+
+    const sql =
+        'SELECT num, POI_NM, CL_NM, CONCAT(CTPRVN_NM, " ", SIGNGU_NM) AS 지역 FROM tour LIMIT 10 OFFSET ?';
+    connection.query(sql, [offset], (err, results) => {
+        if (err) {
+            console.error("Error fetching tour data: " + err.message);
+            return res.status(500).send("Error fetching tour data");
+        }
+
+        // 전체 레코드 수를 가져와서 페이지 계산에 사용
+        connection.query(
+            "SELECT COUNT(*) AS count FROM tour",
+            (countErr, countResults) => {
+                if (countErr) {
+                    console.error(
+                        "Error fetching tour count: " + countErr.message
+                    );
+                    return res.status(500).send("Error fetching tour count");
+                }
+
+                let totalRecords = countResults[0].count;
+                let totalPages = Math.ceil(totalRecords / 10);
+
+                res.render("course", {
+                    tours: results,
+                    currentPage: page,
+                    totalPages: totalPages,
+                });
+            }
+        );
+    });
+});
+
+// 특정 게시물의 세부 정보를 가져오는 라우트
+app.get("/course/:num", (req, res) => {
+    const tourNum = req.params.num;
+    const sql = "SELECT * FROM tour WHERE num = ?";
+    connection.query(sql, [tourNum], (err, result) => {
+        if (err) {
+            console.error("Error fetching tour details: " + err.message);
+            return res.status(500).send("Error fetching tour details");
+        }
+        if (result.length === 0) {
+            return res.status(404).send("Tour not found");
+        }
+        res.render("course-details", { tour: result[0] });
+    });
+});
+
+// 축제 정보 게시판 제공
+app.get("/festival", (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let offset = (page - 1) * 10;
+
+    const sql =
+        'SELECT ID, FCLTY_NM, CONCAT(CTPRVN_NM, " ", SIGNGU_NM) AS 지역, OPMTN_PLACE_NM, FSTVL_BEGIN_DE, FSTVL_END_DE FROM festival LIMIT 10 OFFSET ?';
+    connection.query(sql, [offset], (err, results) => {
+        if (err) {
+            console.error("Error fetching festival data: " + err.message);
+            return res.status(500).send("Error fetching festival data");
+        }
+
+        // 전체 레코드 수를 가져와서 페이지 계산에 사용
+        connection.query(
+            "SELECT COUNT(*) AS count FROM festival",
+            (countErr, countResults) => {
+                if (countErr) {
+                    console.error(
+                        "Error fetching festival count: " + countErr.message
+                    );
+                    return res
+                        .status(500)
+                        .send("Error fetching festival count");
+                }
+
+                let totalRecords = countResults[0].count;
+                let totalPages = Math.ceil(totalRecords / 10);
+
+                res.render("festival", {
+                    festivals: results,
+                    currentPage: page,
+                    totalPages: totalPages,
+                });
+            }
+        );
+    });
+});
+
+// 특정 축제의 세부 정보를 가져오는 라우트
+app.get("/festival/:id", (req, res) => {
+    const festivalId = req.params.id;
+    const sql = "SELECT * FROM festival WHERE ID = ?";
+    connection.query(sql, [festivalId], (err, result) => {
+        if (err) {
+            console.error("Error fetching festival details: " + err.message);
+            return res.status(500).send("Error fetching festival details");
+        }
+        if (result.length === 0) {
+            return res.status(404).send("Festival not found");
+        }
+        res.render("festival-details", { festival: result[0] });
     });
 });
 
