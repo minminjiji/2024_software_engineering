@@ -1,31 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title><%= list.title %> - 여행지 정보</title>
-        <link rel="stylesheet" href="/styles.css" />
-    </head>
-    <body>
-        <div class="header">
-            <h1><%= list.title %></h1>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>
+        <%= list.title %> - 여행지 정보
+    </title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+        .diary_head{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+
+        }
+        .diary_name {
+            font-size: 30px;
+            /* text-align: center; */
+            width: auto;
+            /* margin: 0 10px 0 5px; */
+            /* margin: auto; */
+            margin-left: 20%;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            /* margin*/
+        }
+        .diary_head button{
+            margin-right: 15%;
+            border: none;
+        }
+        .diary_head button img{
+            width: 40px;
+            background-color: none;
+        }
+        .contents {
+            display: block;
+        }
+        .img_content{
+            float: left;
+            margin-left: 13%;
+            /* border: solid 1px black; */
+            width: 32%;
+            height: 550px;
+            border-radius: 25px;
+        }
+        .info_content{
+            float:right;
+            /* border: solid 1px black; */
+            margin-right: 15%;
+            width: 39%;
+            height: 550px;
+            background-color: white;
+            border-radius: 25px;
+            
+        }
+        .diary_img{
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+        }
+        .diary_info{
+            font-size: 17px;
+            padding: 10px;
+            width: 35%;
+            margin-bottom: 20px;
+        }
+        .diary_chat{
+            padding: 10px;
+            width: 70%;
+            margin-top: 5px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <!-- logo 이미지에 onclick 이벤트 추가 -->
+        <img src="images/logo.png" alt="로고" class="logo" onclick="redirectToMain()" />
+        <div class="button-container">
+            <button class="button" onclick="redirectToMain()">여행 스토리</button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">경로 추천</button>
+            <button class="button" onclick="gotoMyPage()">마이페이지</button>
         </div>
-        <div class="content">
-            <img
-                src="<%= list.photo_url %>"
-                alt="<%= list.title %>"
-                style="width: 100%"
-            />
-            <div class="details">
-                <h2>내용</h2>
-                <p><%= list.content %></p>
+        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">
+                    회원가입
+                </button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
             </div>
         </div>
-        <button onclick="goBack()">뒤로가기</button>
+    </div>
+    <hr class="custom" />
 
-        <script>
-            function goBack() {
-                window.history.back();
+    <div class="diary_head">
+        <p class="diary_name">
+            <%= list.title %>
+        </p>
+        <button onclick="goBack()">
+            <img src="https://static-00.iconduck.com/assets.00/go-back-icon-512x512-hqhqt5j0.png">
+        </button>
+    </div>
+    <div class="contents">
+        <div class="img_content">
+            <img src="<%= list.photo_url %>" alt="<%= list.title %>" class="diary_img"/>
+        </div>
+        <div class="info_content">
+            <div class="diary_info">
+                내용
+                <%= list.content %>
+            </div>
+            <!-- <div class="diary_chat">
+                챗 여기 놓던지용
+            </div> -->
+        </div>
+    </div>
+    
+
+    <script>
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
             }
-        </script>
-    </body>
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+
+        function gototour() {
+            window.location.href = "/tour";
+        }
+
+        function gotocourse() {
+            window.location.href = "/course";
+        }
+
+        function gotoMyPage() {
+            window.location.href = "/mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+        }
+        function redirectToMain() {
+            window.location.href = "/";
+        }
+    </script>
+</body>
+
 </html>

@@ -15,6 +15,7 @@ body {
 }
 
 .logo {
+    cursor:pointer;
     width: 50px;
 }
 
@@ -45,7 +46,7 @@ body {
 
 .user-menu {
     position: absolute;
-    top: calc(100% + 5px);
+    top:  40px;
     right: 10px;
     background-color: white;
     border: 1px solid #ccc;
@@ -156,3 +157,4 @@ hr.custom2 {
 #myPageOptions .button {
     margin: 5px;
 }
+

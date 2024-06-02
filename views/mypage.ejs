@@ -5,122 +5,204 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8" />
     <title>여행 웹사이트</title>
-    <link rel="stylesheet" href="/styles.css" />
     <style>
-        .button-container2 {
-            text-align: left;
-            margin-top: 1%;
-            margin-left: 20%;
-            margin-right: 20%;
-            flex-direction: row;
-            justify-content: space-evenly;
+        .header {
+            position: relative;
             display: flex;
             align-items: center;
-        }
-
-        .gallery {
-            display: block;
-        }
-
-        .diary_container2 {
-            background-color: #eee;
-            border-radius: 20px;
-            margin-top: 60px;
-            width: 30%;
-            height: 600px;
-            padding: 0 5px;
-            margin-left: 8%;
-            float: left;
-        }
-
-        .user_img {
-            text-align: center;
-        }
-
-        .user_img img {
-            margin-top: 10%;
-            margin-bottom: 3%;
-            width: 60%;
-            border-radius: 150px;
-        }
-
-        .user_name {
-            font-size: 20px;
-        }
-
-        .user_nick {
-            font-size: 17px;
-            text-align: center;
-        }
-
-        .diary_container {
-            background-color: #eee;
-            border-radius: 20px;
-            margin-top: 60px;
-            width: 50%;
-            height: 580px;
+            justify-content: space-between;
             padding: 10px;
-            margin-right: 8%;
-            float: right;
-            display: flex;
-            justify-content: center;
+            background-color: white;
         }
 
-        .diary_list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, auto);
-            gap: 10px;
-            width: 100%;
-            height: 96%;
-            overflow-y: auto;
-            padding: 10px;
+        .logo {
+            width: 50px;
+            margin-right: 10px;
+            cursor: pointer;
         }
 
-        .diary_list::-webkit-scrollbar {
-            width: 8px;
+        .user-image {
+            width: 50px;
+            cursor: pointer;
         }
 
-        .diary_list::-webkit-scrollbar-thumb {
-            height: 30%;
-            background: #f9a296;
-            border-radius: 10px;
-        }
-
-        .diary_list::-webkit-scrollbar-track {
-            background: rgba(33, 122, 244, 0.1);
-        }
-
-        .card {
-            box-sizing: border-box;
+        .button {
+            background-color: transparent;
             border: none;
-            border-radius: 12px;
-            padding: 5px;
-            /* margin-bottom: 7%; */
-            text-align: center;
-            background-color: #fff;
-            width: 90%;
-            height:60%;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
         }
 
-        .card img {
-            height:80%;
-            border-radius: 10px;
+        .button:hover {
+            background-color: orange;
+            color: white;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container2 {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 170px;
+        }
+
+        hr.custom {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        hr.custom2 {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 48%;
+            margin: 0 auto;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+        }
+
+        .user-menu-item {
+            margin-bottom: 5px;
+        }
+
+        .user-image-container {
+            margin-top: 50px;
+            margin-left: 600px;
+        }
+
+        .story_image {
+            margin-left: 200px;
+            width: 300px;
+            /* 이미지 크기 조정 */
+            height: 300px;
+            /* 이미지 크기 조정 */
+        }
+
+        .travel-box {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            max-width: 300px;
+            height: 300px;
+            margin-top: 20px;
+            margin-left: 35px;
+            /* 왼쪽 여백 수정 */
+            margin-right: 10px;
+            /* 상자들 사이의 여백 조절 */
+            display: inline-block;
+            /* 인라인 블록 요소로 설정하여 가로로 배치 */
+            vertical-align: top;
+            /* 상단 정렬 */
+            white-space: nowrap;
+            /* 텍스트가 가로로만 늘어나도록 설정 */
+        }
+
+        .travel-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+        }
+
+        .travel-image-container {
+            position: relative;
+            margin-bottom: 5px;
+            width: 100px;
+            /* 이미지의 가로 크기 지정 */
+            height: auto;
+            /* 이미지의 세로 크기를 자동으로 조정 */
+        }
+
+        .travel-image {
+            width: 300px;
+            /* 이미지의 가로 크기 조정 */
+            height: 200px;
+            /* 이미지의 세로 크기 조정 */
+        }
+
+        .travel-name-overlay {
+            position: absolute;
+            bottom: -50px;
+            /* 기존의 -20px 대신 더 음수 값으로 위치 조정 */
+            left: 0;
+            background-color: transparent;
+            color: black;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .button-view-travel {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 7px 10px;
+            cursor: pointer;
+            border: 3px solid black;
+            margin-right: 5px;
+            /* 수정된 부분: 버튼 사이 간격 조절 */
+        }
+
+        .button-add-travel {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 7px 10px;
+            cursor: pointer;
+            border: 3px solid black;
+            margin-top: 45px;
+            /* 여행 추가 버튼의 상단 여백 추가 */
+            margin-left: 50px;
+            /* 여행 추가 버튼의 왼쪽 여백 추가 */
+        }
+
+        .button-add-travel:hover,
+        .button-view-travel:hover {
+            background-color: #c0c0c0;
+            /* 호버 시 배경색 변경 */
+            color: black;
+        }
+
+        .button-view-travel-box {
+            margin-top: 10px;
+            text-align: center;
         }
     </style>
-
 </head>
 
 <body>
     <div class="header">
         <!-- logo 이미지에 onclick 이벤트 추가 -->
-        <img src="images/logo.png" alt="로고" class="logo" onclick="redirectToMain()" />
+        <img src="images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
         <div class="button-container">
-            <button class="button" onclick="redirectToMain()">여행 스토리</button>
+            <button class="button">여행 스토리</button>
             <button class="button" onclick="gototour()">여행지 추천</button>
             <button class="button" onclick="gotofestival()">축제</button>
-            <button class="button" onclick="gotocourse()">경로 추천</button>
-            <button class="button" onclick="gotoMyPage()">마이페이지</button>
+            <button class="button" onclick="gotocourse()">
+                관광지 정보
+            </button>
+            <button class="button" onclick="gotoMyPage()">
+                마이페이지
+            </button>
         </div>
         <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
@@ -141,39 +223,16 @@
 
     <div class="button-container2">
         <button class="button" onclick="createTravel()">여행 만들기</button>
-        <button class="button" onclick="gotodiary()">일기작성</button>
+        <button class="button" onclick="gotodiary()">일기</button>
         <button class="button" onclick="gotowishlist()">관심 리스트</button>
-        <button class="button" onclick="gotoretouch()">사용자 정보 수정</button>
-    </div>
-    <div class="gallery" id="gallery">
-        <div class="diary_container2">
-            <div class="user_img">
-                <img src="<%=session.userimage%>">
-            </div>
-            <div class="user_nick">
-                <p class="user_name">
-                    <%= session.username %>
-                </p>
-            </div>
-        </div>
-
-        <div class="diary_container">
-            <div class="diary_list">
-                <% list.forEach(list=> { %>
-                    <div class="card">
-                        <a href="/<%= list.diary_id %>">
-                            <img src="<%= list.photo_url %>" alt="<%= list.title %>" />
-                            <div class="description">
-                                <%= list.title %>
-                            </div>
-                        </a>
-                    </div>
-                    <% }); %>
-            </div>
-        </div>
-
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
     </div>
 
+    <div id="travelList">
+        <!-- 여행 정보가 표시될 곳 -->
+    </div>
 
     <script>
         var travels = [];
@@ -261,24 +320,8 @@
             });
         }
 
-        function gotofestival() {
-            window.location.href = "/festival";
-        }
-
-        function gototour() {
-            window.location.href = "/tour";
-        }
-
-        function gotocourse() {
-            window.location.href = "/course";
-        }
-
-        function gotoMyPage() {
-            window.location.href = "/mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
-        }
-
         function gotodiary() {
-            window.location.href = "/diary";
+            window.location.href = "/diary-list";
         }
 
         function gotowishlist() {
@@ -299,12 +342,28 @@
             alert("로그아웃합니다.");
         }
 
-        function redirectToMain() {
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=session.user_id%>";
+        }
+
+        function gotoMainPage() {
             window.location.href = "/";
         }
 
-        function gotoretouch() {
-            window.location.href = "/retouch/<%=session.user_id%>";
+        function gotoMyPage() {
+            window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+        }
+
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+
+        function gototour() {
+            window.location.href = "/tour";
+        }
+
+        function gotocourse() {
+            window.location.href = "/course";
         }
     </script>
 </body>

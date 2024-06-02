@@ -7,11 +7,14 @@ const mysql = require("mysql");
 const path = require("path");
 const multer = require("multer");
 const moment = require("moment");
+const fs = require('fs');
 
 const port = 3000;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.json());
+
 
 // Body-parser 미들웨어 설정
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,23 +55,6 @@ app.use(
     })
 );
 
-// 루트 경로로 접속했을 때 HTML 파일 제공 - 이 부분을 main.html로 변경
-app.get("/", (req, res) => {
-    // res.sendFile(path.join(__dirname, "views", "main.html"));
-    const sql = "SELECT user_id, diary_id, title, photo_url, content FROM diary LIMIT 10 ";
-    connection.query(sql, [req.session.user_id], (err, results) => {
-        if (err) {
-            console.error("Error fetching courses: " + err.message);
-            return res.status(500).send("Error fetching courses");
-        }
-        res.render("main", { session: req.session });
-    });
-});
-
-app.get("/retouch", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "retouch.html"));
-});
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "public/uploads/"); // 파일이 저장될 서버의 경로
@@ -80,6 +66,87 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// 루트 경로로 접속했을 때 HTML 파일 제공 - 이 부분을 main.html로 변경
+app.get("/", (req, res) => {
+    const sql = "SELECT user_id, diary_id, title, photo_url, content FROM diary LIMIT 10 ";
+    connection.query(sql, [req.session.user_id], (err, results) => {
+        if (err) {
+            console.error("Error fetching courses: " + err.message);
+            return res.status(500).send("Error fetching courses");
+        }
+        res.render("main", { session: req.session });
+    });
+});
+
+app.post("/retouch/:id", upload.single("profileImage"), async (req, res) => {
+    const { username, password, email } = req.body;
+    console.log(req.file.filename)
+    const image = "/uploads/" + req.file.filename;
+    const { id } = req.params;
+
+
+    console.log("나 실행되고 있어..?");
+
+    try {
+        // users 배열의 첫 번째 요소를 user로 설정
+        await connection.query('SELECT * FROM users WHERE ID = ?', [id],(error,results)=>{
+            console.log(results.ID)
+            if(error){
+                console.log(error);
+            }
+            if (results.length === 0) {
+                return res.alert("유저를 찾을 수 없습니다.");
+            }
+
+            if (req.file) {
+                //기존 이미지를 파일 경로
+                const existingImagePath = results.image;
+                //기존 이미지가 있으면 삭제
+                if (existingImagePath) {
+                    fs.unlinkSync(existingImagePath);
+                }
+            }
+        });
+        
+        
+
+        const updateQuery = `
+            UPDATE users
+            SET image = ?, USERNAME = ?, PASSWORD = ?, EMAIL = ?
+            WHERE ID = ?
+        `;
+        // console.log(image, username, password, email, id);
+        const updateValues = [image, username, password, email, id];
+
+        // 업데이트 쿼리 실행
+        await connection.query(updateQuery, updateValues);
+
+        req.session.username = username;
+        req.session.userimage = image;
+
+        //diary-list 이동
+        req.session.save((err) => {
+            if (err) {
+                console.error("Error saving session: " + err.message);
+                return res.status(500).send("Error saving session");
+            }
+            //diary-list 이동
+            res.redirect("/diary-list");
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Something went wrong' });
+    }
+});
+
+//유저정보 수정
+app.get("/retouch/:id", (req, res) => {
+    res.render("retouch", { session: req.session });
+});
+
+
+
 // 이미지 업로드 및 데이터베이스 저장 라우트
 app.post(
     "/upload-profile",
@@ -88,7 +155,7 @@ app.post(
         const filePath = "/uploads/" + req.file.filename; // 데이터베이스에 저장할 경로
 
         // 여기서 필요한 데이터베이스 작업을 수행하세요
-        const sql = "INSERT INTO users (profileImagePath) VALUES (?)";
+        const sql = "UPDATE INTO users (profileImagePath) VALUES (?)";
         connection.query(sql, [filePath], function (error, results, fields) {
             if (error) throw error;
             res.send("File uploaded and saved in database successfully");
@@ -103,7 +170,7 @@ app.get("/signup", (req, res) => {
 
 //마이페이지 페이지 제공
 app.get("/mypage", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "mypage.html"));
+    res.render("mypage", { session: req.session });
 });
 
 // 폼 데이터를 받아 MySQL 데이터베이스에 저장
@@ -177,6 +244,7 @@ app.post("/login", (req, res) => {
                     req.session.is_logined = true; // 세션 정보 갱신
                     req.session.user_id = req.body.id;
                     req.session.username = results[0].USERNAME;
+                    req.session.userimage = results[0].image;
                     req.session.save(function () {
                         console.log(req.session);
                         res.redirect(`/`);
@@ -203,13 +271,12 @@ app.get("/logout", (req, res) => {
 
 //다이어리 페이지 제공
 app.get("/diary", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "diary.html"));
+    res.render("diary",{session:req.session});
 });
 
 //사진 업로드
 app.post("/upload-diary", upload.single("photo"), (req, res) => {
     var today = new Date();
-    console.log(req.body);
     const data = {
         user_id: req.session.user_id,
         title: req.body.title,
@@ -394,26 +461,27 @@ app.get("/festival/:id", (req, res) => {
 });
 
 app.get("/diary-list", (req, res) => {
-    const sql = "SELECT diary_id, title, photo_url FROM diary where user_id =? LIMIT 10 ";
+    const sql = "SELECT diary_id, title, photo_url FROM diary where user_id =?";
     connection.query(sql, [req.session.user_id], (err, results) => {
         if (err) {
             console.error("Error fetching courses: " + err.message);
             return res.status(500).send("Error fetching courses");
         }
-        res.render("diary-list", { list: results, id: req.session.user_id });
+        res.render("diary-list", { list: results, session: req.session });
     });
 });
 
-app.get("/diary-list/:id", (req, res) => {
-    const dairyId = req.params.id;
+
+app.get("/:id", (req, res) => {
+    const diaryId = req.params.id;
     const sql = "SELECT * FROM diary WHERE diary_id = ?";
-    connection.query(sql, [dairyId], (err, results) => {
+    connection.query(sql, [diaryId], (err, results) => {
         if (err) {
             console.error("Error fetching tour details: " + err.message);
             return res.status(500).send("Error fetching tour details");
         }
         if (results.length === 0) {
-            return res.status(404).send("Tour not found");
+            return res.status(404).send("diary_detail not found");
         }
         res.render("diary-details", { list: results[0] });
     });

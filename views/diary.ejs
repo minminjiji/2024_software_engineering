@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8" />
-    <title>여행 웹사이트</title>
     <link rel="stylesheet" href="/styles.css" />
+    <title>여행 웹사이트</title>
     <style>
         .button-container2 {
             text-align: left;
@@ -17,98 +17,144 @@
             display: flex;
             align-items: center;
         }
-
-        .gallery {
-            display: block;
+        .story_image {
+            margin-left: 200px;
+            width: 300px;
+            /* 이미지 크기 조정 */
+            height: 300px;
+            /* 이미지 크기 조정 */
         }
 
-        .diary_container2 {
-            background-color: #eee;
-            border-radius: 20px;
-            margin-top: 60px;
-            width: 30%;
-            height: 600px;
-            padding: 0 5px;
-            margin-left: 8%;
-            float: left;
-        }
-
-        .user_img {
-            text-align: center;
-        }
-
-        .user_img img {
-            margin-top: 10%;
-            margin-bottom: 3%;
-            width: 60%;
-            border-radius: 150px;
-        }
-
-        .user_name {
-            font-size: 20px;
-        }
-
-        .user_nick {
-            font-size: 17px;
-            text-align: center;
-        }
-
-        .diary_container {
-            background-color: #eee;
-            border-radius: 20px;
-            margin-top: 60px;
-            width: 50%;
-            height: 580px;
+        .travel-box {
+            background-color: #f0f0f0;
             padding: 10px;
-            margin-right: 8%;
-            float: right;
-            display: flex;
-            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            max-width: 300px;
+            height: 300px;
+            margin-top: 20px;
+            margin-left: 35px;
+            /* 왼쪽 여백 수정 */
+            margin-right: 10px;
+            /* 상자들 사이의 여백 조절 */
+            display: inline-block;
+            /* 인라인 블록 요소로 설정하여 가로로 배치 */
+            vertical-align: top;
+            /* 상단 정렬 */
+            white-space: nowrap;
+            /* 텍스트가 가로로만 늘어나도록 설정 */
         }
 
-        .diary_list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, auto);
-            gap: 10px;
-            width: 100%;
-            height: 96%;
-            overflow-y: auto;
-            padding: 10px;
+        .travel-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
         }
 
-        .diary_list::-webkit-scrollbar {
-            width: 8px;
+        .travel-image-container {
+            position: relative;
+            margin-bottom: 5px;
+            width: 100px;
+            /* 이미지의 가로 크기 지정 */
+            height: auto;
+            /* 이미지의 세로 크기를 자동으로 조정 */
         }
 
-        .diary_list::-webkit-scrollbar-thumb {
-            height: 30%;
-            background: #f9a296;
-            border-radius: 10px;
+        .travel-image {
+            width: 300px;
+            /* 이미지의 가로 크기 조정 */
+            height: 200px;
+            /* 이미지의 세로 크기 조정 */
         }
 
-        .diary_list::-webkit-scrollbar-track {
-            background: rgba(33, 122, 244, 0.1);
-        }
-
-        .card {
-            box-sizing: border-box;
-            border: none;
-            border-radius: 12px;
+        .travel-name-overlay {
+            position: absolute;
+            bottom: -50px;
+            /* 기존의 -20px 대신 더 음수 값으로 위치 조정 */
+            left: 0;
+            background-color: transparent;
+            color: black;
             padding: 5px;
-            /* margin-bottom: 7%; */
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 30px;
+            font-weight: bold;
             text-align: center;
-            background-color: #fff;
-            width: 90%;
-            height:60%;
         }
 
-        .card img {
-            height:80%;
-            border-radius: 10px;
+        .button-view-travel {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 7px 10px;
+            cursor: pointer;
+            border: 3px solid black;
+            margin-right: 5px;
+            /* 수정된 부분: 버튼 사이 간격 조절 */
+        }
+
+        .button-add-travel {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 7px 10px;
+            cursor: pointer;
+            border: 3px solid black;
+            margin-top: 45px;
+            /* 여행 추가 버튼의 상단 여백 추가 */
+            margin-left: 50px;
+            /* 여행 추가 버튼의 왼쪽 여백 추가 */
+        }
+
+        .button-add-travel:hover,
+        .button-view-travel:hover {
+            background-color: #c0c0c0;
+            /* 호버 시 배경색 변경 */
+            color: black;
+        }
+
+        .button-view-travel-box {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .diary-container {
+            margin-top: 20px;
+            margin-left: 100px;
+            margin-right: 100px;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 30px;
+        }
+
+        .diary-input {
+            width: calc(100% - 22px);
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .diary-textarea {
+            width: calc(100% - 22px);
+            height: 150px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
-
 </head>
 
 <body>
@@ -141,39 +187,29 @@
 
     <div class="button-container2">
         <button class="button" onclick="createTravel()">여행 만들기</button>
-        <button class="button" onclick="gotodiary()">일기작성</button>
+        <button class="button" onclick="gotodiary()">일기</button>
         <button class="button" onclick="gotowishlist()">관심 리스트</button>
         <button class="button" onclick="gotoretouch()">사용자 정보 수정</button>
     </div>
-    <div class="gallery" id="gallery">
-        <div class="diary_container2">
-            <div class="user_img">
-                <img src="<%=session.userimage%>">
-            </div>
-            <div class="user_nick">
-                <p class="user_name">
-                    <%= session.username %>
-                </p>
-            </div>
-        </div>
-
-        <div class="diary_container">
-            <div class="diary_list">
-                <% list.forEach(list=> { %>
-                    <div class="card">
-                        <a href="/<%= list.diary_id %>">
-                            <img src="<%= list.photo_url %>" alt="<%= list.title %>" />
-                            <div class="description">
-                                <%= list.title %>
-                            </div>
-                        </a>
-                    </div>
-                    <% }); %>
-            </div>
-        </div>
-
+    <div class="diary-container">
+        <form action="/upload-diary" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="user_id" value="사용자ID" />
+            <!-- 사용자 ID: 실제 애플리케이션에서는 로그인한 사용자의 ID를 자동으로 채워 넣어야 합니다. -->
+            <input type="text" name="title" class="diary-input" placeholder="일기 제목을 입력하세요" required />
+            <input type="file" name="photo" id="imageUpload" accept="image/*" style="display: none" />
+            <button class="button" onclick="document.getElementById('imageUpload').click();">
+                사진 업로드
+            </button>
+            <img id="imagePreview" src="#" alt="이미지 미리보기" />
+            <textarea name="content" class="diary-textarea" placeholder="일기 내용을 입력하세요" required></textarea>
+            <button type="submit" class="diary-button">일기 저장</button>
+        </form>
     </div>
 
+    <!-- 추가된 부분: 여행 정보 표시 영역 -->
+    <div id="travelList">
+        <!-- 여행 정보가 표시될 곳 -->
+    </div>
 
     <script>
         var travels = [];
@@ -261,28 +297,12 @@
             });
         }
 
-        function gotofestival() {
-            window.location.href = "/festival";
-        }
-
-        function gototour() {
-            window.location.href = "/tour";
-        }
-
-        function gotocourse() {
-            window.location.href = "/course";
-        }
-
-        function gotoMyPage() {
-            window.location.href = "/mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
-        }
-
         function gotodiary() {
-            window.location.href = "/diary";
+            window.location.href = "/diary-list";
         }
 
         function gotowishlist() {
-            window.location.href = "wishlist.html";
+            window.location.href = "/wishlist";
         }
 
         function register() {
@@ -300,12 +320,27 @@
         }
 
         function redirectToMain() {
-            window.location.href = "/";
+            window.location.href = "main.html";
         }
-
         function gotoretouch() {
             window.location.href = "/retouch/<%=session.user_id%>";
         }
+
+        document
+            .getElementById("imageUpload")
+            .addEventListener("change", function (event) {
+                var file = event.target.files[0];
+                if (file && file.type.startsWith("image/")) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById("imagePreview").src =
+                            e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert("이미지 파일을 선택해주세요.");
+                }
+            });
     </script>
 </body>
 
