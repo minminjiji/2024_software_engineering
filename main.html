@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <title>여행 웹사이트</title>
+    <style>
+        .header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .logo {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        .user-image {
+            width: 50px;
+            cursor: pointer;
+        }
+
+        .button {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: orange;
+            color: white;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        hr.custom {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        hr.custom2 {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 48%;
+            margin: 0 auto;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+        }
+
+        .user-menu-item {
+            margin-bottom: 5px;
+        }
+
+        .shared-diaries-container {
+            display: flex;
+            flex-direction: column; /* 컨테이너의 항목들을 세로로 배열 */
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 20px;
+            padding: 10px;
+            cursor:pointer;
+        }
+
+        .shared-diary {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px auto; /* 수평 가운데 정렬을 위해 margin 수정 */
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 50%; /* 각 사진과 사용자 아이디를 감싸는 박스 */
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+        .shared-diary img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .shared-diary .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .shared-diary .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .shared-diary .user-info span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
+        <div class="button-container">
+            <button class="button">여행 스토리</button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">관광지 정보</button>
+            <button class="button" onclick="gotoMyPage()">마이페이지</button>
+        </div>
+        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">회원가입</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+    <hr class="custom" />
+    <div class="shared-diaries-container" id="sharedDiariesContainer">
+        <% sharedDiaries.forEach(function(diary) { %>
+            <!-- 여기를 수정했습니다 -->
+            <div class="shared-diary" data-diary-id="<%= diary.diary_id %>"
+                onclick="gotoDiaryDetails('<%= diary.diary_id %>')">
+                <div class="user-info">
+                    <img src="/images/user.png" alt="사용자" />
+                    <span>
+                        <%= diary.user_id %>
+                    </span>
+                </div>
+                <img src="<%= diary.photo_url %>" alt="diary image">
+            </div>
+            <% }); %>
+    </div>
+    <script>
+        function gotoDiaryDetails(diaryId) {
+            window.location.href = "/diary-list/" + diaryId;
+        }
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
+            }
+        }
+
+        function register() {
+            alert("회원가입 페이지로 이동합니다.");
+            window.location.href = "/signup";
+        }
+
+        function login() {
+            alert("로그인 페이지로 이동합니다.");
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            alert("로그아웃합니다.");
+            window.location.href = "/logout";
+        }
+
+        function gotoMainPage() {
+            window.location.href = "/";
+        }
+
+        function gotoMyPage() {
+            window.location.href = "/mypage"; 
+        }
+
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+
+        function gototour() {
+            window.location.href = "/tour";
+        }
+
+        function gotocourse() {
+            window.location.href = "/course";
+        }
+        function gotoDiaryDetails(diaryId) {
+            window.location.href = "/diary-details/" + diaryId;
+        }
+    </script>
+</body>
+
+</html>
