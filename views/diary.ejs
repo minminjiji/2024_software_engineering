@@ -17,6 +17,7 @@
             display: flex;
             align-items: center;
         }
+
         .story_image {
             margin-left: 200px;
             width: 300px;
@@ -171,9 +172,7 @@
         <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
             <div class="user-menu-item">
-                <button class="button" onclick="register()">
-                    회원가입
-                </button>
+                <button class="button" onclick="register()"> 회원가입</button>
             </div>
             <div class="user-menu-item">
                 <button class="button" onclick="login()">로그인</button>
@@ -184,7 +183,6 @@
         </div>
     </div>
     <hr class="custom" />
-
     <div class="button-container2">
         <button class="button" onclick="createTravel()">여행 만들기</button>
         <button class="button" onclick="gotodiary()">일기</button>
@@ -194,7 +192,6 @@
     <div class="diary-container">
         <form action="/upload-diary" method="post" enctype="multipart/form-data">
             <input type="hidden" name="user_id" value="사용자ID" />
-            <!-- 사용자 ID: 실제 애플리케이션에서는 로그인한 사용자의 ID를 자동으로 채워 넣어야 합니다. -->
             <input type="text" name="title" class="diary-input" placeholder="일기 제목을 입력하세요" required />
             <input type="file" name="photo" id="imageUpload" accept="image/*" style="display: none" />
             <button class="button" onclick="document.getElementById('imageUpload').click();">
@@ -320,7 +317,7 @@
         }
 
         function redirectToMain() {
-            window.location.href = "main.html";
+            window.location.href = "/";
         }
         function gotoretouch() {
             window.location.href = "/retouch/<%=session.user_id%>";

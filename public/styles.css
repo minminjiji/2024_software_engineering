@@ -19,10 +19,10 @@ body {
     width: 50px;
 }
 
-.button-container {
+/* .button-container {
     display: flex;
     align-items: center;
-}
+} */
 
 .button {
     background-color: transparent;
@@ -46,14 +46,14 @@ body {
 
 .user-menu {
     position: absolute;
-    top:  40px;
-    right: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    display: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      top: 100px;
+      right: 10px;
+      z-index: 1000;
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      display:none;
 }
 
 .user-menu-item {

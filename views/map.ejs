@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Kakao 지도 시작하기</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
+        <div class="button-container">
+            <button class="button" onclick="gotoStory()">
+                여행 스토리
+            </button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">
+                관광지 정보
+            </button>
+            <button class="button" onclick="toggleMyPageOptions()">
+                마이페이지
+            </button>
+        </div>
+        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">
+                    회원가입
+                </button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+    <div id="myPageOptions">
+        <button class="button" onclick="createTravel()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기</button>
+        <button class="button" onclick="gotowishlist()">관심 리스트</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
+    </div>
+    <hr class="custom">
+    <div class="body">
+        <div id="map" style="width:100%;height:500px;"></div>
+    </div>
+	
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aa05807c0421a57827951d24fee395da"></script>
+	<script>
+		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(33.450701, 126.570667),
+			level: 3
+		};
+
+		var map = new kakao.maps.Map(container, options);
+	</script>
+    <!-- 이동관련 자바스크립트 -->
+    <script>
+        function register() {
+            alert("회원가입 페이지로 이동합니다.");
+            window.location.href = "/signup";
+        }
+
+        function login() {
+            alert("로그인 페이지로 이동합니다.");
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            alert("로그아웃합니다.");
+        }
+
+        function gotoMainPage() {
+            window.location.href = "/";
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+        function gotoStory() {
+            window.location.href = "/";
+        }
+        function gototour() {
+            window.location.href = "/tour";
+        }
+        function gotocourse() {
+            window.location.href = "/course";
+        }
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+        function gotodiary() {
+            window.location.href = "/diary";
+        }
+
+        function gotowishlist() {
+            window.location.href = "/wishlist";
+        }
+
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=session.user_id%>";
+        }
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
+            }
+        }
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

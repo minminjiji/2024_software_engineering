@@ -23,7 +23,8 @@
         }
 
         .diary_container2 {
-            background-color: #eee;
+            background-color:antiquewhite;
+            border: 1px solid #ccc;
             border-radius: 20px;
             margin-top: 60px;
             width: 30%;
@@ -54,7 +55,8 @@
         }
 
         .diary_container {
-            background-color: #eee;
+            background-color:antiquewhite;
+            border: 1px solid #ccc;
             border-radius: 20px;
             margin-top: 60px;
             width: 50%;
@@ -113,8 +115,7 @@
 
 <body>
     <div class="header">
-        <!-- logo 이미지에 onclick 이벤트 추가 -->
-        <img src="images/logo.png" alt="로고" class="logo" onclick="redirectToMain()" />
+        <img src="/images/logo.png" alt="로고" class="logo" onclick="redirectToMain()" />
         <div class="button-container">
             <button class="button" onclick="redirectToMain()">여행 스토리</button>
             <button class="button" onclick="gototour()">여행지 추천</button>
@@ -122,7 +123,7 @@
             <button class="button" onclick="gotocourse()">경로 추천</button>
             <button class="button" onclick="gotoMyPage()">마이페이지</button>
         </div>
-        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
             <div class="user-menu-item">
                 <button class="button" onclick="register()">
@@ -151,9 +152,8 @@
                 <img src="<%=session.userimage%>">
             </div>
             <div class="user_nick">
-                <p class="user_name">
-                    <%= session.username %>
-                </p>
+                <h2>username</h2>
+                <h3 class="user_name" style="color: coral;"><%= session.username %></h3>
             </div>
         </div>
 
@@ -161,7 +161,7 @@
             <div class="diary_list">
                 <% list.forEach(list=> { %>
                     <div class="card">
-                        <a href="/<%= list.diary_id %>">
+                        <a href="/diary-details/<%= list.diary_id %>">
                             <img src="<%= list.photo_url %>" alt="<%= list.title %>" />
                             <div class="description">
                                 <%= list.title %>
