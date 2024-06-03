@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>
+        <%= list.title %>
+    </title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+        .diary_head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+
+        }
+
+        .diary_name {
+            font-size: 30px;
+            text-align: center;
+            width: auto;
+            margin-left: 19%;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            background-color: antiquewhite;
+            border-radius: 25px;
+            width:20%;
+  
+        }
+
+        .diary_head button {
+            margin-right: 15%;
+            border: none;
+        }
+
+        .diary_head button img {
+            width: 40px;
+            background-color: none;
+        }
+
+        .contents {
+            display: block;
+        }
+
+        .img_content {
+            float: left;
+            margin-left: 13%;
+            border: 1px solid #ccc;
+            width: 32%;
+            height: 550px;
+            border-radius: 25px;
+        }
+
+        .info_content {
+            float: right;
+            /* border: solid 1px black; */
+            margin-right: 15%;
+            width: 39%;
+            height: 550px;
+            background-color: white;
+            border-radius: 25px;
+
+        }
+
+        .diary_img {
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+        }
+
+        .diary_info {
+            font-size: 17px;
+            padding: 10px;
+            height: 20%;
+            border-radius: 25px;
+            background-color: antiquewhite;
+            border: 1px solid #ccc;
+            
+        }
+
+        /* 보람 */
+        .button-container3 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-right:15%;
+        }
+
+        .button-container3 button {
+            margin: 0 5px;
+            background-color: antiquewhite;
+            border-radius: 25px;
+            /* 버튼 사이의 간격 조정 */
+        }
+
+        .comment {
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            padding-top: 20px;
+            height: 380px;
+            background-color: antiquewhite;
+            border-radius: 25px;
+        }
+
+        .comment-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .comment-item {
+            margin-bottom: 10px;
+        }
+
+        .comment-item p {
+            margin: 5px 0;
+        }
+
+        .commentForm_content {
+            bottom: 1%;
+            width: 99%;
+            margin-top: 20%;
+        }
+
+        .comment-box {
+        position: relative;
+    }
+
+    .comment-form {
+        position: absolute;
+        bottom: 10px; /* 댓글 입력 폼을 박스의 바닥에서 일정한 간격으로 고정합니다. */
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <!-- logo 이미지에 onclick 이벤트 추가 -->
+        <img src="/images/logo.png" alt="로고" class="logo" onclick="redirectToMain()" />
+        <div class="button-container">
+            <button class="button" onclick="redirectToMain()">여행 스토리</button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">경로 추천</button>
+            <button class="button" onclick="gotoMyPage()">마이페이지</button>
+        </div>
+        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">
+                    회원가입
+                </button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+    <hr class="custom" />
+
+    <div class="diary_head">
+        <p class="diary_name">
+            <%= list.title %>
+        </p>
+        <div class="button-container3">
+            <button class="button" onclick="goBack()">뒤로가기</button>
+            <button class="button" id="deleteButton" onclick="deleteEntry('<%= list.diary_id %>')">삭제하기</button>
+            <button class="button" onclick="shareDiary('<%= list.diary_id %>')">공유하기</button>
+        </div>
+    </div>
+    <div class="contents">
+        <div class="img_content">
+            <img src="<%= list.photo_url %>" alt="<%= list.title %>" class="diary_img" />
+        </div>
+        <div class="info_content">
+            <div class="diary_info">
+                <h4 style="margin-top: 1%; margin-left: 2%;">내용</h4>
+                <p style="margin-top: 1%;margin-left: 2%;"><%= list.content %></p>
+            </div>
+
+            <!-- 보람 -->
+            <div class="comment-box">
+                <div class="comment">
+                    <h2>댓글</h2>
+                    <!-- 댓글 목록 -->
+                    <ul class="comment-list" id="commentList" style="max-height: 190px; overflow-y: auto;">
+                        <!-- 댓글 목록은 여기에 추가됩니다. -->
+                    </ul>
+                    <!-- 댓글 입력 폼 -->
+                    <form class="comment-form" id="commentForm">
+                        <textarea class="comment-form-content" id="commentContent" rows="4" cols="50"
+                            placeholder="댓글을 작성하세요..."></textarea>
+                        <br>
+                        <input type="hidden" id="diaryId" value="<%= list.diary_id %>">
+                        <button type="button" onclick="submitComment()">댓글 작성</button>
+                    </form>
+                </div>
+                <!-- 보람 -->
+            </div>
+    </div>
+
+
+    <script>
+        let diaryId = '<%= list.diary_id %>'; // 전역 변수로 diary_id 설정
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function deleteEntry(diary_id) {
+            if (confirm("정말로 이 항목을 삭제하시겠습니까?")) {
+                fetch("/delete-diary", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ diary_id: diary_id })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("항목이 삭제되었습니다.");
+                            window.location.href = "/diary-list";
+                        } else {
+                            alert("삭제 중 오류가 발생했습니다.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("삭제 중 오류가 발생했습니다.");
+                    });
+            }
+        }
+
+        function fetchComments() {
+    fetch(`/comments/${diaryId}`)
+        .then(response => response.json())
+        .then(data => {
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = ''; // 기존 목록 초기화
+            data.reverse().forEach(comment => { // 배열을 역순으로 순회하여 최신 댓글부터 보여줌
+                const commentItem = document.createElement('li');
+                commentItem.className = 'comment-item';
+                commentItem.innerHTML = `
+                    <p><strong>${comment.userId}</strong>: ${comment.content}</p>
+                `;
+                commentList.appendChild(commentItem); // 가장 앞쪽에 추가
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('댓글을 불러오는 중 오류가 발생했습니다.');
+        });
+}
+
+        function shareDiary(diary_id) {
+            fetch("/share-diary", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ diary_id: diary_id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("다이어리가 성공적으로 공유되었습니다!");
+                    } else {
+                        alert("다이어리 공유 중 오류가 발생했습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("다이어리 공유 중 오류가 발생했습니다.");
+                });
+        }
+
+        
+
+        function submitComment() {
+            const commentContent = document.getElementById('commentContent').value.trim();
+            if (commentContent === '') {
+                alert('댓글을 입력해주세요.');
+                return;
+            }
+
+            fetch('/submit-comment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    diary_id: diaryId, // 전역 변수 사용
+                    content: commentContent
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchComments();
+                        document.getElementById('commentContent').value = '';
+                    } else {
+                        alert('댓글 작성 중 오류가 발생했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('댓글 작성 중 오류가 발생했습니다.');
+                });
+        }
+
+
+
+        // 페이지 로드 시 댓글 목록을 불러옴
+        fetchComments();
+
+        // 댓글 폼 제출 이벤트 리스너 등록
+        document.getElementById('commentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            submitComment();
+        });
+
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+
+        function gototour() {
+            window.location.href = "/tour";
+        }
+
+        function gotocourse() {
+            window.location.href = "/course";
+        }
+
+        function gotoMyPage() {
+            window.location.href = "/mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+        }
+        function redirectToMain() {
+            window.location.href = "/";
+        }
+
+        function register() {
+            alert("회원가입 페이지로 이동합니다.");
+            window.location.href = "/signup";
+        }
+
+        function login() {
+            alert("로그인 페이지로 이동합니다.");
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            alert("로그아웃합니다.");
+            window.location.href = "/logout";
+        }
+
+    </script>
+</body>
+
+</html>
