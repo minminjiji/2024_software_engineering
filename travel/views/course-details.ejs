@@ -8,8 +8,6 @@
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="/styles.css" />
-        <!-- 카카오맵 API 로드 (API_KEY를 실제 API 키로 교체하세요) -->
         <script
             type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f16de7f8d3ee2ae208ff54f169060951"
@@ -25,6 +23,15 @@
             </p>
             <p><strong>세부 정보:</strong> <%= tour.ORIGIN_NM %></p>
             <div id="map" style="width: 100%; height: 400px"></div>
+            <button
+                class="btn btn-primary"
+                onclick="saveToWishlist('<%= tour.num %>')"
+            >
+                관심 리스트 저장
+            </button>
+            <button class="btn btn-secondary" onclick="history.back()">
+                뒤로가기
+            </button>
         </div>
         <script>
             function initMap() {
@@ -32,36 +39,64 @@
                     lat: parseFloat("<%= tour.LC_LA %>"),
                     lng: parseFloat("<%= tour.LC_LO %>"),
                 };
-
-                var container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
+                var container = document.getElementById("map");
                 var options = {
-                    // 지도를 생성할 때 필요한 기본 옵션
-                    center: new kakao.maps.LatLng(location.lat, location.lng), // 지도의 중심좌표.
-                    level: 3, // 지도의 레벨(확대, 축소 정도)
+                    center: new kakao.maps.LatLng(location.lat, location.lng),
+                    level: 3,
                 };
-
-                var map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-
-                // 마커가 표시될 위치입니다
+                var map = new kakao.maps.Map(container, options);
                 var markerPosition = new kakao.maps.LatLng(
                     location.lat,
                     location.lng
                 );
-
-                // 마커를 생성합니다
                 var marker = new kakao.maps.Marker({
                     position: markerPosition,
                 });
-
-                // 마커가 지도 위에 표시되도록 설정합니다
                 marker.setMap(map);
             }
-
-            // 카카오맵 API 스크립트가 로드된 후 initMap 함수 호출
             kakao.maps.load(initMap);
+
+            function saveToWishlist(tourId) {
+                console.log("Saving tour with ID:", tourId); // 추가된 콘솔 로그
+                fetch("/add-to-wishlist", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ tour_id: tourId }),
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(
+                                "Network response was not ok: " +
+                                    response.statusText
+                            );
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            if (
+                                confirm(
+                                    "관심 리스트에 저장되었습니다. 관심 리스트로 가시겠습니까?"
+                                )
+                            ) {
+                                window.location.href = "/wishlist";
+                            }
+                        } else {
+                            console.error("Error:", data.message); // 추가된 콘솔 로그
+                            alert("저장 중 오류가 발생했습니다.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Fetch error:", error); // 추가된 콘솔 로그
+                        alert("저장 중 오류가 발생했습니다.");
+                    });
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>
+
