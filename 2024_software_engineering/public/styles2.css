@@ -1,0 +1,145 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    width: 50px;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    background-color: orange;
+    color: white;
+}
+
+.user-image {
+    width: 50px;
+    cursor: pointer;
+}
+
+.user-menu {
+    position: absolute;
+    top: 100px;
+    right: 10px;
+    z-index: 1000;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    display: none;
+}
+
+.user-menu-item {
+    margin-bottom: 5px;
+}
+
+#myPageOptions {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#myPageOptions .button {
+    margin: 5px;
+}
+
+hr.custom {
+    border: none;
+    height: 2px;
+    background-color: black;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.search-box {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-box label,
+.search-box select,
+.search-box input,
+.search-box button {
+    margin: 5px;
+}
+
+.table {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.table thead th {
+    background-color: #f8f8f8;
+    text-align: center;
+    padding: 10px;
+}
+
+.table tbody td {
+    text-align: center;
+    padding: 10px;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination .page-item .page-link {
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: orange;
+    border-color: orange;
+    color: white;
+}
+
+#calendar {
+    max-width: 900px;
+    /* 너비를 900px로 제한 */
+    margin: 0 auto;
+    /* 수평으로 중앙에 배치 */
+    height: 500px;
+    /* 높이를 500px로 설정 */
+}

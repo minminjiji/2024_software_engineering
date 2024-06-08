@@ -1,0 +1,160 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    cursor:pointer;
+    width: 50px;
+}
+
+/* .button-container {
+    display: flex;
+    align-items: center;
+} */
+
+.button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+    background-color: orange;
+    color: white;
+}
+
+.user-image {
+    width: 50px;
+    cursor: pointer;
+}
+
+.user-menu {
+    position: absolute;
+      top: 100px;
+      right: 10px;
+      z-index: 1000;
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      display:none;
+}
+
+.user-menu-item {
+    margin-bottom: 5px;
+}
+
+hr.custom {
+    border: none;
+    height: 2px;
+    background-color: black;
+    width: 85%;
+    margin: 0 auto;
+}
+
+hr.custom2 {
+    border: none;
+    height: 2px;
+    background-color: black;
+    width: 48%;
+    margin: 0 auto;
+}
+
+.user-image-container {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.story_image {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.search-box {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-box label,
+.search-box select,
+.search-box input,
+.search-box button {
+    margin: 5px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    height: auto;
+}
+
+.card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.description {
+    padding: 10px;
+    text-align: center;
+}
+
+#loadMoreBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#loadMoreBtn:hover {
+    background-color: #555;
+}
+
+#myPageOptions {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#myPageOptions .button {
+    margin: 5px;
+}
+
