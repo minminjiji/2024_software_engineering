@@ -25,8 +25,8 @@
             margin-bottom: 5px;
             background-color: antiquewhite;
             border-radius: 25px;
-            width:20%;
-  
+            width: 20%;
+
         }
 
         .diary_head button {
@@ -76,7 +76,7 @@
             border-radius: 25px;
             background-color: antiquewhite;
             border: 1px solid #ccc;
-            
+
         }
 
         /* 보람 */
@@ -84,7 +84,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-right:15%;
+            margin-right: 15%;
         }
 
         .button-container3 button {
@@ -97,15 +97,37 @@
         .comment {
             margin-top: 10px;
             border: 1px solid #ccc;
-            padding-top: 20px;
-            height: 69%;
+            padding-top: 1px;
+            height: 73%;
             background-color: antiquewhite;
             border-radius: 25px;
+            
+        }
+
+        h2{
+            margin-left: 5%;
         }
 
         .comment-list {
             list-style-type: none;
             padding: 0;
+            height:250px;
+            overflow-y: auto;
+            margin-left: 5%;
+        }
+
+        .comment-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .comment-list::-webkit-scrollbar-thumb {
+            height: 30%;
+            background: #f9a296;
+            border-radius: 10px;
+        }
+
+        .comment-list::-webkit-scrollbar-track {
+            background: rgba(33, 122, 244, 0.1);
         }
 
         .comment-item {
@@ -116,12 +138,25 @@
             margin: 5px 0;
         }
 
-        .commentForm_content {
-            bottom: 1%;
-            width: 99%;
-            margin-top: 20%;
+        .comment-form-content {
+            /* bottom: 1%; */
+            width: 535px;
+            /* margin-top: 20%; */
+            border-radius: 10px;
         }
 
+        .comment-box {
+            position: relative;
+        }
+
+        .comment-form {
+            position: absolute;
+            /* bottom: 10px; */
+            /* 댓글 입력 폼을 박스의 바닥에서 일정한 간격으로 고정합니다. */
+            /* left: 0;
+            right: 0; */
+            margin: auto;
+        }
 
 
         /* 보람 */
@@ -172,8 +207,10 @@
         </div>
         <div class="info_content">
             <div class="diary_info">
-                <h4 style="margin-top: 1%; margin-left: 2%;">내용</h4>
-                <p style="margin-top: 1%;margin-left: 2%;"><%= list.content %></p>
+                <h3 style="margin-top: 1%; margin-left: 2%;">내용</h3>
+                <p style="margin-top: 1%;margin-left: 2%;">
+                    <%= list.content %>
+                </p>
             </div>
 
             <!-- 보람 -->
@@ -183,8 +220,8 @@
                     <!-- 댓글 목록은 여기에 추가됩니다. -->
                 </ul>
                 <!-- 댓글 입력 폼 -->
-                <form class="comment-Form" id="commentForm">
-                    <textarea class="commentForm_content" id="commentContent" rows="4" cols="50"
+                <form class="comment-form" id="commentForm">
+                    <textarea class="comment-form-content" id="commentContent" rows="4" cols="50"
                         placeholder="댓글을 작성하세요..."></textarea>
                     <br>
                     <input type="hidden" id="diaryId" value="<%= list.diary_id %>"> <!-- hidden input 추가 -->

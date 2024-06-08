@@ -77,25 +77,26 @@
 
         .shared-diaries-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            /* 컨테이너의 항목들을 세로로 배열 */
             justify-content: flex-start;
-            /* 왼쪽부터 아이템을 정렬 */
             align-items: flex-start;
-            /* 아이템들을 상단 정렬 */
             margin-top: 20px;
             padding: 10px;
-            cursor:pointer;
+            cursor: pointer;
         }
 
         .shared-diary {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 10px;
+            margin: 10px auto;
+            /* 수평 가운데 정렬을 위해 margin 수정 */
             padding: 15px;
             border: 1px solid #ccc;
             border-radius: 10px;
-            width: 30%;
+            width: 50%;
+            /* 각 사진과 사용자 아이디를 감싸는 박스 */
             background-color: #f9f9f9;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -198,7 +199,7 @@
         }
 
         function gotoMyPage() {
-            window.location.href = "/mypage"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+            window.location.href = "/maketravel/<%=session.user_id%>"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
         }
 
         function gotofestival() {

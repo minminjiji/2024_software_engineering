@@ -203,11 +203,6 @@
         </form>
     </div>
 
-    <!-- 추가된 부분: 여행 정보 표시 영역 -->
-    <div id="travelList">
-        <!-- 여행 정보가 표시될 곳 -->
-    </div>
-
     <script>
         var travels = [];
 
@@ -217,33 +212,6 @@
                 userMenu.style.display = "none";
             } else {
                 userMenu.style.display = "block";
-            }
-        }
-
-        function createTravel() {
-            var travelName = prompt(
-                "여행 이름을 입력하세요 (공백포함 최대 10글자):"
-            );
-            if (travelName) {
-                // 입력된 여행 이름의 글자 수 (공백 포함) 확인
-                var nameLength = travelName.length;
-
-                // 공백을 제외한 글자 수 확인
-                var trimmedLength = travelName.replace(/\s/g, "").length;
-
-                // 최대 글자 수 확인
-                if (nameLength <= 10 && trimmedLength <= 10) {
-                    var travel = {
-                        name: travelName,
-                        image: "story_image.png", // 여행 이미지 경로
-                    };
-                    travels.push(travel);
-                    renderTravelList();
-                } else {
-                    alert(
-                        "입력된 여행 이름은 공백 포함 10글자를 넘을 수 없습니다."
-                    );
-                }
             }
         }
 

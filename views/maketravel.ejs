@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <title>여행 웹사이트</title>
+    <style>
+        .header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .logo {
+            width: 50px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .user-image {
+            width: 50px;
+            cursor: pointer;
+        }
+
+        .button {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .body {
+            display: flex;
+            margin: auto;
+        }
+
+        .pagelist {
+            width: 1000px;
+            height: auto;
+            margin-left: 430px;
+            margin-top: 0%;
+            /* background-color: #ffe4c4 */
+        }
+
+        .travel-make-button {
+            width: 1000px;
+            background-color: transparent;
+            border-radius: 20px;
+            border-color: #ccc;
+            padding: 10px 20px;
+
+            margin-top: 2%;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: orange;
+            color: white;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        hr.custom {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        hr.custom2 {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 48%;
+            margin: 0 auto;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+        }
+
+        .user-menu-item {
+            margin-bottom: 5px;
+        }
+
+        .user-image-container {
+            margin-top: 50px;
+            margin-left: 600px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+        }
+
+
+        /* 폼 컨테이너 */
+        .form-container {
+            display: none;
+            width: 300px;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            background-color: #ffe4c4;
+            box-shadow: 3px 3px 3px 3px #dadce0;
+            margin-left: 22px;
+        }
+
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        #travel-content {
+            height: 100px;
+            width: 300px;
+            padding: 10px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        .page {
+            /* margin-top: 20px; */
+            /* background-color: rgb(241, 241, 241); */
+            /* box-shadow: 1px 0px 5px; */
+            border-radius: 20px;
+            padding: 3px;
+            display: flex;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            /* 링크의 밑줄 제거 */
+        }
+
+        .pagename {
+            padding-top: 10px;
+            padding-left: 20px;
+            padding-bottom: 10px;
+            width: 500px;
+        }
+
+        .content {
+            padding-top: 5px;
+            padding-left: 20px;
+            padding-bottom: 10px;
+            width: 400px;
+        }
+
+        .showdelete {
+            width: 25px;
+            height: 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            /* margin-left:200px; */
+        }
+
+        .delete_button {
+            display: none;
+            position: absolute;
+            background-color: white;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-left: 820px;
+            margin-top: 10px;
+
+        }
+
+        .pagedivide {
+            margin-top: 20px;
+            background-color: rgb(241, 241, 241);
+            box-shadow: 1px 0px 5px;
+            border-radius: 20px;
+            padding: 3px;
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <!-- logo 이미지에 onclick 이벤트 추가 -->
+        <img src="/images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
+        <div class="button-container">
+            <button class="button">여행 스토리</button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">
+                관광지 정보
+            </button>
+            <button class="button" onclick="gotoMyPage()">
+                마이페이지
+            </button>
+        </div>
+        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">
+                    회원가입
+                </button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+    <hr class="custom" />
+
+    <div class="body">
+        <div class="pagelist">
+            <button class="travel-make-button" onclick="showForm()">+ 여행 만들기</button>
+            <div id="travel-pages">
+                <% schedulepage.sort((a, b)=> new Date(a.traveldate) - new
+                    Date(b.traveldate)).forEach(schedulepage => {
+                    %>
+                    <div class="pagedivide">
+                        <a href="/map/<%= schedulepage.pageid %>">
+                            <div class="page">
+                                <div class="pagename">
+                                    <h2>
+                                        <%= schedulepage.pagename %>
+                                    </h2>
+                                    <p>
+                                        <%= moment(schedulepage.traveldate).format("YYYY-MM-DD") %> - <%=
+                                                moment(schedulepage.traveldateend).format("YYYY-MM-DD") %>
+                                    </p>
+                                </div>
+                                <hr style="color: black;">
+                                <div class="content">
+                                    <h3>내용</h3>
+                                    <%= schedulepage.content %>
+                                </div>
+                            </div>
+                        </a>
+                        <button class="delete_button" id="delete_button<%= schedulepage.pageid %>"
+                            onclick="deletePage('<%= schedulepage.pageid %>')">페이지삭제</button>
+                        <img src="/images/list.png"class="showdelete" id="showdelete<%= schedulepage.pageid %>"
+                            onclick="showdelete('delete_button<%= schedulepage.pageid %>')" />
+
+
+                    </div>
+                    <% }); %>
+            </div>
+
+        </div>
+        <div class="form-container" id="form-container">
+            <div class="form-group">
+                <form action="/travelupload" method="post">
+                    <label for="travel-title">여행 제목</label>
+                    <input type="text" name="title" id="travel-title" placeholder="여행 제목을 입력하세요">
+                    <label for="travel-date">날짜</label>
+                    <input type="date" name="travelDate" id="travel-date">
+                    <p></p>
+                    <input type="date" name="travelDateEnd" id="travel-date-end">
+                    <label for="travel-content">내용</label>
+                    <textarea id="travel-content" name="content" placeholder="여행 내용을 작성해주세요"></textarea>
+                    <button type="submit" class="button" onclick="createTravelPage()">만들기</button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    </div>
+
+    <script>
+        var travels = [];
+
+        function deletePage(pageId) {
+            if (confirm("정말로 이 페이지를 삭제하시겠습니까?")) {
+                fetch(`/delete-page/${pageId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // 삭제가 성공적으로 이루어졌을 때 페이지 새로고침
+                            location.reload();
+                        } else {
+                            alert("페이지 삭제에 실패했습니다.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("페이지 삭제에 실패했습니다.");
+                    });
+            }
+        }
+
+
+        function showForm() {
+            var formcontainer = document.getElementById('form-container')
+            if (formcontainer.style.display === "block") {
+                formcontainer.style.display = "none";
+            } else {
+                formcontainer.style.display = "block";
+            }
+        }
+
+        function showdelete(id) {
+            var deletebutton = document.getElementById(id);
+            if (deletebutton.style.display === "block") {
+                deletebutton.style.display = "none";
+            } else {
+                deletebutton.style.display = "block";
+            }
+        }
+
+        function gotodiary() {
+            window.location.href = "/diary-list";
+        }
+
+        function gotowishlist() {
+            window.location.href = "wishlist.html";
+        }
+
+        function register() {
+            alert("회원가입 페이지로 이동합니다.");
+            window.location.href = "/signup";
+        }
+
+        function login() {
+            alert("로그인 페이지로 이동합니다.");
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            alert("로그아웃합니다.");
+        }
+
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=schedulepage.userid%>";
+        }
+
+        function gotoMainPage() {
+            window.location.href = "/";
+        }
+
+        function gotoMyPage() {
+            window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+        }
+
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
+
+        function gototour() {
+            window.location.href = "/tour";
+        }
+
+        function gotocourse() {
+            window.location.href = "/course";
+        }
+    </script>
+</body>
+
+</html>

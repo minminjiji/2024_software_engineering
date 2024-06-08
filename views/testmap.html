@@ -2,78 +2,44 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>Kakao 지도 시작하기</title>
-    <link rel="stylesheet" href="/styles.css" />
+    <meta charset="utf-8">
+    <title>키워드로 장소검색하고 목록으로 표출하기</title>
     <style>
-        .body {
+        .map_wrap,
+        .map_wrap * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            height: 100%;
-
+            padding: 0;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            font-size: 12px;
         }
 
-        #schdule {
-            position: absolute;
-            width: 350px;
-            height: 750px;
-            top:130px;
-            left:13px;
-            background-color: rgba(255, 255, 255, 0.7);
-            box-sizing: border-box;
-            overflow-y: auto;
-            border-radius: 25px;
-            z-index: 1;
-            padding: 5px;
-
+        .map_wrap a,
+        .map_wrap a:hover,
+        .map_wrap a:active {
+            color: #000;
+            text-decoration: none;
         }
 
-        h3 {
-            text-align: center;
-            padding: 15px;
-            margin-left: 5%;
-            margin-right: 5%;
-            background-color: rgba(255, 169, 138);
-            border-radius: 25px;
-            box-shadow: 0px 0px 5px 5px #cfcfcf;
-        }
-
-        #map {
+        .map_wrap {
+            position: relative;
             width: 100%;
-            height: 800px;
-            overflow: hidden;
-        }
-
-        #search {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 100%;
-            z-index: 1;
-            width: 40px;
-            height: 40px;
-            top: 130px;
-            right: 13px;
-            margin-right: 50px;
-            cursor: pointer;
+            height: 500px;
         }
 
         #menu_wrap {
             position: absolute;
-            right: 120px;
-            width: 300px;
-            height: 550px;
-            top: 130px;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 250px;
             margin: 10px 0 30px 10px;
-            /* padding: 5px; */
+            padding: 5px;
             overflow-y: auto;
             background: rgba(255, 255, 255, 0.7);
-            z-index: 2;
+            z-index: 1;
             font-size: 12px;
             border-radius: 10px;
-            display: none;
         }
-
 
         .bg_white {
             background: #fff;
@@ -88,13 +54,7 @@
         }
 
         #menu_wrap .option {
-            position: sticky;
-            top: 0;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 5px;
-            z-index: 3;
-            /* text-align: center; */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         #menu_wrap .option p {
@@ -102,7 +62,7 @@
         }
 
         #menu_wrap .option button {
-            margin-left: 3px;
+            margin-left: 5px;
         }
 
         #placesList li {
@@ -234,63 +194,17 @@
 </head>
 
 <body>
-    <div class="header">
-        <img src="/images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
-        <div class="button-container">
-            <button class="button" onclick="gotoStory()">
-                여행 스토리
-            </button>
-            <button class="button" onclick="gototour()">여행지 추천</button>
-            <button class="button" onclick="gotofestival()">축제</button>
-            <button class="button" onclick="gotocourse()">
-                관광지 정보
-            </button>
-            <button class="button" onclick="toggleMyPageOptions()">
-                마이페이지
-            </button>
-        </div>
-        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
-        <div class="user-menu" id="userMenu">
-            <div class="user-menu-item">
-                <button class="button" onclick="register()">
-                    회원가입
-                </button>
-            </div>
-            <div class="user-menu-item">
-                <button class="button" onclick="login()">로그인</button>
-            </div>
-            <div class="user-menu-item">
-                <button class="button" onclick="logout()">로그아웃</button>
-            </div>
-        </div>
-    </div>
-    <div id="myPageOptions">
-        <button class="button" onclick="createTravel()">여행 만들기</button>
-        <button class="button" onclick="gotodiary()">일기</button>
-        <button class="button" onclick="gotowishlist()">관심 리스트</button>
-        <button class="button" onclick="gotoretouch()">
-            사용자 정보 수정
-        </button>
-    </div>
-    <hr class="custom">
-    <div class="body">
-        <div id="map"></div>
-        <div id="schdule" class="bg_white">
-            <h3>
-                스케줄 제목이 들어갈 곳
-            </h3>
-            <!-- 일정 리스트 영역 -->
-            <hr>
-            <ul id="schduleList"></ul>
-            <div id="schdulepage"></div>
-        </div>
-        <img src="/images/search.png" id="search" onclick="showSearch()" />
+    <div class="map_wrap">
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+
         <div id="menu_wrap" class="bg_white">
             <div class="option">
-                <form onsubmit="searchPlaces(); return false;">
-                    키워드 : <input type="text" id="keyword" size="15">
-                    <button type="submit">검색하기</button>
-                </form>
+                <div>
+                    <form onsubmit="searchPlaces(); return false;">
+                        키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15">
+                        <button type="submit">검색하기</button>
+                    </form>
+                </div>
             </div>
             <hr>
             <ul id="placesList"></ul>
@@ -303,8 +217,6 @@
     <script>
         // 마커를 담을 배열입니다
         var markers = [];
-
-        var schdule_index = 0;
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
@@ -329,10 +241,8 @@
 
             var keyword = document.getElementById('keyword').value;
 
-            var listEl = document.getElementById('placesList');
-
-
             if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                alert('키워드를 입력해주세요!');
                 return false;
             }
 
@@ -373,11 +283,6 @@
                 bounds = new kakao.maps.LatLngBounds(),
                 listStr = '';
 
-            var schdule = document.getElementById('schduleList');
-
-            
-
-            
             // 검색 결과 목록에 추가된 항목들을 제거합니다
             removeAllChildNods(listEl);
 
@@ -401,7 +306,6 @@
                 (function (marker, title) {
                     kakao.maps.event.addListener(marker, 'mouseover', function () {
                         displayInfowindow(marker, title);
-                        
                     });
 
                     kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -411,24 +315,11 @@
                     itemEl.onmouseover = function () {
                         displayInfowindow(marker, title);
                     };
-                    
-                    kakao.maps.event.addListener(itemEl,'click',function(mouseEvent){
-                        console.log("하이")
-                    })
-
-                    // 클릭시 저장
-                    // itemEl.3 = function () {
-                    //     console.log("하이")
-                    //     schdule_itemEl = getListItem(schdule_index, places[i]);
-                    //     schdule.appendChild(schdule_itemEl);
-                    // }
 
                     itemEl.onmouseout = function () {
                         infowindow.close();
                     };
                 })(marker, places[i].place_name);
-
-                fragment.appendChild(itemEl)
 
                 fragment.appendChild(itemEl);
             }
@@ -538,104 +429,6 @@
         function removeAllChildNods(el) {
             while (el.hasChildNodes()) {
                 el.removeChild(el.lastChild);
-            }
-        }
-
-
-    </script>
-    <!-- 일정 목록 관련 자바스크립트 -->
-    <!-- <script>
-        // 검색결과 항목을 Element로 반환하는 함수입니다
-        function scheduleListItem(index, places) {
-            var el = document.createElement('li'),
-                itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info">' +
-                    '   <h5>' + places.place_name + '</h5>';
-
-            if (places.road_address_name) {
-                itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    '   <span class="jibun gray">' + places.address_name + '</span>';
-            } else {
-                itemStr += '    <span>' + places.address_name + '</span>';
-            }
-
-            itemStr += '  <span class="tel">' + places.phone + '</span>' +
-                '</div>';
-
-            el.innerHTML = itemStr;
-            el.className = 'item';
-
-            return el;
-        }
-    </script> -->
-
-    <script>
-        function register() {
-            alert("회원가입 페이지로 이동합니다.");
-            window.location.href = "/signup";
-        }
-
-        function login() {
-            alert("로그인 페이지로 이동합니다.");
-            window.location.href = "/login";
-        }
-
-        function logout() {
-            alert("로그아웃합니다.");
-        }
-
-        function gotoMainPage() {
-            window.location.href = "/";
-        }
-
-        function goBack() {
-            window.history.back();
-        }
-        function gotoStory() {
-            window.location.href = "/";
-        }
-        function gototour() {
-            window.location.href = "/tour";
-        }
-        function gotocourse() {
-            window.location.href = "/course";
-        }
-        function gotofestival() {
-            window.location.href = "/festival";
-        }
-        function gotodiary() {
-            window.location.href = "/diary";
-        }
-
-        function gotowishlist() {
-            window.location.href = "/wishlist";
-        }
-
-        function gotoretouch() {
-            window.location.href = "/retouch/<%=session.user_id%>";
-        }
-        function toggleMyPageOptions() {
-            var myPageOptions = document.getElementById("myPageOptions");
-            if (myPageOptions.style.display === "block") {
-                myPageOptions.style.display = "none";
-            } else {
-                myPageOptions.style.display = "block";
-            }
-        }
-        function toggleUserMenu() {
-            var userMenu = document.getElementById("userMenu");
-            if (userMenu.style.display === "block") {
-                userMenu.style.display = "none";
-            } else {
-                userMenu.style.display = "block";
-            }
-        }
-        function showSearch() {
-            var menu_wrap = document.getElementById("menu_wrap");
-            if (menu_wrap.style.display === "block") {
-                menu_wrap.style.display = "none";
-            } else {
-                menu_wrap.style.display = "block";
             }
         }
     </script>

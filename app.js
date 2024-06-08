@@ -113,18 +113,14 @@ app.get("/", (req, res) => {
 
 app.post("/retouch/:id", upload.single("profileImage"), async (req, res) => {
     const { username, password, email } = req.body;
-    console.log(req.file.filename)
-    const image = "/uploads/" + req.file.filename;
+    const image = req.file ? "/uploads/" + req.file.filename : '../svg/circle_user.svg';
     const { id } = req.params;
-
-
-    console.log("나 실행되고 있어..?");
 
     try {
         // users 배열의 첫 번째 요소를 user로 설정
-        await connection.query('SELECT * FROM users WHERE ID = ?', [id],(error,results)=>{
+        await connection.query('SELECT * FROM users WHERE ID = ?', [id], (error, results) => {
             console.log(results.ID)
-            if(error){
+            if (error) {
                 console.log(error);
             }
             if (results.length === 0) {
@@ -140,8 +136,7 @@ app.post("/retouch/:id", upload.single("profileImage"), async (req, res) => {
                 }
             }
         });
-        
-        
+
 
         const updateQuery = `
             UPDATE users
@@ -304,7 +299,7 @@ app.get("/logout", (req, res) => {
 
 //다이어리 페이지 제공
 app.get("/diary", (req, res) => {
-    res.render("diary",{session:req.session});
+    res.render("diary", { session: req.session });
 });
 
 //사진 업로드
@@ -416,7 +411,7 @@ app.get("/course", (req, res) => {
                     tours: results,
                     currentPage: page,
                     totalPages: totalPages,
-                    session:req.session,
+                    session: req.session,
                 });
             }
         );
@@ -528,7 +523,7 @@ app.delete('/comments/:commentId', async (req, res) => {
     try {
         // 데이터베이스에서 댓글 삭제
         const deletedComment = await Comments.findByIdAndDelete(commentId);
-        
+
         if (deletedComment) {
             res.status(200).json({ success: true, message: '댓글이 성공적으로 삭제되었습니다.' });
         } else {
@@ -677,15 +672,92 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
+//일정 관리 관련 코드
+
 
 //카카오맵
-app.get("/map", async (req,res)=>{
-    await res.render("map",{session:req.session});
+app.get("/map/:pageid", async (req, res) => {
+    await res.render("map", { session: req.session });
 
 });
 
+//여행만들기 페이지
+app.get('/maketravel/:id',  (req, res) => {
+    const userid = req.params.id;
+    const sql = 'SELECT * FROM schedule WHERE userid = ?'
 
-// 보람
+    connection.query(sql, [userid], (err, results) => {
+        if (err) {
+            console.error("Error checking schedule ownership: " + err.message);
+            return res.status(500).send("Database error occurred.");
+        }
+        if (results.length === 0) {
+            return res.status(403).send("Unauthorized to share this schedule.");
+        }
+
+        res.render("maketravel", { schedulepage:results, moment:moment});
+    });
+
+
+    
+});
+
+//페이지만들기
+app.post('/travelupload', (req, res) => {
+    const data = {
+        user_id: req.session.user_id,
+        title: req.body.title,
+        startDate: moment(req.body.travelDate).format("YYYY-MM-DD"),
+        endDate: moment(req.body.travelDateEnd).format("YYYY-MM-DD"),
+        content: req.body.content,
+    };
+
+    // 데이터베이스에 저장하는 코드 (주석 처리된 SQL 코드 대신 실제 데이터베이스 코드를 사용해야 합니다)
+    const sql =
+        "INSERT INTO schedule (userid, pagename, traveldate, traveldateend, content) VALUES (?, ?, ?, ?, ?)";
+    connection.query(
+        sql,
+        [
+            data.user_id,
+            data.title,
+            data.startDate,
+            data.endDate,
+            data.content,
+            
+        ],
+        (error, results) => {
+            if (error) {
+                return res
+                    .status(500)
+                    .send("업로드 중 오류 발생: " + error.message);
+            }
+            // res.json({ success: true, message: '여행이 성공적으로 만들어졌습니다.' });
+            res.redirect('/maketravel/'+req.session.user_id);
+        }
+    );
+
+    
+    // res.render("maketravel",{page:date})
+});
+
+// 페이지 삭제 라우트
+app.delete('/delete-page/:pageId', (req, res) => {
+    const pageId = req.params.pageId;
+
+    // 페이지를 삭제하는 데이터베이스 쿼리 또는 다른 로직을 여기에 추가하세요
+    // 예: schedule 테이블에서 해당 페이지를 삭제하는 쿼리를 실행한다고 가정합니다.
+    const sql = "DELETE FROM schedule WHERE pageid = ?";
+    connection.query(sql, [pageId], (err, result) => {
+        if (err) {
+            console.error("Error deleting page: " + err.message);
+            return res.status(500).send("Error deleting page");
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).send("Page not found");
+        }
+        res.send("Page has been successfully deleted.");
+    });
+});
 
 // 서버 실행
 app.listen(port, () => {

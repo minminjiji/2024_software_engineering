@@ -187,79 +187,7 @@
             }
         }
 
-        function createTravel() {
-            var travelName = prompt(
-                "여행 이름을 입력하세요 (공백포함 최대 10글자):"
-            );
-            if (travelName) {
-                // 입력된 여행 이름의 글자 수 (공백 포함) 확인
-                var nameLength = travelName.length;
 
-                // 공백을 제외한 글자 수 확인
-                var trimmedLength = travelName.replace(/\s/g, "").length;
-
-                // 최대 글자 수 확인
-                if (nameLength <= 10 && trimmedLength <= 10) {
-                    var travel = {
-                        name: travelName,
-                        image: "story_image.png", // 여행 이미지 경로
-                    };
-                    travels.push(travel);
-                    renderTravelList();
-                } else {
-                    alert(
-                        "입력된 여행 이름은 공백 포함 10글자를 넘을 수 없습니다."
-                    );
-                }
-            }
-        }
-
-        function renderTravelList() {
-            var container = document.getElementById("travelList");
-            container.innerHTML = ""; // Clear previous content
-            travels.forEach(function (travel, index) {
-                var travelBox = document.createElement("div");
-                travelBox.className = "travel-box";
-
-                var travelImageContainer = document.createElement("div");
-                travelImageContainer.className = "travel-image-container";
-
-                var travelImage = document.createElement("img");
-                travelImage.className = "travel-image";
-                travelImage.src = travel.image;
-
-                var travelNameOverlay = document.createElement("div");
-                travelNameOverlay.className = "travel-name-overlay";
-                travelNameOverlay.textContent = travel.name;
-
-                travelImageContainer.appendChild(travelImage);
-                travelImageContainer.appendChild(travelNameOverlay);
-
-                var viewButton = document.createElement("button");
-                viewButton.className = "button-view-travel";
-                viewButton.textContent = "내가 만든 여행 보기";
-                viewButton.onclick = function () {
-                    alert("내가 만든 여행 보기: " + travel.name); // 여행 보기 동작 정의
-                };
-
-                var addButton = document.createElement("button");
-                addButton.className = "button-add-travel";
-                addButton.textContent = "여행 추가하기";
-                addButton.onclick = function () {
-                    createTravel();
-                };
-
-                var buttonBox = document.createElement("div");
-                buttonBox.className = "button-view-travel-box"; // 여행 보기 버튼을 감싸는 박스 추가
-                buttonBox.appendChild(viewButton);
-                buttonBox.appendChild(addButton);
-
-                travelBox.appendChild(travelImageContainer);
-                travelBox.appendChild(buttonBox);
-
-                container.appendChild(travelBox);
-            });
-        }
 
         function gotofestival() {
             window.location.href = "/festival";

@@ -56,25 +56,6 @@
             margin: 0 auto;
         }
 
-        .user-menu {
-            position: absolute;
-            top: calc(100% + 5px);
-            right: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            display: none;
-        }
-
-        .user-menu-item {
-            margin-bottom: 5px;
-        }
-
-        .user-image-container {
-            margin-top: 50px;
-            margin-left: 600px;
-        }
 
         .story_image {
             margin-left: 200px;
@@ -188,7 +169,7 @@
                 사진 업로드
             </button>
         </div>
-        <form action="/retouch/<%=session.user_id%>" method="post" enctype="multipart/form-data">
+        <form id="retouchForm" action="/retouch/<%=session.user_id%>" method="post" enctype="multipart/form-data" >
 
             <input type="file" name="profileImage" id="imageUpload" accept="image/*" style="display: none" />
 
@@ -196,32 +177,33 @@
             <div class="input_box">
                 <img src="../svg/user.svg" alt="userSVG" class="user-icon" name="username" />
                 <div class="input_container">
-                    <input type="text" size="20" placeholder="이름" name="username" />
+                    <input type="text" size="20" placeholder="이름" name="username" required/>
                 </div>
             </div>
 
             <div class="input_box">
                 <img src="../svg/lock.svg" alt="lockSVG" class="user-icon" />
                 <div class="input_container">
-                    <input type="password" size="20" placeholder="비밀번호" name="password" />
+                    <input type="password" size="20" placeholder="비밀번호" name="password" required />
                 </div>
             </div>
             <div class="input_box">
                 <img src="../svg/lock.svg" alt="lockSVG" class="user-icon" />
                 <div class="input_container">
-                    <input type="password" size="20" placeholder="비밀번호 확인" name="passwordConfirm" />
+                    <input type="password" size="20" placeholder="비밀번호 확인" name="passwordConfirm" required/>
                 </div>
             </div>
             <div class="input_box">
                 <img src="../svg/mail.svg" alt="mailSVG" class="user-icon" />
                 <div class="input_container">
-                    <input type="email" size="20" placeholder="이메일 주소" name="email" />
+                    <input type="email" size="20" placeholder="이메일 주소" name="email" required/>
                 </div>
             </div>
 
             <div class="input_box">
                 <input type="submit" value="수정" style="
                             margin-top: 30px;
+                            margin-left:50px;
                             width: 500px;
                             height: 50px;
                             background-color: white;
@@ -309,9 +291,29 @@
                     };
                     reader.readAsDataURL(file);
                 } else {
-                    alert("이미지 파일을 선택해주세요.");
+                    imagePreview.src = "../svg/circle_user.svg";
                 }
             });
+
+        function validateForm() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var passwordConfirm = document.getElementById("passwordConfirm").value;
+            var email = document.getElementById("email").value;
+            var profileImage = document.getElementById("imageUpload").files.length;
+
+            if (!username || !password || !passwordConfirm || !email || !profileImage) {
+                alert("모든 필드를 채워주세요.");
+                return false;
+            }
+
+            if (password !== passwordConfirm) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </body>
 
