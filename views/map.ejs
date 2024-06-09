@@ -11,7 +11,6 @@
             font-family: Arial, sans-serif;
             display: flex;
             height: 100%;
-
         }
 
         #schdule {
@@ -26,7 +25,6 @@
             border-radius: 25px;
             z-index: 1;
             padding: 5px;
-
         }
 
         h3 {
@@ -65,7 +63,6 @@
             height: 550px;
             top: 130px;
             margin: 10px 0 30px 10px;
-            /* padding: 5px; */
             overflow-y: auto;
             background: rgba(255, 255, 255, 0.7);
             z-index: 2;
@@ -73,7 +70,6 @@
             border-radius: 10px;
             display: none;
         }
-
 
         .bg_white {
             background: #fff;
@@ -93,7 +89,6 @@
             background-color: rgba(255, 255, 255, 0.9);
             padding: 5px;
             z-index: 3;
-            /* text-align: center; */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
@@ -230,6 +225,32 @@
             cursor: default;
             color: #777;
         }
+
+        .button_container3 {
+            display: flex;
+            
+        }
+
+        .schedule_item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule_item .info {
+            flex-grow: 1;
+        }
+
+        .schedule_item .delete_button {
+            background-color: transparent;
+            border: none;
+            margin: 0 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
     </style>
 </head>
 
@@ -255,15 +276,14 @@
                 <div class="user-menu-item">
                     <button class="button" onclick="logout()">로그아웃</button>
                 </div>
-            <%} else{%>
-                <div class="user-menu-item">
-                    <button class="button" onclick="register()">회원가입</button>
-                </div>
-                <div class="user-menu-item">
-                    <button class="button" onclick="login()">로그인</button>
-                </div>
-            <%}%>
-            
+                <%} else{%>
+                    <div class="user-menu-item">
+                        <button class="button" onclick="register()">회원가입</button>
+                    </div>
+                    <div class="user-menu-item">
+                        <button class="button" onclick="login()">로그인</button>
+                    </div>
+                    <%}%>
         </div>
     </div>
     <div id="myPageOptions">
@@ -281,10 +301,20 @@
             <h3>
                 <%=pagename%>
             </h3>
+            <hr>
+            <div class="button_container3">
+                <button class="button" onclick="drawRoute()">경로그리기</button>
+                <hr>
+                <button class="button" onclick="resetSchedule()">리셋</button>
+                <button class="button">저장하기</button>
+                
+            </div>
             <!-- 일정 리스트 영역 -->
             <hr>
-            <ul id="schduleList"></ul>
-            <div id="schdulepage"></div>
+            <div class="schedule_area">
+                <ul id="schduleList"></ul>
+                <div id="schdulepage"></div>
+            </div>
         </div>
         <img src="/images/search.png" id="search" onclick="showSearch()" />
         <div id="menu_wrap" class="bg_white">
@@ -303,12 +333,10 @@
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aa05807c0421a57827951d24fee395da&libraries=services"></script>
     <script>
-        // 마커를 담을 배열입니다
+        // 마커와 폴리라인을 담을 배열입니다
         var markers = [];
-
-
+        var polylines = [];
         var scheduleList = [];
-
         var schdule_index = 0;
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -331,13 +359,9 @@
 
         // 키워드 검색을 요청하는 함수입니다
         function searchPlaces() {
-
             var keyword = document.getElementById('keyword').value;
-
             var listEl = document.getElementById('placesList');
-
             var paginationEl = document.getElementById('pagination');
-
 
             if (!keyword.replace(/^\s+|\s+$/g, '')) {
                 // 기존에 추가된 페이지번호를 삭제합니다
@@ -360,38 +384,30 @@
         // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
         function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
-
                 // 정상적으로 검색이 완료됐으면
                 // 검색 목록과 마커를 표출합니다
                 displayPlaces(data);
 
                 // 페이지 번호를 표출합니다
                 displayPagination(pagination);
-
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
                 alert('검색 결과가 존재하지 않습니다.');
                 return;
-
             } else if (status === kakao.maps.services.Status.ERROR) {
-
                 alert('검색 결과 중 오류가 발생했습니다.');
                 return;
-
             }
         }
 
         // 검색 결과 목록과 마커를 표출하는 함수입니다
         function displayPlaces(places) {
-
             var listEl = document.getElementById('placesList'),
                 menuEl = document.getElementById('menu_wrap'),
                 fragment = document.createDocumentFragment(),
-                schfragment = document.createDocumentFragment()
-            bounds = new kakao.maps.LatLngBounds(),
+                schfragment = document.createDocumentFragment(),
+                bounds = new kakao.maps.LatLngBounds(),
                 listStr = '';
-
-
+            var scheduleListEl = document.getElementById('schduleList');
 
             // 검색 결과 목록에 추가된 항목들을 제거합니다
             removeAllChildNods(listEl);
@@ -400,26 +416,20 @@
             removeMarker();
 
             for (var i = 0; i < places.length; i++) {
-
-                // console.log(placePosition)
-                // 마커를 생성하고 지도에 표시합니다
                 var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                    marker = addMarker(placePosition, i),
+                    marker = addMarker(placePosition, i, places[i].place_name),
                     itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                 // LatLngBounds 객체에 좌표를 추가합니다
                 bounds.extend(placePosition);
 
-
                 // 마커와 검색결과 항목에 mouseover 했을때
                 // 해당 장소에 인포윈도우에 장소명을 표시합니다
                 // mouseout 했을 때는 인포윈도우를 닫습니다
-                (function (marker, title, item, placePosition) {
-
+                (function (marker, title, place, i, placePosition) {
                     kakao.maps.event.addListener(marker, 'mouseover', function () {
                         displayInfowindow(marker, title);
-
                     });
 
                     kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -428,18 +438,34 @@
 
                     itemEl.onclick = function () {
                         map.setCenter(placePosition);
-                        addToSchedule(item);
+                        var item = getScheduleListItem(scheduleListEl.children.length + 1, place); // 일정 항목 생성 시 순서 포함
+                        scheduleListEl.appendChild(item);
+
+                        item.onclick = function () {
+                            if (scheduleListEl.contains(item)) { // Check if item is a child of scheduleListEl
+                                map.setCenter(placePosition);
+                                displayInfowindow(marker, title);
+                            }
+                        }
+
+                        var deleteButton = item.querySelector('.delete_button');
+                        deleteButton.onclick = function () {
+                            if (scheduleListEl.contains(item)) { // Check if item is a child of scheduleListEl
+                                scheduleListEl.removeChild(item);
+                                updateScheduleOrder(); // 일정 목록의 순서 업데이트
+                                drawRoute(); // 경로 다시 그리기
+                            }
+                        }
                     }
 
                     itemEl.onmouseover = function () {
                         displayInfowindow(marker, title);
                     };
 
-
                     itemEl.onmouseout = function () {
                         infowindow.close();
                     };
-                })(marker, places[i].place_name, itemEl, placePosition);
+                })(marker, places[i].place_name, places[i], i, placePosition);
 
                 fragment.appendChild(itemEl);
             }
@@ -451,13 +477,9 @@
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             map.setBounds(bounds);
         }
-        function showplaces(places) {
-            console.log(places);
-        }
 
         // 검색결과 항목을 Element로 반환하는 함수입니다
         function getListItem(index, places) {
-
             var el = document.createElement('li'),
                 itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
                     '<div class="info">' +
@@ -472,6 +494,30 @@
 
             itemStr += '  <span class="tel">' + places.phone + '</span>' +
                 '</div>';
+
+            el.innerHTML = itemStr;
+            el.className = 'item';
+
+            return el;
+        }
+
+        // 일정 목록 항목을 Element로 반환하는 함수입니다 (순서를 포함)
+        function getScheduleListItem(order, places) {
+            var el = document.createElement('li'),
+                itemStr = '<div class="schedule_item"><span class="order">' + order + '</span>' +
+                    '<div class="info">' +
+                    '   <h5>' + places.place_name + '</h5>';
+
+            if (places.road_address_name) {
+                itemStr += '    <span>' + places.road_address_name + '</span>' +
+                    '   <span class="jibun gray">' + places.address_name + '</span>';
+            } else {
+                itemStr += '    <span>' + places.address_name + '</span>';
+            }
+
+            itemStr += '  <span class="tel">' + places.phone + '</span>' +
+                '</div>' +
+                '<button class="delete_button">삭제</button></div>';
 
             el.innerHTML = itemStr;
             el.className = 'item';
@@ -495,7 +541,12 @@
                 });
 
             marker.setMap(map); // 지도 위에 마커를 표출합니다
-            markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+            markers[idx] = marker;  // 배열에 생성된 마커를 추가합니다
+
+            // 마커 클릭 이벤트를 추가합니다
+            kakao.maps.event.addListener(marker, 'click', function () {
+                displayInfowindow(marker, title);
+            });
 
             return marker;
         }
@@ -506,6 +557,15 @@
                 markers[i].setMap(null);
             }
             markers = [];
+            removePolyline(); // 기존 폴리라인 제거
+        }
+
+        // 지도 위에 표시되고 있는 폴리라인을 모두 제거합니다
+        function removePolyline() {
+            for (var i = 0; i < polylines.length; i++) {
+                polylines[i].setMap(null);
+            }
+            polylines = [];
         }
 
         // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
@@ -543,7 +603,6 @@
         // 인포윈도우에 장소명을 표시합니다
         function displayInfowindow(marker, title) {
             var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
             infowindow.setContent(content);
             infowindow.open(map, marker);
         }
@@ -555,50 +614,69 @@
             }
         }
 
-        function addToSchedule(itemEl) {
-            var scheduleList = document.getElementById('schduleList');
-            var clonedItem = itemEl.cloneNode(true); // 선택된 요소를 복제합니다.
-
-            // 일정 항목에 순서를 표시하기 위해 번호를 붙입니다.
-            var index = scheduleList.childElementCount + 1; // 현재 일정 개수 + 1을 일정 번호로 사용합니다.
-            var span = document.createElement("span"); // span 요소 생성
-            span.className = "markerbg marker_" + (index); // 클래스 설정
-            clonedItem.insertBefore(span, clonedItem.firstChild); // 일정 번호를 clonedItem의 첫 번째 자식으로 삽입
-
-            scheduleList.appendChild(clonedItem); // 일정 목록에 복제된 요소를 추가합니다.
-
-            // 복제된 요소를 클릭하면 삭제됩니다.
-            clonedItem.onclick = function () {
-                scheduleList.removeChild(clonedItem); // 클릭된 요소를 일정 목록에서 삭제합니다.
-                updateScheduleNumbers(); // 일정 번호를 업데이트합니다.
-            };
-
-            // 일정 목록에 추가 후 일정 번호를 업데이트합니다.
-            updateScheduleNumbers();
+        // 일정 목록의 순서를 업데이트하는 함수입니다
+        function updateScheduleOrder() {
+            var scheduleListEl = document.getElementById('schduleList');
+            var items = scheduleListEl.children;
+            for (var i = 0; i < items.length; i++) {
+                var orderEl = items[i].querySelector('.order');
+                orderEl.textContent = (i + 1).toString();
+            }
         }
 
+        // 일정 목록에 있는 위치를 지도에 마커로 표시하고 선으로 잇는 함수입니다
+        function drawRoute() {
+            // 지도에 있는 기존 마커와 폴리라인 제거
+            removeMarker();
 
-        // 일정 번호를 업데이트하는 함수
-        function updateScheduleMarkers() {
-            var scheduleList = document.getElementById('schduleList');
-            var items = scheduleList.querySelectorAll('li');
+            // 일정 목록 가져오기
+            var scheduleListEl = document.getElementById('schduleList');
+            var items = scheduleListEl.children;
+            var path = [];
 
-            // 모든 마커를 숨깁니다
-            markers.forEach(function (marker) {
-                marker.setMap(null);
-            });
+            // 일정 목록에 있는 위치를 마커로 추가하고 경로를 생성
+            for (var i = 0; i < items.length; i++) {
+                var placeName = items[i].querySelector('.info h5').innerText;
+                var placeAddress = items[i].querySelector('.info span').innerText;
 
-            // 각 일정 아이템에 대해 마커를 다시 추가합니다
-            items.forEach(function (item, index) {
-                var marker = markers[index];
-                if (marker) {
-                    marker.setMap(map); // 마커를 지도에 다시 표시합니다
-                    // 여기서 마커의 위치를 업데이트해야 한다면 마커의 position을 변경해줄 수 있습니다.
-                }
-            });
+                // 장소 검색 객체를 통해 주소로 좌표 검색
+                (function (index) {
+                    ps.keywordSearch(placeName, function (data, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            var position = new kakao.maps.LatLng(data[0].y, data[0].x);
+                            addMarker(position, index, placeName);
+                            path[index] = position; // 경로 배열에 올바른 순서를 유지
+
+                            // 모든 마커가 추가된 후 폴리라인을 그림
+                            if (path.filter(Boolean).length === items.length) {
+                                var polyline = new kakao.maps.Polyline({
+                                    path: path.filter(Boolean), // undefined 위치를 필터링
+                                    strokeWeight: 5,
+                                    strokeColor: '#FFAE00',
+                                    strokeOpacity: 0.8,
+                                    strokeStyle: 'solid'
+                                });
+                                polyline.setMap(map);
+                                polylines.push(polyline);
+                            }
+                        }
+                    });
+                })(i);
+            }
         }
 
+        function resetSchedule() {
+            // Clear the schedule list
+            var scheduleListEl = document.getElementById('schduleList');
+            while (scheduleListEl.hasChildNodes()) {
+                scheduleListEl.removeChild(scheduleListEl.lastChild);
+            }
 
+            // Reset the map
+            removeMarker(); // This will also call removePolyline to clear the polylines
+            map.setCenter(new kakao.maps.LatLng(37.566826, 126.9786567)); // Reset the map center to the initial coordinates
+            map.setLevel(3); // Reset the zoom level to the initial level
+        }
     </script>
 
     <script>
@@ -624,18 +702,23 @@
         function goBack() {
             window.history.back();
         }
+
         function gotoStory() {
             window.location.href = "/";
         }
+
         function gototour() {
             window.location.href = "/tour";
         }
+
         function gotocourse() {
             window.location.href = "/course";
         }
+
         function gotofestival() {
             window.location.href = "/festival";
         }
+
         function gotodiary() {
             window.location.href = "/diary-list/<%=session.user_id%>";
         }
@@ -647,6 +730,7 @@
         function gotoretouch() {
             window.location.href = "/retouch/<%=session.user_id%>";
         }
+
         function toggleMyPageOptions() {
             var myPageOptions = document.getElementById("myPageOptions");
             if (myPageOptions.style.display === "block") {
@@ -655,6 +739,7 @@
                 myPageOptions.style.display = "block";
             }
         }
+
         function toggleUserMenu() {
             var userMenu = document.getElementById("userMenu");
             if (userMenu.style.display === "block") {
@@ -663,6 +748,7 @@
                 userMenu.style.display = "block";
             }
         }
+
         function showSearch() {
             var menu_wrap = document.getElementById("menu_wrap");
             if (menu_wrap.style.display === "block") {

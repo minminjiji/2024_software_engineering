@@ -23,7 +23,7 @@
         }
 
         .diary_container2 {
-            background-color:antiquewhite;
+            background-color: antiquewhite;
             border: 1px solid #ccc;
             border-radius: 20px;
             margin-top: 60px;
@@ -55,7 +55,7 @@
         }
 
         .diary_container {
-            background-color:antiquewhite;
+            background-color: antiquewhite;
             border: 1px solid #ccc;
             border-radius: 20px;
             margin-top: 60px;
@@ -102,11 +102,11 @@
             text-align: center;
             background-color: #fff;
             width: 90%;
-            height:60%;
+            height: 90%;
         }
 
         .card img {
-            height:80%;
+            height: 80%;
             border-radius: 10px;
         }
 
@@ -115,7 +115,6 @@
             text-align: center;
             margin-top: 20px;
         }
-
     </style>
 
 </head>
@@ -127,7 +126,7 @@
             <button class="button" onclick="redirectToMain()">여행 스토리</button>
             <button class="button" onclick="gototour()">여행지 추천</button>
             <button class="button" onclick="gotofestival()">축제</button>
-            <button class="button" onclick="gotocourse()">경로 추천</button>
+            <button class="button" onclick="gotocourse()">관광지 정보</button>
             <button class="button" onclick="toggleMyPageOptions()">마이페이지</button>
         </div>
         <img src="<%=session.userimage%>" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
@@ -136,15 +135,15 @@
                 <div class="user-menu-item">
                     <button class="button" onclick="logout()">로그아웃</button>
                 </div>
-            <%} else{%>
-                <div class="user-menu-item">
-                    <button class="button" onclick="register()">회원가입</button>
-                </div>
-                <div class="user-menu-item">
-                    <button class="button" onclick="login()">로그인</button>
-                </div>
-            <%}%>
-            
+                <%} else{%>
+                    <div class="user-menu-item">
+                        <button class="button" onclick="register()">회원가입</button>
+                    </div>
+                    <div class="user-menu-item">
+                        <button class="button" onclick="login()">로그인</button>
+                    </div>
+                    <%}%>
+
         </div>
     </div>
     <hr class="custom" />
@@ -164,7 +163,9 @@
             </div>
             <div class="user_nick">
                 <h2>username</h2>
-                <h3 class="user_name" style="color: coral;"><%= session.username %></h3>
+                <h3 class="user_name" style="color: coral;">
+                    <%= session.username %>
+                </h3>
             </div>
         </div>
 

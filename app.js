@@ -164,7 +164,7 @@ app.post("/retouch/:id", upload.single("profileImage"), async (req, res) => {
                 return res.status(500).send("Error saving session");
             }
             //diary-list 이동
-            res.redirect("/diary-list");
+            res.redirect("/diary-list/"+req.session.user_id);
         });
 
     } catch (error) {
@@ -350,7 +350,7 @@ app.post("/upload-diary", upload.single("photo"), (req, res) => {
                     .status(500)
                     .send("업로드 중 오류 발생: " + error.message);
             }
-            res.redirect('/diary-list');
+            res.redirect('/diary-list/'+req.session.user_id);
         }
     );
 });
@@ -530,7 +530,7 @@ app.get("/diary-details/:id", (req, res) => {
         if (results.length === 0) {
             return res.status(404).send("diary_detail not found");
         }
-        res.render("diary-details", { list: results[0] });
+        res.render("diary-details", { list: results[0], session:req.session });
     });
 });
 
@@ -964,6 +964,8 @@ app.get("/search-tour", (req, res) => {
         res.json(results);
     });
 });
+
+
 
 // 서버 실행
 app.listen(port, () => {
