@@ -18,8 +18,8 @@
             position: absolute;
             width: 350px;
             height: 750px;
-            top:130px;
-            left:13px;
+            top: 130px;
+            left: 13px;
             background-color: rgba(255, 255, 255, 0.7);
             box-sizing: border-box;
             overflow-y: auto;
@@ -277,7 +277,7 @@
         <div id="map"></div>
         <div id="schdule" class="bg_white">
             <h3>
-                스케줄 제목이 들어갈 곳
+                <%=pagename%>
             </h3>
             <!-- 일정 리스트 영역 -->
             <hr>
@@ -303,6 +303,9 @@
     <script>
         // 마커를 담을 배열입니다
         var markers = [];
+
+
+        var scheduleList = [];
 
         var schdule_index = 0;
 
@@ -331,8 +334,20 @@
 
             var listEl = document.getElementById('placesList');
 
+            var paginationEl = document.getElementById('pagination');
+
 
             if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                // 기존에 추가된 페이지번호를 삭제합니다
+                while (paginationEl.hasChildNodes()) {
+                    paginationEl.removeChild(paginationEl.lastChild);
+                }
+
+                // 검색 결과 목록에 추가된 항목들을 제거합니다
+                removeAllChildNods(listEl);
+
+                // 지도에 표시되고 있는 마커를 제거합니다
+                removeMarker();
                 return false;
             }
 
@@ -370,14 +385,12 @@
             var listEl = document.getElementById('placesList'),
                 menuEl = document.getElementById('menu_wrap'),
                 fragment = document.createDocumentFragment(),
-                bounds = new kakao.maps.LatLngBounds(),
+                schfragment = document.createDocumentFragment()
+            bounds = new kakao.maps.LatLngBounds(),
                 listStr = '';
 
-            var schdule = document.getElementById('schduleList');
 
-            
 
-            
             // 검색 결과 목록에 추가된 항목들을 제거합니다
             removeAllChildNods(listEl);
 
@@ -386,6 +399,7 @@
 
             for (var i = 0; i < places.length; i++) {
 
+                // console.log(placePosition)
                 // 마커를 생성하고 지도에 표시합니다
                 var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
                     marker = addMarker(placePosition, i),
@@ -395,40 +409,35 @@
                 // LatLngBounds 객체에 좌표를 추가합니다
                 bounds.extend(placePosition);
 
+
                 // 마커와 검색결과 항목에 mouseover 했을때
                 // 해당 장소에 인포윈도우에 장소명을 표시합니다
                 // mouseout 했을 때는 인포윈도우를 닫습니다
-                (function (marker, title) {
+                (function (marker, title, item, placePosition) {
+
                     kakao.maps.event.addListener(marker, 'mouseover', function () {
                         displayInfowindow(marker, title);
-                        
+
                     });
 
                     kakao.maps.event.addListener(marker, 'mouseout', function () {
                         infowindow.close();
                     });
 
+                    itemEl.onclick = function () {
+                        map.setCenter(placePosition);
+                        addToSchedule(item);
+                    }
+
                     itemEl.onmouseover = function () {
                         displayInfowindow(marker, title);
                     };
-                    
-                    kakao.maps.event.addListener(itemEl,'click',function(mouseEvent){
-                        console.log("하이")
-                    })
 
-                    // 클릭시 저장
-                    // itemEl.3 = function () {
-                    //     console.log("하이")
-                    //     schdule_itemEl = getListItem(schdule_index, places[i]);
-                    //     schdule.appendChild(schdule_itemEl);
-                    // }
 
                     itemEl.onmouseout = function () {
                         infowindow.close();
                     };
-                })(marker, places[i].place_name);
-
-                fragment.appendChild(itemEl)
+                })(marker, places[i].place_name, itemEl, placePosition);
 
                 fragment.appendChild(itemEl);
             }
@@ -439,6 +448,9 @@
 
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             map.setBounds(bounds);
+        }
+        function showplaces(places) {
+            console.log(places);
         }
 
         // 검색결과 항목을 Element로 반환하는 함수입니다
@@ -541,33 +553,51 @@
             }
         }
 
+        function addToSchedule(itemEl) {
+            var scheduleList = document.getElementById('schduleList');
+            var clonedItem = itemEl.cloneNode(true); // 선택된 요소를 복제합니다.
+
+            // 일정 항목에 순서를 표시하기 위해 번호를 붙입니다.
+            var index = scheduleList.childElementCount + 1; // 현재 일정 개수 + 1을 일정 번호로 사용합니다.
+            var span = document.createElement("span"); // span 요소 생성
+            span.className = "markerbg marker_" + (index); // 클래스 설정
+            clonedItem.insertBefore(span, clonedItem.firstChild); // 일정 번호를 clonedItem의 첫 번째 자식으로 삽입
+
+            scheduleList.appendChild(clonedItem); // 일정 목록에 복제된 요소를 추가합니다.
+
+            // 복제된 요소를 클릭하면 삭제됩니다.
+            clonedItem.onclick = function () {
+                scheduleList.removeChild(clonedItem); // 클릭된 요소를 일정 목록에서 삭제합니다.
+                updateScheduleNumbers(); // 일정 번호를 업데이트합니다.
+            };
+
+            // 일정 목록에 추가 후 일정 번호를 업데이트합니다.
+            updateScheduleNumbers();
+        }
+
+
+        // 일정 번호를 업데이트하는 함수
+        function updateScheduleMarkers() {
+            var scheduleList = document.getElementById('schduleList');
+            var items = scheduleList.querySelectorAll('li');
+
+            // 모든 마커를 숨깁니다
+            markers.forEach(function (marker) {
+                marker.setMap(null);
+            });
+
+            // 각 일정 아이템에 대해 마커를 다시 추가합니다
+            items.forEach(function (item, index) {
+                var marker = markers[index];
+                if (marker) {
+                    marker.setMap(map); // 마커를 지도에 다시 표시합니다
+                    // 여기서 마커의 위치를 업데이트해야 한다면 마커의 position을 변경해줄 수 있습니다.
+                }
+            });
+        }
+
 
     </script>
-    <!-- 일정 목록 관련 자바스크립트 -->
-    <!-- <script>
-        // 검색결과 항목을 Element로 반환하는 함수입니다
-        function scheduleListItem(index, places) {
-            var el = document.createElement('li'),
-                itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-                    '<div class="info">' +
-                    '   <h5>' + places.place_name + '</h5>';
-
-            if (places.road_address_name) {
-                itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    '   <span class="jibun gray">' + places.address_name + '</span>';
-            } else {
-                itemStr += '    <span>' + places.address_name + '</span>';
-            }
-
-            itemStr += '  <span class="tel">' + places.phone + '</span>' +
-                '</div>';
-
-            el.innerHTML = itemStr;
-            el.className = 'item';
-
-            return el;
-        }
-    </script> -->
 
     <script>
         function register() {
@@ -604,7 +634,7 @@
             window.location.href = "/festival";
         }
         function gotodiary() {
-            window.location.href = "/diary";
+            window.location.href = "/diary-list/<%=session.user_id%>";
         }
 
         function gotowishlist() {

@@ -207,6 +207,12 @@
             padding: 3px;
             display: flex;
         }
+
+        #myPageOptions {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -215,13 +221,13 @@
         <!-- logo 이미지에 onclick 이벤트 추가 -->
         <img src="/images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
         <div class="button-container">
-            <button class="button">여행 스토리</button>
+            <button class="button" onclick="gotoMainPage()">여행 스토리</button>
             <button class="button" onclick="gototour()">여행지 추천</button>
             <button class="button" onclick="gotofestival()">축제</button>
             <button class="button" onclick="gotocourse()">
                 관광지 정보
             </button>
-            <button class="button" onclick="gotoMyPage()">
+            <button class="button" onclick="toggleMyPageOptions()">
                 마이페이지
             </button>
         </div>
@@ -240,6 +246,14 @@
             </div>
         </div>
     </div>
+    <div id="myPageOptions">
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기</button>
+        <button class="button" onclick="gotowishlist()">관심 리스트</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
+    </div>
     <hr class="custom" />
 
     <div class="body">
@@ -250,7 +264,7 @@
                     Date(b.traveldate)).forEach(schedulepage => {
                     %>
                     <div class="pagedivide">
-                        <a href="/map/<%= schedulepage.pageid %>">
+                        <a href="/map/<%= schedulepage.pageid %>/<%= schedulepage.pagename %>">
                             <div class="page">
                                 <div class="pagename">
                                     <h2>
@@ -270,7 +284,7 @@
                         </a>
                         <button class="delete_button" id="delete_button<%= schedulepage.pageid %>"
                             onclick="deletePage('<%= schedulepage.pageid %>')">페이지삭제</button>
-                        <img src="/images/list.png"class="showdelete" id="showdelete<%= schedulepage.pageid %>"
+                        <img src="/images/list.png" class="showdelete" id="showdelete<%= schedulepage.pageid %>"
                             onclick="showdelete('delete_button<%= schedulepage.pageid %>')" />
 
 
@@ -337,6 +351,15 @@
             }
         }
 
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
+            }
+        }
+
         function showdelete(id) {
             var deletebutton = document.getElementById(id);
             if (deletebutton.style.display === "block") {
@@ -347,11 +370,11 @@
         }
 
         function gotodiary() {
-            window.location.href = "/diary-list";
+            window.location.href = "/diary-list/<%=session.user_id%>";
         }
 
         function gotowishlist() {
-            window.location.href = "wishlist.html";
+            window.location.href = "/wishlist";
         }
 
         function register() {
@@ -366,10 +389,11 @@
 
         function logout() {
             alert("로그아웃합니다.");
+            window.location.href = "/logout";
         }
 
         function gotoretouch() {
-            window.location.href = "/retouch/<%=schedulepage.userid%>";
+            window.location.href = "/retouch/<%=session.user_id%>";
         }
 
         function gotoMainPage() {
@@ -377,7 +401,7 @@
         }
 
         function gotoMyPage() {
-            window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+            window.location.href = "/maketravel/<%=session.user_id%>";
         }
 
         function gotofestival() {

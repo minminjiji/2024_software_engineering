@@ -335,9 +335,6 @@ app.post("/upload-diary", upload.single("photo"), (req, res) => {
     );
 });
 
-app.get("/wishlist", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "wishlist.html"));
-});
 
 // 초기 10개의 여행지 목록을 제공하는 경로 설정
 app.get("/tour", (req, res) => {
@@ -347,7 +344,7 @@ app.get("/tour", (req, res) => {
             console.error("Error fetching courses: " + err.message);
             return res.status(500).send("Error fetching courses");
         }
-        res.render("tour", { courses: results });
+        res.render("tour", { session:req.session, courses: results });
     });
 });
 
@@ -467,6 +464,7 @@ app.get("/festival", (req, res) => {
                     festivals: results,
                     currentPage: page,
                     totalPages: totalPages,
+                    session:req.session,
                 });
             }
         );
@@ -489,7 +487,7 @@ app.get("/festival/:id", (req, res) => {
     });
 });
 
-app.get("/diary-list", (req, res) => {
+app.get("/diary-list/:id", (req, res) => {
     const sql = "SELECT diary_id, title, photo_url FROM diary where user_id =?";
     connection.query(sql, [req.session.user_id], (err, results) => {
         if (err) {
@@ -676,8 +674,8 @@ app.use((err, req, res, next) => {
 
 
 //카카오맵
-app.get("/map/:pageid", async (req, res) => {
-    await res.render("map", { session: req.session });
+app.get("/map/:pageid/:pagename", async (req, res) => {
+    await res.render("map", { session: req.session, pagename:req.params.pagename  });
 
 });
 
@@ -695,7 +693,7 @@ app.get('/maketravel/:id',  (req, res) => {
             return res.status(403).send("Unauthorized to share this schedule.");
         }
 
-        res.render("maketravel", { schedulepage:results, moment:moment});
+        res.render("maketravel", { schedulepage:results, moment:moment, session:req.session});
     });
 
 
@@ -756,6 +754,200 @@ app.delete('/delete-page/:pageId', (req, res) => {
             return res.status(404).send("Page not found");
         }
         res.send("Page has been successfully deleted.");
+    });
+});
+
+// 관심 리스트에 저장하는 라우트
+app.post("/add-to-wishlist", (req, res) => {
+    const { tour_id, title, subject, location, detail } = req.body;
+    const user_id = req.session.user_id;
+
+    // console.log("Received tour_id:", tour_id);
+    // console.log("Received title:", title);
+    // console.log("Received subject:", subject);
+    // console.log("Received location:", location);
+    // console.log("Received detail:", detail);
+    // console.log("Session user_id:", user_id);
+
+    if (!tour_id || !user_id) {
+        console.error("Tour ID and user session are required.");
+        return res.status(400).send({
+            success: false,
+            message: "Tour ID and user session are required.",
+        });
+    }
+
+    const sql =
+        "INSERT INTO user_favorites (user_id, tour_id, added_date, title, subject, location, detail) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const added_date = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    connection.query(
+        sql,
+        [user_id, tour_id, added_date, title, subject, location, detail],
+        (err, results) => {
+            if (err) {
+                console.error("Error adding to wishlist: " + err.message);
+                return res.status(500).send({
+                    success: false,
+                    message: "Database error occurred.",
+                });
+            }
+            res.send({
+                success: true,
+                message: "Successfully added to wishlist.",
+            });
+        }
+    );
+});
+
+app.get("/wishlist", (req, res) => {
+    const user_id = req.session.user_id;
+    console.log("user_id!!!!!!!!!!!!!!!:", user_id); // 전달된 id 값 확인
+
+    const sql = `
+    SELECT * 
+    FROM user_favorites
+    WHERE user_id = ?
+    ORDER BY added_date DESC;
+    `;
+
+    connection.query(sql, [user_id], (err, results) => {
+        if (err) {
+            console.error("Error fetching wishlist: " + err.message);
+            return res
+                .status(500)
+                .send({ success: false, message: "Database error occurred." });
+        }
+        console.log("Results: ", results); // 쿼리 결과 확인
+        res.render("wishlist", { wishlist: results, session:req.session });
+    });
+});
+
+// 관심 리스트에서 삭제하는 라우트
+app.post("/remove-from-wishlist", (req, res) => {
+    const { favorite_id } = req.body;
+    const user_id = req.session.user_id;
+
+    if (!favorite_id || !user_id) {
+        console.error("Favorite ID and user session are required.");
+        return res.status(400).send({
+            success: false,
+            message: "Favorite ID and user session are required.",
+        });
+    }
+
+    const sql =
+        "DELETE FROM user_favorites WHERE favorite_id = ? AND user_id = ?";
+    connection.query(sql, [favorite_id, user_id], (err, results) => {
+        if (err) {
+            console.error("Error removing from wishlist: " + err.message);
+            return res.status(500).send({
+                success: false,
+                message: "Error removing from wishlist",
+            });
+        }
+        res.send({
+            success: true,
+            message: "Successfully removed from wishlist",
+        });
+    });
+});
+
+// 아이디 찾기
+app.post('/searchID', (req, res) => {
+    const { username, email } = req.body;
+    const sql = 'SELECT ID FROM users WHERE USERNAME = ? AND EMAIL = ?';
+    connection.query(sql, [username, email], (err, result) => {
+        if (err) {
+            console.error('Database query error:', err);
+            return res.status(500).json({ error: 'Database query error' });
+        }
+        if (result.length > 0) {
+            res.json({ id: result[0].ID });
+        } else {
+            res.json({ id: null });
+        }
+    });
+});
+
+// 비밀번호 찾기
+app.post('/searchPW', (req, res) => {
+    const { username, id, email } = req.body;
+
+    // 입력된 정보로 사용자 찾기
+    const sql = 'SELECT PASSWORD FROM users WHERE USERNAME = ? AND ID = ? AND EMAIL = ?';
+    connection.query(sql, [username, id, email], (err, result) => {
+        if (err) {
+            console.error('Database query error:', err);
+            return res.status(500).json({ error: 'Database query error' });
+        }
+        if (result.length > 0) {
+            res.json({ password: result[0].PASSWORD });
+        } else {
+            res.json({ password: null });
+        }
+    });
+});
+
+// 여행지 검색 라우트 
+app.get("/search", (req, res) => {
+    const searchQuery = req.query.query; // 클라이언트로부터 전달된 검색어
+
+    // 검색어를 기준으로 데이터베이스에서 정보를 검색하는 쿼리 작성
+    const sql = "SELECT id, subject, image FROM course WHERE subject LIKE ?";
+    const searchParam = `%${searchQuery}%`; // LIKE 연산자를 사용하여 부분 일치하는 결과를 찾음
+
+    connection.query(sql, [searchParam], (err, results) => {
+        if (err) {
+            console.error("Error searching courses: " + err.message);
+            return res.status(500).send("Error searching courses");
+        }
+        // 검색 결과를 클라이언트에 반환
+        res.json(results);
+    });
+});
+
+// 축제 검색 라우트
+app.get("/search-festival", (req, res) => {
+    const searchQuery = req.query.query; // 클라이언트로부터 전달된 검색어
+    console.log("Received festival search query: ", searchQuery); // 디버깅용 로그
+
+    // 축제를 검색하는 SQL 쿼리 작성
+    const sql = `
+        SELECT ID, FCLTY_NM, CONCAT(CTPRVN_NM, ' ', SIGNGU_NM) AS 지역, 
+               OPMTN_PLACE_NM, FSTVL_BEGIN_DE, FSTVL_END_DE 
+        FROM festival 
+        WHERE FCLTY_NM LIKE ? OR OPMTN_PLACE_NM LIKE ?`;
+    const searchParam = `%${searchQuery}%`; // LIKE 연산자를 사용하여 부분 일치하는 결과를 찾음
+
+    connection.query(sql, [searchParam, searchParam], (err, results) => {
+        if (err) {
+            console.error("Error searching festivals: " + err.message);
+            return res.status(500).send("Error searching festivals");
+        }
+        console.log("Festival search results: ", results); // 디버깅용 로그
+        // 검색 결과를 클라이언트에 반환
+        res.json(results);
+    });
+});
+
+app.get("/search-tour", (req, res) => {
+    const searchQuery = req.query.query; // 클라이언트로부터 전달된 검색어
+
+    // 검색어를 기준으로 데이터베이스에서 정보를 검색하는 쿼리 작성
+    const sql = `
+        SELECT num, POI_NM, CL_NM, CONCAT(CTPRVN_NM, ' ', SIGNGU_NM) AS 지역 
+        FROM tour 
+        WHERE POI_NM LIKE ?`;
+    const searchParam = `%${searchQuery}%`; // LIKE 연산자를 사용하여 부분 일치하는 결과를 찾음
+
+    connection.query(sql, [searchParam], (err, results) => {
+        if (err) {
+            console.error("Error searching tours: " + err.message);
+            return res.status(500).send("Error searching tours");
+        }
+        // 검색 결과를 클라이언트에 반환
+        res.json(results);
     });
 });
 

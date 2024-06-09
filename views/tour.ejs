@@ -1,204 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=0.8" />
-        <title>여행 웹사이트</title>
-        <link rel="stylesheet" href="/styles.css" />
-    </head>
-    <body>
-        <div class="header">
-            <img
-                src="images/logo.png"
-                alt="로고"
-                class="logo"
-                onclick="gotoMainPage()"
-            />
-            <div class="button-container">
-                <button class="button" onclick="gotoMainPage()">
-                    여행 스토리
-                </button>
-                <button class="button" onclick="gototour()">여행지 추천</button>
-                <button class="button" onclick="gotofestival()">축제</button>
-                <button class="button" onclick="gotocourse()">
-                    관광지 정보
-                </button>
-                <button class="button" onclick="toggleMyPageOptions()">
-                    마이페이지
-                </button>
-            </div>
-            <img
-                src="images/user.png"
-                alt="사용자"
-                class="user-image"
-                onclick="toggleUserMenu()"
-            />
-            <div class="user-menu" id="userMenu">
-                <div class="user-menu-item">
-                    <button class="button" onclick="register()">
-                        회원가입
-                    </button>
-                </div>
-                <div class="user-menu-item">
-                    <button class="button" onclick="login()">로그인</button>
-                </div>
-                <div class="user-menu-item">
-                    <button class="button" onclick="logout()">로그아웃</button>
-                </div>
-            </div>
-        </div>
 
-        <div id="myPageOptions">
-            <button class="button" onclick="createTravel()">여행 만들기</button>
-            <button class="button" onclick="gotodiary()">일기</button>
-            <button class="button" onclick="gotowishlist()">관심 리스트</button>
-            <button class="button" onclick="gotoretouch()">
-                사용자 정보 수정
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <title>여행 웹사이트</title>
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+    <div class="header">
+        <img src="images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
+        <div class="button-container">
+            <button class="button" onclick="gotoMainPage()">
+                여행 스토리
+            </button>
+            <button class="button" onclick="gototour()">여행지 추천</button>
+            <button class="button" onclick="gotofestival()">축제</button>
+            <button class="button" onclick="gotocourse()">
+                관광지 정보
+            </button>
+            <button class="button" onclick="toggleMyPageOptions()">
+                마이페이지
             </button>
         </div>
-        <hr class="custom" />
-        <div class="search-box">
-            <div>
-                <label for="city">지역 선택</label>
-                <select id="city">
-                    <option value="서울">서울</option>
-                    <option value="강원">강원</option>
-                    <option value="경기">경기</option>
-                    <option value="인천">인천</option>
-                    <option value="대전">대전</option>
-                    <option value="대구">대구</option>
-                    <option value="울산">울산</option>
-                    <option value="광주">광주</option>
-                    <option value="경북">경북</option>
-                    <option value="경남">경남</option>
-                    <option value="충남">충남</option>
-                    <option value="충북">충북</option>
-                    <option value="전북">전북</option>
-                    <option value="전남">전남</option>
-                    <option value="제주">제주</option>
-                </select>
-                <label for="type">분류</label>
-                <select id="type">
-                    <option value="문화">문화</option>
-                    <option value="역사">역사</option>
-                </select>
+        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">
+                    회원가입
+                </button>
             </div>
-            <div>
-                <input type="text" placeholder="검색어 입력" />
-                <button type="button" onclick="search()">검색</button>
-                <button type="button">초기화</button>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
             </div>
         </div>
-        <h1>여행지 목록</h1>
-        <div class="gallery" id="gallery">
-            <% courses.forEach(course => { %>
+    </div>
+
+    <div id="myPageOptions">
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기</button>
+        <button class="button" onclick="gotowishlist()">관심 리스트</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
+    </div>
+    <hr class="custom" />
+    <div class="search-box">
+        <div>
+            <label for="city">지역 선택</label>
+            <select id="city">
+                <option value="서울">서울</option>
+                <option value="강원">강원</option>
+                <option value="경기">경기</option>
+                <option value="인천">인천</option>
+                <option value="대전">대전</option>
+                <option value="대구">대구</option>
+                <option value="울산">울산</option>
+                <option value="광주">광주</option>
+                <option value="경북">경북</option>
+                <option value="경남">경남</option>
+                <option value="충남">충남</option>
+                <option value="충북">충북</option>
+                <option value="전북">전북</option>
+                <option value="전남">전남</option>
+                <option value="제주">제주</option>
+            </select>
+            <label for="type">분류</label>
+            <select id="type">
+                <option value="문화">문화</option>
+                <option value="역사">역사</option>
+            </select>
+        </div>
+        <div>
+            <input type="text" id="searchInput" placeholder="검색어 입력" />
+            <button type="button" onclick="search()">검색</button>
+            <button type="button" onclick="reset()">초기화</button>
+        </div>
+    </div>
+    <h1>여행지 목록</h1>
+    <div class="gallery" id="gallery">
+        <% courses.forEach(course=> { %>
             <div class="card">
                 <a href="/tour/<%= course.id %>">
-                    <img
-                        src="<%= course.image %>"
-                        alt="<%= course.subject %>"
-                        style="width: 100%"
-                    />
-                    <div class="description"><%= course.subject %></div>
+                    <img src="<%= course.image %>" alt="<%= course.subject %>" style="width: 100%" />
+                    <div class="description">
+                        <%= course.subject %>
+                    </div>
                 </a>
             </div>
             <% }); %>
-        </div>
-        <button id="loadMoreBtn" onclick="loadMore()">더보기</button>
+    </div>
+    <button id="loadMoreBtn" onclick="loadMore()">더보기</button>
 
-        <script>
-            let offset = 10; // 초기 offset 값
+    <script>
+        let offset = 10; // 초기 offset 값
 
-            function toggleUserMenu() {
-                var userMenu = document.getElementById("userMenu");
-                if (userMenu.style.display === "block") {
-                    userMenu.style.display = "none";
-                } else {
-                    userMenu.style.display = "block";
-                }
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
             }
+        }
 
-            function toggleMyPageOptions() {
-                var myPageOptions = document.getElementById("myPageOptions");
-                if (myPageOptions.style.display === "block") {
-                    myPageOptions.style.display = "none";
-                } else {
-                    myPageOptions.style.display = "block";
-                }
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
             }
+        }
 
-            function register() {
-                alert("회원가입 페이지로 이동합니다.");
-                window.location.href = "/signup";
-            }
+        function register() {
+            alert("회원가입 페이지로 이동합니다.");
+            window.location.href = "/signup";
+        }
 
-            function login() {
-                alert("로그인 페이지로 이동합니다.");
-                window.location.href = "/login";
-            }
+        function login() {
+            alert("로그인 페이지로 이동합니다.");
+            window.location.href = "/login";
+        }
 
-            function logout() {
-                alert("로그아웃합니다.");
-            }
+        function logout() {
+            alert("로그아웃합니다.");
+        }
 
-            function gotoMainPage() {
-                window.location.href = "/";
-            }
+        function gotoMainPage() {
+            window.location.href = "/";
+        }
 
-            function gotocourse() {
-                window.location.href = "/course";
-            }
+        function gotoStory() {
+            alert("여행 스토리 페이지로 이동합니다.");
+        }
 
-            function gotoMyPage() {
-                window.location.href = "/mypage";
-            }
+        function gotocourse() {
+            window.location.href = "/course";
+        }
 
-            function gotofestival() {
-                window.location.href = "/festival";
-            }
+        function gotoMyPage() {
+            window.location.href = "/maketravel/<%=session.user_id%>";
+        }
 
-            function gototour() {
-                window.location.href = "/tour";
-            }
+        function gotofestival() {
+            window.location.href = "/festival";
+        }
 
-            function gotodiary() {
-                window.location.href = "/diary-list";
-            }
+        function gototour() {
+            window.location.href = "/tour";
+        }
 
-            function gotowishlist() {
-                window.location.href = "/wishlist";
-            }
+        function gotodiary() {
+            window.location.href = "/diary-list/<%=session.user_id%>";
+        }
 
-            function gotoretouch() {
-                window.location.href = "/retouch";
-            }
+        function gotowishlist() {
+            window.location.href = "/wishlist";
+        }
 
-            function search() {
-                alert("검색 기능은 아직 구현되지 않았습니다.");
-            }
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=session.user_id%>";
+        }
 
-            function loadMore() {
-                fetch(`/api/more-courses?offset=${offset}`)
+        function search() {
+            const searchInput = document.getElementById("searchInput").value;
+            if (searchInput.trim() !== "") {
+                // 검색어가 비어있지 않으면 서버로 검색어 전송
+                fetch(`/search?query=${searchInput}`)
                     .then((response) => response.json())
                     .then((data) => {
-                        const gallery = document.getElementById("gallery");
-                        data.forEach((course) => {
-                            const card = document.createElement("div");
-                            card.className = "card";
-                            card.innerHTML = `
+                        // 검색 결과 처리
+                        displaySearchResults(data);
+                    })
+                    .catch((error) =>
+                        console.error("검색 결과를 가져오는 중 에러 발생:", error)
+                    );
+            } else {
+                alert("검색어를 입력해주세요.");
+            }
+        }
+
+        // 검색어 입력 상자를 선택합니다.
+        const searchInput = document.getElementById("searchInput");
+
+        // Enter 키 입력 이벤트를 감지하는 이벤트 리스너를 추가합니다.
+        searchInput.addEventListener("keypress", function (event) {
+            // Enter 키의 keyCode가 13일 때(Enter 키 입력)
+            if (event.keyCode === 13) {
+                // 검색 함수를 호출합니다.
+                search();
+            }
+        });
+
+        const sql = "SELECT id, subject, image FROM course WHERE tour = ? AND category = ?";
+
+        // 초기화 버튼을 클릭할 때 축제 목록을 초기화하고 검색창을 비워주는 함수 호출
+        function reset() {
+            // 검색창 초기화
+            document.getElementById("searchInput").value = "";
+
+            fetch('/api/reset-festivals')
+                .then((response) => response.json())
+                .then((data) => {
+                    // 초기화가 완료되면 메시지를 출력하거나 다른 작업을 수행할 수 있습니다.
+                    console.log(data.message);
+                    // 예를 들어, 초기화가 완료되면 다시 축제 목록을 불러오도록 할 수 있습니다.
+                    // loadFestivals();
+                })
+                .catch((error) => console.error("Error resetting festivals: ", error));
+        }
+
+        function displaySearchResults(results) {
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = ""; // 기존 목록 초기화
+            results.forEach((result) => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                        <a href="/tour/${result.id}">
+                            <img src="${result.image}" alt="${result.subject}" style="width:100%">
+                            <div class="description">${result.subject}</div>
+                        </a>
+                    `;
+                gallery.appendChild(card);
+            });
+        }
+
+        function loadMore() {
+            fetch(`/api/more-courses?offset=${offset}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    const gallery = document.getElementById("gallery");
+                    data.forEach((course) => {
+                        const card = document.createElement("div");
+                        card.className = "card";
+                        card.innerHTML = `
                             <a href="/tour/${course.id}">
                                 <img src="${course.image}" alt="${course.subject}" style="width:100%">
                                 <div class="description">${course.subject}</div>
                             </a>
                         `;
-                            gallery.appendChild(card);
-                        });
-                        offset += 10;
-                    })
-                    .catch((error) =>
-                        console.error("Error fetching more courses:", error)
-                    );
-            }
-        </script>
-    </body>
+                        gallery.appendChild(card);
+                    });
+                    offset += 10;
+                })
+                .catch((error) =>
+                    console.error("Error fetching more courses:", error)
+                );
+        }
+
+    </script>
+</body>
+
 </html>

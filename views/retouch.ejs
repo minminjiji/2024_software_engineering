@@ -153,15 +153,16 @@
 
 
     </div>
+    
+    <hr class="custom">
     <div id="myPageOptions">
-        <button class="button" onclick="createTravel()">여행 만들기</button>
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
         <button class="button" onclick="gotodiary()">일기</button>
         <button class="button" onclick="gotowishlist()">관심 리스트</button>
         <button class="button" onclick="gotoretouch()">
             사용자 정보 수정
         </button>
     </div>
-    <hr class="custom">
     <div class="revise-container">
         <div class="input_box">
             <img id="imagePreview" src="../svg/circle_user.svg" alt="이미지 미리보기" class="user-img" />
@@ -230,6 +231,7 @@
 
         function logout() {
             alert("로그아웃합니다.");
+            window.location.href = "/logout";
         }
 
         function gotoMainPage() {
@@ -252,15 +254,16 @@
             window.location.href = "/festival";
         }
         function gotodiary() {
-            window.location.href = "/diary-list";
+            window.location.href = "/diary-list/<%=session.user_id%>";
         }
-
         function gotowishlist() {
             window.location.href = "/wishlist";
         }
-
         function gotoretouch() {
             window.location.href = "/retouch/<%=session.user_id%>";
+        }
+        function gotoMyPage() {
+            window.location.href = "/maketravel/<%=session.user_id%>"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
         }
         function toggleMyPageOptions() {
             var myPageOptions = document.getElementById("myPageOptions");

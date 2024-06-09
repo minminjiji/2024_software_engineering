@@ -124,6 +124,12 @@
         .shared-diary .user-info span {
             font-weight: bold;
         }
+
+        #myPageOptions {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -135,7 +141,7 @@
             <button class="button" onclick="gototour()">여행지 추천</button>
             <button class="button" onclick="gotofestival()">축제</button>
             <button class="button" onclick="gotocourse()">관광지 정보</button>
-            <button class="button" onclick="gotoMyPage()">마이페이지</button>
+            <button class="button" onclick="toggleMyPageOptions()">마이페이지</button>
         </div>
         <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
@@ -151,6 +157,14 @@
         </div>
     </div>
     <hr class="custom" />
+    <div id="myPageOptions">
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기</button>
+        <button class="button" onclick="gotowishlist()">관심 리스트</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
+    </div>
     <div class="shared-diaries-container" id="sharedDiariesContainer">
         <% sharedDiaries.forEach(function(diary) { %>
             <!-- 여기를 수정했습니다 -->
@@ -167,8 +181,8 @@
             <% }); %>
     </div>
     <script>
-        function gotoDiaryDetails(diaryId) {
-            window.location.href = "/diary-list/" + diaryId;
+         function gotoDiaryDetails(diaryId) {
+            window.location.href = "/diary-details/" + diaryId;
         }
         function toggleUserMenu() {
             var userMenu = document.getElementById("userMenu");
@@ -176,6 +190,15 @@
                 userMenu.style.display = "none";
             } else {
                 userMenu.style.display = "block";
+            }
+        }
+
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
             }
         }
 
@@ -214,8 +237,15 @@
             window.location.href = "/course";
         }
 
-        function gotoDiaryDetails(diaryId) {
-            window.location.href = "/diary-details/" + diaryId;
+        function gotodiary() {
+            window.location.href = "/diary-list/<%=session.user_id%>";
+        }
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=session.user_id%>";
+        }
+
+        function gotowishlist() {
+            window.location.href = "/wishlist";
         }
     </script>
 </body>

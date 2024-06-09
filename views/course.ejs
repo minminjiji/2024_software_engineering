@@ -55,14 +55,14 @@
 
         .user-menu {
             position: absolute;
-            top: 100px;
+            top: calc(100% + 5px);
             right: 10px;
-            z-index: 1000;
             background-color: white;
-            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            padding: 10px;
             display: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .user-menu-item {
@@ -171,7 +171,7 @@
 
 <body>
     <div class="header">
-        <img src="/images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
+        <img src="images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
         <div class="button-container">
             <button class="button" onclick="gotoMainPage()">
                 여행 스토리
@@ -185,7 +185,7 @@
                 마이페이지
             </button>
         </div>
-        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
             <div class="user-menu-item">
                 <button class="button" onclick="register()">
@@ -202,7 +202,7 @@
     </div>
 
     <div id="myPageOptions">
-        <button class="button" onclick="createTravel()">여행 만들기</button>
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
         <button class="button" onclick="gotodiary()">일기</button>
         <button class="button" onclick="gotowishlist()">관심 리스트</button>
         <button class="button" onclick="gotoretouch()">
@@ -249,9 +249,9 @@
             </select>
         </div>
         <div>
-            <input type="text" placeholder="검색어 입력" />
-            <button type="button" onclick="search()">검색</button>
-            <button type="button">초기화</button>
+            <input type="text" id="searchInput" placeholder="검색어 입력" />
+            <button type="button" onclick="searchCourse()">검색</button>
+            <button type="button" onclick="reset()">초기화</button>
         </div>
     </div>
 
@@ -336,15 +336,6 @@
                 userMenu.style.display = "block";
             }
         }
-        function toggleMyPageOptions() {
-            var myPageOptions = document.getElementById("myPageOptions");
-            if (myPageOptions.style.display === "block") {
-                myPageOptions.style.display = "none";
-            } else {
-                myPageOptions.style.display = "block";
-            }
-        }
-        
 
         function register() {
             alert("회원가입 페이지로 이동합니다.");
@@ -364,9 +355,6 @@
             window.location.href = "/";
         }
 
-        // function gotoMyPage() {
-        //     window.location.href = "mypage.html"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
-        // }
 
         function gotofestival() {
             window.location.href = "/festival";
@@ -379,11 +367,6 @@
         function gotocourse() {
             window.location.href = "/course";
         }
-
-        function gotodiary() {
-            window.location.href = "/diary-list";
-        }
-
         function gotowishlist() {
             window.location.href = "/wishlist";
         }
@@ -391,6 +374,74 @@
         function gotoretouch() {
             window.location.href = "/retouch/<%=session.user_id%>";
         }
+
+        function gotoMyPage() {
+            window.location.href = "/maketravel/<%=session.user_id%>";
+        }
+
+        function gotodiary() {
+            window.location.href = "/diary-list/<%=session.user_id%>";
+        }
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
+            }
+        }
+
+        // 검색 버튼 클릭 시 호출되는 함수
+        function searchCourse() {
+            const query = document.getElementById("searchInput").value;
+            fetch(`/search-tour?query=${query}`) // URL 수정
+                .then(response => response.json())
+                .then(results => {
+                    displaySearchResults(results); // 검색 결과를 표시하는 함수 호출
+                })
+                .catch(error => console.error("Error searching:", error));
+        }
+
+        // 검색 결과 표시 함수
+        function displaySearchResults(data) {
+            const tbody = document.querySelector("tbody");
+            tbody.innerHTML = ""; // 기존 결과 초기화
+
+            // 검색 결과가 없을 경우
+            if (data.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='3'>검색 결과가 없습니다.</td></tr>";
+            } else {
+                // 검색 결과가 있을 경우
+                data.forEach((item) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                            <td><a href="/course/${item.num}">${item.POI_NM}</a></td> <!-- 필드명 수정 -->
+                            <td>${item.CL_NM}</td> <!-- 필드명 수정 -->
+                            <td>${item.지역}</td> <!-- 필드명 수정 -->
+                        `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        // 검색어 입력 상자를 선택합니다.
+        var searchInput = document.getElementById("searchInput");
+
+        // Enter 키 입력 이벤트를 감지하는 이벤트 리스너를 추가합니다.
+        searchInput.addEventListener("keyup", function (event) {
+            // Enter 키 입력을 확인합니다.
+            if (event.key === "Enter") {
+                // 검색 함수를 호출합니다.
+                searchCourse();
+            }
+        });
+
+        function reset() {
+            // 검색어 입력 상자를 선택하고 내용을 비웁니다.
+            var searchInput = document.getElementById("searchInput");
+            searchInput.value = "";
+        }
+
     </script>
 </body>
 

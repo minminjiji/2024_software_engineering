@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관심 리스트</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .logo {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        .user-image {
+            width: 50px;
+            cursor: pointer;
+        }
+
+        .button {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: orange;
+            color: white;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        hr.custom {
+            border: none;
+            height: 2px;
+            background-color: black;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+        }
+
+        .user-menu-item {
+            margin-bottom: 5px;
+        }
+
+        .user-image-container {
+            margin-top: 50px;
+            margin-left: 600px;
+        }
+
+        .wishlist-container {
+            padding: 20px;
+        }
+
+        .wishlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid darkgray;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .wishlist-item:hover {
+            background-color: #e9e9e9;
+        }
+
+        .item-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .item-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .item-detail {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .delete-button {
+            cursor: pointer;
+            color: red;
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+
+        #myPageOptions {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="images/logo.png" alt="로고" class="logo" onclick="gotoMainPage()" />
+        <div class="button-container">
+            <button class="button" onclick="gotoStory()">
+                여행 스토리
+            </button>
+            <button class="button" onclick="gotoRecommend()">
+                여행지 추천
+            </button>
+            <button class="button" onclick="gotoFestival()">축제</button>
+            <button class="button" onclick="gotoCourse()">
+                관광지 정보
+            </button>
+            <button class="button" onclick="toggleMyPageOptions()">
+                마이페이지
+            </button>
+        </div>
+        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">
+                <button class="button" onclick="register()">
+                    회원가입
+                </button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="login()">로그인</button>
+            </div>
+            <div class="user-menu-item">
+                <button class="button" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+    <hr class="custom" />
+    <div id="myPageOptions">
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기</button>
+        <button class="button" onclick="gotowishlist()">관심 리스트</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
+    </div>
+    <div class="wishlist-container container">
+        <h2 class="text-center">관심 리스트</h2>
+        <% if (wishlist.length> 0) { %> <% wishlist.forEach(function(item) { %>
+                <div class="wishlist-item">
+                    <div class="item-info">
+                        <div class="item-title">
+                            <%= item.title %>
+                        </div>
+                        <div class="item-detail">
+                            <strong>추가 날짜:</strong>
+                            <%= item.added_date %>
+                        </div>
+                        <div class="item-detail">
+                            <strong>주제:</strong>
+                            <%= item.subject %>
+                        </div>
+                        <div class="item-detail">
+                            <strong>위치:</strong>
+                            <%= item.location %>
+                        </div>
+                        <div class="item-detail">
+                            <strong>상세:</strong>
+                            <%= item.detail %>
+                        </div>
+                    </div>
+                    <button class="delete-button" onclick="confirmRemoveFromWishlist('<%= item.favorite_id %>')">
+                        삭제
+                    </button>
+                </div>
+                <% }) %>
+                    <% } else { %>
+                        <p class="text-center">관심 리스트가 비어 있습니다.</p>
+                        <% } %>
+    </div>
+    <script>
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
+            }
+        }
+
+        function register() {
+            alert("회원가입 페이지로 이동합니다.");
+            window.location.href = "/signup";
+        }
+
+        function login() {
+            alert("로그인 페이지로 이동합니다.");
+            window.location.href = "/login";
+        }
+
+        function logout() {
+            alert("로그아웃합니다.");
+            window.location.href = "/logout";
+        }
+
+        function gotoMainPage() {
+            window.location.href = "/";
+        }
+
+        function gotoMyPage() {
+            window.location.href = "/maketravel/<%=session.user_id%>"; // 이 경로는 Node.js 서버에서 설정한 라우트와 일치해야 합니다.
+        }
+
+        function gotoStory() {
+            window.location.href = "/";
+        }
+
+        function gotoRecommend() {
+            window.location.href = "/tour";
+        }
+
+        function gotoFestival() {
+            window.location.href = "/festival";
+        }
+
+        function gotoCourse() {
+            window.location.href = "/course";
+        }
+
+        function gotodiary() {
+            window.location.href = "/diary-list/<%=session.user_id%>";
+        }
+
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=session.user_id%>";
+        }
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
+            }
+        }
+
+        function confirmRemoveFromWishlist(favoriteId) {
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                removeFromWishlist(favoriteId);
+            }
+        }
+
+        function removeFromWishlist(favoriteId) {
+            fetch("/remove-from-wishlist", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ favorite_id: favoriteId }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert("삭제 중 오류가 발생했습니다.");
+                    }
+                });
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

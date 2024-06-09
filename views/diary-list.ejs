@@ -109,6 +109,13 @@
             height:80%;
             border-radius: 10px;
         }
+
+        #myPageOptions {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
     </style>
 
 </head>
@@ -121,7 +128,7 @@
             <button class="button" onclick="gototour()">여행지 추천</button>
             <button class="button" onclick="gotofestival()">축제</button>
             <button class="button" onclick="gotocourse()">경로 추천</button>
-            <button class="button" onclick="gotoMyPage()">마이페이지</button>
+            <button class="button" onclick="toggleMyPageOptions()">마이페이지</button>
         </div>
         <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
@@ -140,11 +147,13 @@
     </div>
     <hr class="custom" />
 
-    <div class="button-container2">
-        <button class="button" onclick="createTravel()">여행 만들기</button>
-        <button class="button" onclick="gotodiary()">일기작성</button>
+    <div id="myPageOptions">
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기 작성</button>
         <button class="button" onclick="gotowishlist()">관심 리스트</button>
-        <button class="button" onclick="gotoretouch()">사용자 정보 수정</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
     </div>
     <div class="gallery" id="gallery">
         <div class="diary_container2">
@@ -210,7 +219,7 @@
         }
 
         function gotowishlist() {
-            window.location.href = "wishlist.html";
+            window.location.href = "/wishlist";
         }
 
         function register() {
@@ -225,14 +234,29 @@
 
         function logout() {
             alert("로그아웃합니다.");
+            window.location.href = "/logout";
         }
 
         function redirectToMain() {
             window.location.href = "/";
         }
 
+        function gotoMyPage() {
+            window.location.href = "/maketravel/<%=session.user_id%>";
+        }
+
+
         function gotoretouch() {
             window.location.href = "/retouch/<%=session.user_id%>";
+        }
+
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
+            }
         }
     </script>
 </body>
