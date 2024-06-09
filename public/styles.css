@@ -19,10 +19,6 @@ body {
     width: 50px;
 }
 
-/* .button-container {
-    display: flex;
-    align-items: center;
-} */
 
 .button {
     background-color: transparent;
@@ -40,9 +36,12 @@ body {
 }
 
 .user-image {
-    width: 50px;
+    width: 70px;
+    height: 70px;
     cursor: pointer;
+    border-radius: 100%;
 }
+
 
 .user-menu {
     position: absolute;

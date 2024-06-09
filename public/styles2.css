@@ -39,9 +39,12 @@ body {
 }
 
 .user-image {
-    width: 50px;
+    width: 70px;
+    height: 70px;
     cursor: pointer;
+    border-radius: 100%;
 }
+
 
 .user-menu {
     position: absolute;

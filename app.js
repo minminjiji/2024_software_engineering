@@ -82,6 +82,7 @@ app.use(
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: false,
             secure: false,
+            is_logined:false,
         },
         store: new fileStore()
     })
@@ -99,14 +100,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
-    // 공유된 일기 ID가 저장된 배열을 사용
+    
+    const userImage = req.session.is_logined ? req.session.userimage : '/images/user.png';
+    req.session.userimage = userImage;
+    req.session.save(function () {
+    });
     const sql = "SELECT diary_id, user_id, photo_url FROM diary WHERE diary_id IN (?) ORDER BY created_at DESC LIMIT 10";
     connection.query(sql, [sharedDiaries.length > 0 ? sharedDiaries : [0]], (err, results) => {
         if (err) {
             console.error("Error fetching shared diaries: " + err.message);
             return res.status(500).send("Error fetching shared diaries");
         }
-        res.render("main", { session: req.session, sharedDiaries: results });
+        res.render("main", {session: req.session, sharedDiaries: results });
     });
 });
 
@@ -170,7 +175,12 @@ app.post("/retouch/:id", upload.single("profileImage"), async (req, res) => {
 
 //유저정보 수정
 app.get("/retouch/:id", (req, res) => {
-    res.render("retouch", { session: req.session });
+    try{
+        res.render("retouch", { session: req.session });
+    }
+    catch(error){
+        res.send(error);
+    }
 });
 
 
@@ -201,17 +211,33 @@ app.get("/mypage", (req, res) => {
     res.render("mypage", { session: req.session });
 });
 
+app.post('/check-id', (req, res) => {
+    const { id } = req.body;
+    connection.query('SELECT COUNT(*) AS count FROM users WHERE id = ?', [id], (error, results) => {
+        if (error) {
+            res.status(500).send('Server error');
+        } else {
+            if (results[0].count > 0) {
+                res.send({ exists: true });
+            } else {
+                res.send({ exists: false });
+            }
+        }
+    });
+});
+
 // 폼 데이터를 받아 MySQL 데이터베이스에 저장
-app.post("/signup", (req, res) => {
+app.post("/signup",upload.single("profileImage"), async (req, res) => {
     const data = {
         ID: req.body.id,
         USERNAME: req.body.username,
         PASSWORD: req.body.password,
         EMAIL: req.body.email,
     };
+    const image = req.file ? "/uploads/" + req.file.filename : '../svg/circle_user.svg';
 
     // 먼저 ID가 이미 존재하는지 확인
-    connection.query(
+    await connection.query(
         "SELECT * FROM users WHERE ID = ?",
         [data.ID],
         (err, results) => {
@@ -223,25 +249,19 @@ app.post("/signup", (req, res) => {
                     );
             }
             if (results.length > 0) {
-                return res
-                    .status(400)
-                    .send("이미 존재하는 ID입니다. 다른 ID를 선택해 주세요.");
+                return res.send("이미 아이디가 존재합니다");
             } else {
                 // ID가 존재하지 않으면 새 사용자 삽입
                 const sql =
-                    "INSERT INTO users (ID, USERNAME, PASSWORD, EMAIL) VALUES (?, ?, ?, ?)";
+                    "INSERT INTO users (ID, USERNAME, PASSWORD, EMAIL, image) VALUES (?, ?, ?, ?)";
                 connection.query(
                     sql,
-                    [data.ID, data.USERNAME, data.PASSWORD, data.EMAIL],
+                    [data.ID, data.USERNAME, data.PASSWORD, data.EMAIL, image],
                     (error, results) => {
                         if (error) {
-                            return res
-                                .status(500)
-                                .send(
-                                    "회원가입 중 오류 발생: " + error.message
-                                );
+                            return res.send(error);
                         }
-                        res.send("회원가입 완료!");
+                        res.redirect("/");
                     }
                 );
             }
@@ -762,12 +782,6 @@ app.post("/add-to-wishlist", (req, res) => {
     const { tour_id, title, subject, location, detail } = req.body;
     const user_id = req.session.user_id;
 
-    // console.log("Received tour_id:", tour_id);
-    // console.log("Received title:", title);
-    // console.log("Received subject:", subject);
-    // console.log("Received location:", location);
-    // console.log("Received detail:", detail);
-    // console.log("Session user_id:", user_id);
 
     if (!tour_id || !user_id) {
         console.error("Tour ID and user session are required.");

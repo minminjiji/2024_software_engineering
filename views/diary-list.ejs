@@ -130,19 +130,21 @@
             <button class="button" onclick="gotocourse()">경로 추천</button>
             <button class="button" onclick="toggleMyPageOptions()">마이페이지</button>
         </div>
-        <img src="/images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <img src="<%=session.userimage%>" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
-            <div class="user-menu-item">
-                <button class="button" onclick="register()">
-                    회원가입
-                </button>
-            </div>
-            <div class="user-menu-item">
-                <button class="button" onclick="login()">로그인</button>
-            </div>
-            <div class="user-menu-item">
-                <button class="button" onclick="logout()">로그아웃</button>
-            </div>
+            <% if(session.is_logined){%>
+                <div class="user-menu-item">
+                    <button class="button" onclick="logout()">로그아웃</button>
+                </div>
+            <%} else{%>
+                <div class="user-menu-item">
+                    <button class="button" onclick="register()">회원가입</button>
+                </div>
+                <div class="user-menu-item">
+                    <button class="button" onclick="login()">로그인</button>
+                </div>
+            <%}%>
+            
         </div>
     </div>
     <hr class="custom" />

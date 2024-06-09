@@ -49,20 +49,23 @@
         }
 
         .user-image {
-            width: 50px;
+            width: 70px;
+            height: 70px;
             cursor: pointer;
+            border-radius: 100%;
         }
+
 
         .user-menu {
             position: absolute;
-            top: calc(100% + 5px);
+            top: 100px;
             right: 10px;
+            z-index: 1000;
             background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
             padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
             display: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .user-menu-item {
@@ -185,19 +188,21 @@
                 마이페이지
             </button>
         </div>
-        <img src="images/user.png" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
+        <img src="<%=session.userimage%>" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
-            <div class="user-menu-item">
-                <button class="button" onclick="register()">
-                    회원가입
-                </button>
-            </div>
-            <div class="user-menu-item">
-                <button class="button" onclick="login()">로그인</button>
-            </div>
-            <div class="user-menu-item">
-                <button class="button" onclick="logout()">로그아웃</button>
-            </div>
+            <% if(session.is_logined){%>
+                <div class="user-menu-item">
+                    <button class="button" onclick="logout()">로그아웃</button>
+                </div>
+                <%} else{%>
+                    <div class="user-menu-item">
+                        <button class="button" onclick="register()">회원가입</button>
+                    </div>
+                    <div class="user-menu-item">
+                        <button class="button" onclick="login()">로그인</button>
+                    </div>
+                    <%}%>
+
         </div>
     </div>
 
@@ -349,6 +354,7 @@
 
         function logout() {
             alert("로그아웃합니다.");
+            window.location.href = "/logout";
         }
 
         function gotoMainPage() {
