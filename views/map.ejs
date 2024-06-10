@@ -228,7 +228,7 @@
 
         .button_container3 {
             display: flex;
-            
+
         }
 
         .schedule_item {
@@ -287,7 +287,7 @@
         </div>
     </div>
     <div id="myPageOptions">
-        <button class="button" onclick="createTravel()">여행 만들기</button>
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
         <button class="button" onclick="gotodiary()">일기</button>
         <button class="button" onclick="gotowishlist()">관심 리스트</button>
         <button class="button" onclick="gotoretouch()">
@@ -299,15 +299,16 @@
         <div id="map"></div>
         <div id="schdule" class="bg_white">
             <h3>
-                <%=pagename%>
+                <%= pagename %>
             </h3>
             <hr>
             <div class="button_container3">
                 <button class="button" onclick="drawRoute()">경로그리기</button>
                 <hr>
                 <button class="button" onclick="resetSchedule()">리셋</button>
-                <button class="button">저장하기</button>
-                
+                <hr>
+                <button class="button" onclick="saveSchedule()">저장하기</button>
+
             </div>
             <!-- 일정 리스트 영역 -->
             <hr>
@@ -353,6 +354,45 @@
 
         // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+        // 기존 일정 데이터를 JSON 형식으로 파싱합니다.
+        var existingSchedules = JSON.parse('<%- schedules %>');  // EJS의 <%- %> 구문을 사용하여 문자열로 직접 삽입합니다.
+
+        if (existingSchedules.length > 0) {
+            for (var i = 0; i < existingSchedules.length; i++) {
+                console.log(existingSchedules[i]);
+                var schedule = existingSchedules[i];
+                var position = new kakao.maps.LatLng(schedule.lat, schedule.lng);
+
+                var marker = addMarker(position, i, schedule.place_name);
+                map.setCenter(position);
+
+                var item = getScheduleListItem(i + 1, schedule);
+                document.getElementById('schduleList').appendChild(item);
+                var deleteButton = item.querySelector('.delete_button');
+
+                (function (item, position, i, schedule) {
+                    item.onclick = function () {
+                        console.log(schedule)
+                        if (document.getElementById('schduleList').contains(item)) { // Check if item is a child of scheduleListEl
+                            map.setCenter(position);
+                            displayInfowindow(marker, schedule.place_name);
+                        }
+                    }
+
+
+                    deleteButton.onclick = function () {
+                        if (document.getElementById('schduleList').contains(item)) { // Check if item is a child of scheduleListEl
+                            document.getElementById('schduleList').removeChild(item);
+                            updateScheduleOrder(); // 일정 목록의 순서 업데이트
+                            drawRoute(); // 경로 다시 그리기
+                        }
+                    }
+                })(item,position,i,schedule)
+
+            }
+            drawRoute();
+        }
 
         // 키워드로 장소를 검색합니다
         searchPlaces();
@@ -507,7 +547,7 @@
                 itemStr = '<div class="schedule_item"><span class="order">' + order + '</span>' +
                     '<div class="info">' +
                     '   <h5>' + places.place_name + '</h5>';
-
+            console.log(places.address_name)
             if (places.road_address_name) {
                 itemStr += '    <span>' + places.road_address_name + '</span>' +
                     '   <span class="jibun gray">' + places.address_name + '</span>';
@@ -677,12 +717,63 @@
             map.setCenter(new kakao.maps.LatLng(37.566826, 126.9786567)); // Reset the map center to the initial coordinates
             map.setLevel(3); // Reset the zoom level to the initial level
         }
+
+        function saveSchedule() {
+            var scheduleListEl = document.getElementById('schduleList');
+            var items = scheduleListEl.children;
+            var scheduleData = [];
+            var pageId = "<%= pageId %>"; // EJS를 사용하여 서버에서 pageId를 전달받음
+
+            for (var i = 0; i < items.length; i++) {
+                var placeName = items[i].querySelector('.info h5').innerText;
+                var placeAddress = items[i].querySelector('.info span').innerText;
+                var placePhoneEl = items[i].querySelector('.info .tel').innerText; // 수정된 부분
+
+                var marker = markers[i];
+                if (marker) {
+                    var position = marker.getPosition();
+                    var lat = position.getLat();
+                    var lng = position.getLng();
+
+                    scheduleData.push({
+                        name: placeName,
+                        address: placeAddress,
+                        phone: placePhoneEl,
+                        lat: lat,
+                        lng: lng
+                    });
+                }
+            }
+
+            fetch('/save-schedule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pageId: pageId, scheduleData: scheduleData })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('일정이 성공적으로 저장되었습니다.');
+                    } else {
+                        alert('일정 저장에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('일정 저장 중 오류가 발생했습니다.');
+                });
+        }
     </script>
 
     <script>
         function register() {
             alert("회원가입 페이지로 이동합니다.");
             window.location.href = "/signup";
+        }
+        function gotoMyPage() {
+            window.location.href = "/maketravel/<%=session.user_id%>";
         }
 
         function login() {
@@ -720,7 +811,7 @@
         }
 
         function gotodiary() {
-            window.location.href = "/diary-list/<%=session.user_id%>";
+            window.location.href = "/diary-list/<%= session.user_id %>";
         }
 
         function gotowishlist() {
@@ -728,7 +819,7 @@
         }
 
         function gotoretouch() {
-            window.location.href = "/retouch/<%=session.user_id%>";
+            window.location.href = "/retouch/<%= session.user_id %>";
         }
 
         function toggleMyPageOptions() {

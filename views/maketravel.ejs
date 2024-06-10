@@ -365,6 +365,15 @@
             }
         }
 
+        function toggleUserMenu() {
+            var userMenu = document.getElementById("userMenu");
+            if (userMenu.style.display === "block") {
+                userMenu.style.display = "none";
+            } else {
+                userMenu.style.display = "block";
+            }
+        }
+
         function showdelete(id) {
             var deletebutton = document.getElementById(id);
             if (deletebutton.style.display === "block") {

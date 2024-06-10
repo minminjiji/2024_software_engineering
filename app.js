@@ -695,8 +695,26 @@ app.use((err, req, res, next) => {
 
 //카카오맵
 app.get("/map/:pageid/:pagename", async (req, res) => {
-    await res.render("map", { session: req.session, pagename:req.params.pagename  });
+    const userId = req.session.user_id;
+    const pageId = req.params.pageid;
+    const pageName = req.params.pagename;
 
+    const sql = "SELECT * FROM schedules WHERE user_id = ? AND pageid = ?";
+    connection.query(sql, [userId, pageId], (err, results) => {
+        if (err) {
+            console.error("Error fetching schedules: " + err.message);
+            return res.status(500).send("Error fetching schedules");
+        }
+
+        // 데이터를 JSON 문자열로 변환합니다.
+        const schedules = JSON.stringify(results);
+        res.render("map", {
+            session: req.session,
+            pagename: pageName,
+            pageId: pageId,
+            schedules: schedules
+        });
+    });
 });
 
 //여행만들기 페이지
@@ -965,6 +983,32 @@ app.get("/search-tour", (req, res) => {
     });
 });
 
+// 일정 저장 엔드포인트
+app.post('/save-schedule', (req, res) => {
+    const { pageId, scheduleData } = req.body;
+    const userId = req.session.user_id; // 사용자 ID를 세션에서 가져옴
+
+    // 기존 데이터 삭제 후 새 데이터 추가
+    let deleteQuery = 'DELETE FROM schedules WHERE user_id = ? AND pageid = ?';
+    let insertQuery = 'INSERT INTO schedules (user_id, pageid, place_name, address_name, lat, lng, phone) VALUES ?';
+    let values = scheduleData.map(item => [userId, pageId, item.name, item.address, item.lat, item.lng, item.phone]);
+
+    connection.query(deleteQuery, [userId, pageId], (deleteError) => {
+        if (deleteError) {
+            console.error('기존 데이터 삭제 오류:', deleteError);
+            return res.json({ success: false, message: '기존 데이터 삭제에 실패했습니다.' });
+        }
+
+        connection.query(insertQuery, [values], (insertError, results) => {
+            if (insertError) {
+                console.error('DB 저장 오류:', insertError);
+                return res.json({ success: false, message: 'DB 저장에 실패했습니다.' });
+            } else {
+                return res.json({ success: true, message: '일정이 성공적으로 저장되었습니다.' });
+            }
+        });
+    });
+});
 
 
 // 서버 실행
