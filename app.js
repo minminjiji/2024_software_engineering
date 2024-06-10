@@ -253,7 +253,7 @@ app.post("/signup",upload.single("profileImage"), async (req, res) => {
             } else {
                 // ID가 존재하지 않으면 새 사용자 삽입
                 const sql =
-                    "INSERT INTO users (ID, USERNAME, PASSWORD, EMAIL, image) VALUES (?, ?, ?, ?)";
+                    "INSERT INTO users (ID, USERNAME, PASSWORD, EMAIL, image) VALUES (?, ?, ?, ?, ?)";
                 connection.query(
                     sql,
                     [data.ID, data.USERNAME, data.PASSWORD, data.EMAIL, image],
