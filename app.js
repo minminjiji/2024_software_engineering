@@ -105,7 +105,7 @@ app.get("/", (req, res) => {
     req.session.save(function () {});
 
     const sql = `
-        SELECT d.diary_id, d.user_id, d.photo_url, u.image AS user_image, u.USERNAME
+        SELECT d.diary_id, d.user_id, d.photo_url,d.content, u.image AS user_image, u.USERNAME
         FROM diary d
         JOIN users u ON d.user_id = u.ID
         WHERE d.diary_id IN (?) 
@@ -681,8 +681,17 @@ loadCommentsFromFile();
 app.post('/submit-comment', (req, res) => {
     const { diary_id, content } = req.body;
     const userId = req.session.user_id; // 현재 세션에 저장된 사용자 아이디를 가져옴
-    saveComment(diary_id, userId, content); // 댓글 저장
-    res.json({ success: true });
+    const sql = "select * from users where ID=?"
+    connection.query(sql,userId,(err, results) =>{
+        if (err) {
+            console.error("Error fetching schedules: " + err.message);
+            return res.status(500).send("Error fetching schedules");
+        }
+        
+        saveComment(diary_id, results[0].USERNAME, content); // 댓글 저장
+        res.json({ success: true });
+    });
+    
 });
 
 // 댓글 불러오기 엔드포인트
@@ -842,8 +851,7 @@ app.post("/add-to-wishlist", (req, res) => {
 
 app.get("/wishlist", (req, res) => {
     const user_id = req.session.user_id;
-    console.log("user_id!!!!!!!!!!!!!!!:", user_id); // 전달된 id 값 확인
-
+    
     const sql = `
     SELECT * 
     FROM user_favorites
