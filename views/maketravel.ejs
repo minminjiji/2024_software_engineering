@@ -265,7 +265,8 @@
         <div class="pagelist">
             <button class="travel-make-button" onclick="showForm()">+ 여행 만들기</button>
             <div id="travel-pages">
-                <% schedulepage.sort((a, b)=> new Date(a.traveldate) - new
+                <% if(schedulepage){%>
+                    <% schedulepage.sort((a, b)=> new Date(a.traveldate) - new
                     Date(b.traveldate)).forEach(schedulepage => {
                     %>
                     <div class="pagedivide">
@@ -295,6 +296,8 @@
 
                     </div>
                     <% }); %>
+                <%}%>
+                
             </div>
 
         </div>

@@ -728,7 +728,7 @@ app.get('/maketravel/:id',  (req, res) => {
             return res.status(500).send("Database error occurred.");
         }
         if (results.length === 0) {
-            return res.status(403).send("Unauthorized to share this schedule.");
+            return res.render("maketravel", { schedulepage: results,moment:moment, session:req.session}); 
         }
 
         res.render("maketravel", { schedulepage:results, moment:moment, session:req.session});
