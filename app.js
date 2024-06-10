@@ -105,7 +105,7 @@ app.get("/", (req, res) => {
     req.session.save(function () {});
 
     const sql = `
-        SELECT d.diary_id, d.user_id, d.photo_url, u.image AS user_image
+        SELECT d.diary_id, d.user_id, d.photo_url, u.image AS user_image, u.USERNAME
         FROM diary d
         JOIN users u ON d.user_id = u.ID
         WHERE d.diary_id IN (?) 
