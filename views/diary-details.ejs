@@ -158,6 +158,12 @@
             margin: auto;
         }
 
+        #myPageOptions {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
 
         /* 보람 */
     </style>
@@ -172,7 +178,7 @@
             <button class="button" onclick="gototour()">여행지 추천</button>
             <button class="button" onclick="gotofestival()">축제</button>
             <button class="button" onclick="gotocourse()">관광지 정보</button>
-            <button class="button" onclick="gotoMyPage()">마이페이지</button>
+            <button class="button" onclick="toggleMyPageOptions()">마이페이지</button>
         </div>
         <img src="<%=session.userimage%>" alt="사용자" class="user-image" onclick="toggleUserMenu()" />
         <div class="user-menu" id="userMenu">
@@ -190,6 +196,14 @@
         </div>
     </div>
     <hr class="custom" />
+    <div id="myPageOptions">
+        <button class="button" onclick="gotoMyPage()">여행 만들기</button>
+        <button class="button" onclick="gotodiary()">일기</button>
+        <button class="button" onclick="gotowishlist()">관심 리스트</button>
+        <button class="button" onclick="gotoretouch()">
+            사용자 정보 수정
+        </button>
+    </div>
 
     <div class="diary_head">
         <p class="diary_name">
@@ -238,6 +252,18 @@
 
         function goBack() {
             window.history.back();
+        }
+        function toggleMyPageOptions() {
+            var myPageOptions = document.getElementById("myPageOptions");
+            if (myPageOptions.style.display === "block") {
+                myPageOptions.style.display = "none";
+            } else {
+                myPageOptions.style.display = "block";
+            }
+        }
+
+        function gotodiary() {
+            window.location.href = "/diary-list/<%=session.user_id%>";
         }
 
         function deleteEntry(diary_id) {
@@ -376,6 +402,17 @@
         }
         function redirectToMain() {
             window.location.href = "/";
+        }
+        function gotodiary() {
+            window.location.href = "/diary-list/<%=session.user_id%>";
+        }
+
+        function gotowishlist() {
+            window.location.href = "/wishlist";
+        }
+
+        function gotoretouch() {
+            window.location.href = "/retouch/<%=session.user_id%>";
         }
 
         function register() {

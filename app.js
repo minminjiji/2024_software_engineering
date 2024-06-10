@@ -100,17 +100,25 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
-    
     const userImage = req.session.is_logined ? req.session.userimage : '/images/user.png';
     req.session.userimage = userImage;
-    req.session.save(function () {
-    });
-    const sql = "SELECT diary_id, user_id, photo_url FROM diary WHERE diary_id IN (?) ORDER BY created_at DESC LIMIT 10";
+    req.session.save(function () {});
+
+    const sql = `
+        SELECT d.diary_id, d.user_id, d.photo_url, u.image AS user_image
+        FROM diary d
+        JOIN users u ON d.user_id = u.ID
+        WHERE d.diary_id IN (?) 
+        ORDER BY d.created_at DESC 
+        LIMIT 10
+    `;
+
     connection.query(sql, [sharedDiaries.length > 0 ? sharedDiaries : [0]], (err, results) => {
         if (err) {
             console.error("Error fetching shared diaries: " + err.message);
             return res.status(500).send("Error fetching shared diaries");
         }
+        console.log(results)
         res.render("main", {session: req.session, sharedDiaries: results });
     });
 });
