@@ -79,7 +79,7 @@ app.use(
         saveUninitialized: true, // 세션이 저장되기 전 uninitialized 상태로 미리 만들어 저장
         cookie: {
             // 세션 쿠키 설정 (세션 관리 시 클라이언트에 보내는 쿠키)
-            maxAge: 24 * 60 * 60 * 1000,
+            maxAge: 60 * 60 * 1000,
             httpOnly: false,
             secure: false,
             is_logined:false,
